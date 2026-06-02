@@ -732,29 +732,41 @@ This project is licensed under the **MIT License** — see [LICENSE](LICENSE) fo
 
 ---
 
-## 👤 Author
+## Contact
 
-<div align="center">
-
-**Adil Shamim**
-AI/ML Engineer · Agentic Systems Builder
-
-[![Website](https://img.shields.io/badge/Website-adilshamim.me-3B82F6?style=for-the-badge&logo=safari&logoColor=white)](https://adilshamim.me/)
-[![GitHub](https://img.shields.io/badge/GitHub-AdilShamim8-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/AdilShamim8)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-AdilShamim8-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/adilshamim8)
-
-*Have a question, idea, or found something broken? [Open an issue](https://github.com/AdilShamim8/Agentic-AI-Roadmap-with-Notes-and-Projects/issues) — I read and respond to all of them.*
-
-</div>
+- Website: [Adil Shamim](https://adilshamim.me/)
+- GitHub: [Adil Shamim](https://github.com/AdilShamim8)
+- Create an issue in this repository for questions or suggestions
 
 ---
 
+<p align="center">
+  <a href="https://github.com/AdilShamim8">
+    <img src="https://img.shields.io/badge/GitHub-AdilShamim8-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Profile"/>
+  </a>
+  <span style="opacity:.6">&nbsp;</span>
+
+  <a href="https://www.linkedin.com/in/adilshamim8">
+    <img src="https://img.shields.io/badge/LinkedIn-AdilShamim8-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn Profile"/>
+  </a>
+  <span style="opacity:.6">&nbsp;</span>
+
+  <a href="https://www.kaggle.com/adilshamim8">
+    <img src="https://img.shields.io/badge/Kaggle-AdilShamim8-20BEFF?style=for-the-badge&logo=kaggle&logoColor=white" alt="Kaggle Profile"/>
+  </a>
+  <span style="opacity:.6">&nbsp;</span>
+
+  <a href="https://x.com/adil_shamim8">
+    <img src="https://img.shields.io/badge/Twitter%2FX-@adil__shamim8-000000?style=for-the-badge&logo=x&logoColor=white" alt="Twitter/X Profile"/>
+  </a>
+  <span style="opacity:.6">&nbsp;</span>
+
+  <a href="https://adilshamim8.medium.com/">
+    <img src="https://img.shields.io/badge/Medium-AdilShamim8-12100E?style=for-the-badge&logo=medium&logoColor=white" alt="Medium Profile"/>
+  </a>
+</p>
 <div align="center">
-
-### ⭐ If this roadmap helped you, please give it a star — it helps others discover it!
-
-[![Star on GitHub](https://img.shields.io/github/stars/AdilShamim8/Agentic-AI-Roadmap-with-Notes-and-Projects?style=social)](https://github.com/AdilShamim8/Agentic-AI-Roadmap-with-Notes-and-Projects/stargazers)
-
-*Built with for the Agentic AI community*
+  
+⭐ **If you find this repository helpful, please consider giving it a star!** ⭐
 
 </div>
