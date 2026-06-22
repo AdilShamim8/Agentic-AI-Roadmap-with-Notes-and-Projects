@@ -23,7 +23,7 @@
 
 ---
 
-## 📌 What Is This Repository?
+## What Is This Repository?
 
 This is a **structured, production-grade curriculum** for building sophisticated **Agentic AI systems** — from first principles to enterprise-scale deployment.
 
@@ -41,7 +41,7 @@ Unlike scattered tutorials, this roadmap gives you:
 
 ---
 
-## 🎯 Who Is This For?
+## Who Is This For?
 
 | Your Background | You'll Use This To |
 |---|---|
