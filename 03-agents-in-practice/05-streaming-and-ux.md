@@ -37,7 +37,7 @@ The UX considerations:
 
 ## Worked example
 
-A streaming chat client that prints tokens as they arrive and shows tool-call events. Full code in [`examples/streaming_demo.py`](../examples/streaming_demo_demo.py).
+A streaming chat client that prints tokens as they arrive and shows tool-call events. Full code in [`examples/streaming_demo.py`](../examples/streaming_demo.py).
 
 ```python
 from langchain_openai import ChatOpenAI
