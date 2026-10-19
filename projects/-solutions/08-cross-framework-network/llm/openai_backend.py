@@ -22,7 +22,7 @@ class OpenAIBackend(LLMBackend):
     def __init__(
         self,
         api_key: str,
-        model: str = "gpt-4o",
+        model: str = "gpt-5.5",
         base_url: str | None = None,
     ) -> None:
         # Lazy import — avoids hard dependency on the openai package.

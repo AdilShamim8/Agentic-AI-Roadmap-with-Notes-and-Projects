@@ -3,7 +3,7 @@
 Module: 05-agentic-patterns
 Chapter: 01-react
 Status: stable
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 2 hours
 
 ## Learning objectives
@@ -52,7 +52,7 @@ For these cases, use plan-and-execute, reflexion, or a supervisor pattern.
 A ReAct agent that answers questions using a web search tool and a calculator. Full code in [`examples/react_demo.py`](../examples/react_demo.py).
 
 ```python
-from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 from langchain_core.tools import tool
 from langgraph.prebuilt import create_react_agent
 
@@ -71,7 +71,7 @@ def calculator(expression: str) -> str:
     except Exception as e:
         return f"Error: {e}"
 
-llm = ChatOpenAI(model="gpt-4o", temperature=0)
+llm = ChatAnthropic(model="claude-sonnet-5-5")
 agent = create_react_agent(llm, tools=[web_search, calculator])
 
 result = agent.invoke({
@@ -88,7 +88,7 @@ A golden dataset of 20 questions, each requiring one or two tool calls. The eval
 
 ## Production notes
 
-In production, the `recursion_limit` parameter on `create_react_agent` is your safety net. The default is 25, which is too high for most production agents - set it to 5-10. Track the average number of tool calls per request and alert if it drifts upward (a sign of degradation). For long-running ReAct agents (more than 10 tool calls), consider switching to plan-and-execute - the explicit plan keeps the agent on track.
+In production, the `recursion_limit` runtime config is your safety net (the default is 25 - too high for most production agents; set 5-10 at invoke time via `config={"recursion_limit": 8}`). Track the average number of tool calls per request and alert if it drifts upward (a sign of degradation). For long-running ReAct agents (more than 10 tool calls), consider switching to plan-and-execute - the explicit plan keeps the agent on track.
 
 ## Common pitfalls
 

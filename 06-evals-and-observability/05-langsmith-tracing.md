@@ -3,7 +3,7 @@
 Module: 06-evals-and-observability
 Chapter: 05-langsmith-tracing
 Status: stable
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 2 hours
 
 ## Learning objectives
@@ -50,7 +50,7 @@ os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_API_KEY"] = "ls__..."
 os.environ["LANGCHAIN_PROJECT"] = "my-agent"
 
-from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 from langchain_core.tools import tool
 from langgraph.prebuilt import create_react_agent
 
@@ -59,7 +59,7 @@ def get_weather(location: str) -> str:
     """Get weather for a location."""
     return f"72F, sunny in {location}"
 
-llm = ChatOpenAI(model="gpt-4o", temperature=0)
+llm = ChatAnthropic(model="claude-sonnet-5-5")
 agent = create_react_agent(llm, tools=[get_weather])
 
 # This invocation is automatically traced

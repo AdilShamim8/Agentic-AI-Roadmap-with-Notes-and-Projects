@@ -3,7 +3,7 @@
 Module: 08-production
 Chapter: 04-checkpointing-and-durability
 Status: stable
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 2 hours
 
 ## Learning objectives
@@ -44,11 +44,10 @@ For most agents, idempotent tools are the right answer. Work with the tool's API
 Configuring PostgresSaver and resuming after a crash. Full code in [`examples/durability_demo.py`](../examples/durability_demo.py).
 
 ```python
-from langgraph.checkpoint.postgres import PostgresSaver
+from langgraph.checkpoint.postgres import PostgresSaver  # own package since langgraph 1.x
 from langgraph.prebuilt import create_react_agent
-from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 from langchain_core.tools import tool
-from psycopg import Connection
 
 @tool
 def issue_refund(order_id: str, amount: float, idempotency_key: str) -> str:
@@ -56,19 +55,27 @@ def issue_refund(order_id: str, amount: float, idempotency_key: str) -> str:
     # In production, call the refund API with the idempotency key
     return f"Refund of ${amount} for {order_id} processed (key: {idempotency_key})"
 
-conn = Connection("postgresql://postgres:postgres@localhost:5432/langgraph")
-checkpointer = PostgresSaver(conn)
-checkpointer.setup()  # creates the schema if it does not exist
+# from_conn_string is a context manager in langgraph 1.x
+with PostgresSaver.from_conn_string(
+    "postgresql://postgres:postgres@localhost:5432/langgraph"
+) as checkpointer:
+    checkpointer.setup()  # creates the schema if it does not exist
 
-llm = ChatOpenAI(model="gpt-4o", temperature=0)
-agent = create_react_agent(llm, tools=[issue_refund], checkpointer=checkpointer)
+    agent = create_react_agent(
+        ChatAnthropic(model="claude-sonnet-5-5"),
+        tools=[issue_refund],
+        checkpointer=checkpointer,
+    )
 
-config = {"configurable": {"thread_id": "user-001"}}
-result = agent.invoke({"messages": [{"role": "user", "content": "Refund order ACME-123 for $50"}]}, config=config)
+    config = {"configurable": {"thread_id": "user-001"}}
+    result = agent.invoke(
+        {"messages": [{"role": "user", "content": "Refund order ACME-123 for $50"}]},
+        config=config,
+    )
 
-# If the process crashes here, the agent can resume:
-# result = agent.invoke({"messages": []}, config=config)
-# The checkpointer restores the state, and the agent continues.
+    # If the process crashes here, the agent can resume:
+    # result = agent.invoke({"messages": []}, config=config)
+    # The checkpointer restores the state, and the agent continues.
 ```
 
 ## Evaluation
@@ -77,7 +84,7 @@ Test that: (1) the agent's state survives a process restart, (2) resuming with t
 
 ## Production notes
 
-In production, the PostgresSaver schema grows over time (every node execution adds a row). Implement a retention policy: keep checkpoints for 30 days, then delete. For long-running agents (hours to days), this is essential - a single agent's checkpoints can occupy megabytes.
+In production, the PostgresSaver schema grows over time (every node execution adds a row). Implement a retention policy: keep checkpoints for 30 days, then delete. `langgraph-checkpoint-postgres` 3.2 ships a first-class `prune()` method for exactly this. For long-running agents (hours to days), retention is essential - a single agent's checkpoints can occupy megabytes.
 
 The most common production failure: a non-idempotent tool called in a node that crashes mid-execution. The refund is issued twice; the user is charged twice (or refunded twice). The fix: every tool with side effects must be idempotent. This is non-negotiable for production agents.
 
@@ -89,8 +96,8 @@ The most common production failure: a non-idempotent tool called in a node that 
 
 ## Further reading
 
-- [LangGraph checkpointers](https://langchain-ai.github.io/langgraph/concepts/persistence/)
-- [PostgresSaver](https://langchain-ai.github.io/langgraph/reference/checkpoints/#langgraph.checkpoint.postgres.PostgresSaver)
+- [LangGraph checkpointing docs](https://docs.langchain.com/oss/python/langgraph)
+- [langgraph-checkpoint-postgres](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint-postgres)
 
 ## Checklist
 

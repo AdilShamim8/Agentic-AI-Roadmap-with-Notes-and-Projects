@@ -3,7 +3,7 @@
 Module: 05-agentic-patterns
 Chapter: 04-supervisor
 Status: stable
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 2 hours
 
 ## Learning objectives
@@ -42,10 +42,10 @@ from typing import TypedDict, Annotated, Literal
 from langgraph.graph import StateGraph, START, END
 from langgraph.graph.message import add_messages
 from langgraph.prebuilt import create_react_agent
-from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 from langchain_core.tools import tool
 
-llm = ChatOpenAI(model="gpt-4o", temperature=0)
+llm = ChatAnthropic(model="claude-sonnet-5-5")
 
 @tool
 def search_web(query: str) -> str:

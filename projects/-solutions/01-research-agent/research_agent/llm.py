@@ -22,7 +22,7 @@ class LLMClient(Protocol):
 class OpenAIClient:
     """Adapter around the official `openai` SDK."""
 
-    def __init__(self, model: str = "gpt-4o-mini", api_key: Optional[str] = None, temperature: float = 0.2):
+    def __init__(self, model: str = "gpt-5.5", api_key: Optional[str] = None, temperature: float = 0.2):
         try:
             from openai import OpenAI
         except ImportError as exc:  # pragma: no cover
@@ -52,7 +52,7 @@ class OpenAIClient:
 class AnthropicClient:
     """Adapter around the official `anthropic` SDK."""
 
-    def __init__(self, model: str = "claude-sonnet-4-6", api_key: Optional[str] = None, temperature: float = 0.2):
+    def __init__(self, model: str = "claude-sonnet-5-5", api_key: Optional[str] = None, temperature: float = 0.2):
         try:
             import anthropic
         except ImportError as exc:  # pragma: no cover
@@ -122,11 +122,11 @@ def build_llm(provider: str, model: Optional[str] = None) -> LLMClient:
 
     provider = provider.lower()
     if provider == "openai":
-        return OpenAIClient(model=model or "gpt-4o-mini")
+        return OpenAIClient(model=model or "gpt-5.5")
     if provider == "ollama":
         return OllamaClient(model=model or "llama3.1")
     if provider == "anthropic":
-        return AnthropicClient(model=model or "claude-sonnet-4-6")
+        return AnthropicClient(model=model or "claude-sonnet-5-5")
 
     raise ValueError(f"Unknown LLM provider '{provider}'. Use openai, anthropic, or ollama.")
 

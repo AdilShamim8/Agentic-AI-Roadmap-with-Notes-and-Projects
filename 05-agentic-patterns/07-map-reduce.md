@@ -3,7 +3,7 @@
 Module: 05-agentic-patterns
 Chapter: 07-map-reduce
 Status: stable
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 1 hour
 
 ## Learning objectives
@@ -44,9 +44,9 @@ A map-reduce agent that summarizes N documents and produces a meta-summary. Full
 from typing import TypedDict, Annotated
 from operator import add
 from langgraph.graph import StateGraph, START, END
-from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 
-llm = ChatOpenAI(model="gpt-4o", temperature=0)
+llm = ChatAnthropic(model="claude-sonnet-5-5")
 
 class State(TypedDict):
     documents: list[str]

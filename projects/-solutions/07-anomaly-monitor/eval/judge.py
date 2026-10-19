@@ -1,6 +1,6 @@
 """LLM-as-judge for response correctness.
 
-Asks the configured LLM (``settings.llm_model``, default ``gpt-4o-mini``)
+Asks the configured LLM (``settings.llm_model``, default ``gpt-5.5``)
 to grade each :class:`PipelineRecord`'s proposed response on a 0–1 scale.
 When no ``OPENAI_API_KEY`` is configured, :meth:`ResponseJudge.judge`
 returns ``(1.0, "no_llm_judge")`` so the rest of the eval pipeline can run

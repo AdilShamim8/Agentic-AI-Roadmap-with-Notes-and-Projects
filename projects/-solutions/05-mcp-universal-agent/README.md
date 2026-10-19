@@ -287,7 +287,7 @@ A full JSON report is written to `evals/results/report.json` (or
 
 By default the eval uses a deterministic, rule-based completion check (no
 API key needed). For real scoring, set `OPENAI_API_KEY` – the agent will
-use GPT-4o-mini and the rubric will reflect a real LLM's selection
+use a real LLM and the rubric will reflect its selection
 accuracy.
 
 ---
@@ -300,7 +300,7 @@ automatically by `agent/cli.py`):
 | Variable | Default | Meaning |
 |----------|---------|---------|
 | `OPENAI_API_KEY` | *(unset)* | If set, agent uses OpenAI for selection + synthesis. |
-| `OPENAI_MODEL` | `gpt-4o-mini` | Override the OpenAI model. |
+| `OPENAI_MODEL` | `gpt-5.5` | Override the OpenAI model. |
 | `OPENAI_BASE_URL` | *(unset)* | Override for Azure / proxies. |
 | `ANTHROPIC_API_KEY` | *(unset)* | If set, agent uses Claude Sonnet. |
 | `ANTHROPIC_MODEL` | `claude-3-5-sonnet-20241022` | Override the Claude model. |

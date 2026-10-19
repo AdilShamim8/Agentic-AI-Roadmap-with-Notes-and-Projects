@@ -106,7 +106,7 @@ Set environment variables (in `.env` or Docker environment):
 ```bash
 LLM_BACKEND=openai
 OPENAI_API_KEY=sk-your-key-here
-OPENAI_MODEL=gpt-4o
+OPENAI_MODEL=gpt-5.5
 ```
 
 For Docker:

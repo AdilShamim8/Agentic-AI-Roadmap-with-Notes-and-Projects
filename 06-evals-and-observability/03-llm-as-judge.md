@@ -3,7 +3,7 @@
 Module: 06-evals-and-observability
 Chapter: 03-llm-as-judge
 Status: stable
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 2 hours
 
 ## Learning objectives
@@ -27,7 +27,7 @@ The components:
 
 2. Judge prompt. The prompt sent to the judge LLM. It includes the rubric, the input, the output to evaluate, and an instruction to produce a structured score. The judge prompt is versioned with the rubric.
 
-3. Judge LLM. The model used as the judge. Use a stronger model than the one being evaluated (e.g., evaluate GPT-4o outputs with Claude Opus, or vice versa). Using the same model as both actor and judge produces self-preference bias.
+3. Judge LLM. The model used as the judge. Use a different model than the one being evaluated - a different family is ideal, a different tier is an acceptable fallback. Using the same model as both actor and judge produces self-preference bias.
 
 4. Score aggregation. For multi-dimensional rubrics, aggregate the per-dimension scores into a single score (weighted average, minimum, etc.).
 
@@ -49,7 +49,7 @@ An LLM-as-judge evaluator for answer quality. Full code in [`examples/llm_judge_
 
 ```python
 from pydantic import BaseModel, Field
-from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 
 class AnswerScore(BaseModel):
     correctness: int = Field(description="Score 1-5: does the answer address the question correctly?")
@@ -71,7 +71,7 @@ Be strict. A score of 5 means excellent; 3 means acceptable; 1 means poor.
 """
 
 def judge_answer(question: str, answer: str) -> AnswerScore:
-    llm = ChatOpenAI(model="claude-3-5-sonnet", temperature=0)  # different model from actor
+    llm = ChatAnthropic(model="claude-haiku-5-5")  # different tier from the actor
     prompt = JUDGE_PROMPT.format(question=question, answer=answer)
     return llm.with_structured_output(AnswerScore).invoke(prompt)
 

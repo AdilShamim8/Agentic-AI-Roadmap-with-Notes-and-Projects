@@ -66,7 +66,7 @@ Mirrors the **OpenAI Agents SDK** pattern:
 ```python
 # Real OpenAI Agents SDK:
 from agents import Agent, Runner
-agent = Agent(name="...", instructions="...", model="gpt-4o", tools=[...])
+agent = Agent(name="...", instructions="...", model="gpt-5.5", tools=[...])
 result = await Runner.run(agent, query)
 
 # This project (same structure):

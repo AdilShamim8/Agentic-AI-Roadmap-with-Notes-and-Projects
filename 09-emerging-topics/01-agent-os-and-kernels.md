@@ -3,7 +3,7 @@
 Module: 09-emerging-topics
 Chapter: 01-agent-os-and-kernels
 Status: draft
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 1 hour
 
 ## Learning objectives
@@ -48,7 +48,7 @@ In production (in 2026), do not wait for an agent OS. Use LangGraph Platform or 
 
 ## Further reading
 
-- [Agent OS discussions](https://github.com/langchain-ai/langgraph/discussions)
+- [LangChain forum](https://forum.langchain.com/)
 - [AI SDK](https://sdk.vercel.ai/docs) - Vercel's take on the agent runtime layer
 
 ## Checklist

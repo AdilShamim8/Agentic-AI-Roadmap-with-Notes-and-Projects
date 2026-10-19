@@ -3,7 +3,7 @@
 Module: 07-multi-agent-and-a2a
 Chapter: 04-a2a-agent-cards
 Status: beta
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 2 hours
 
 ## Learning objectives
@@ -19,27 +19,28 @@ Estimated time: 2 hours
 
 ## Conceptual foundation
 
-The Agent Card is the public face of an A2A agent. It is a JSON document at `/.well-known/agent.json` that tells potential clients: who I am, what I can do, how to call me, what authentication I require. A well-authored Agent Card is the difference between an agent that gets used and one that does not.
+The Agent Card is the public face of an A2A agent. It is a JSON document at `/.well-known/agent-card.json` (the v1.0 path; 0.2.x used `agent.json`) that tells potential clients: who I am, what I can do, how to call me, what authentication I require. v1.0 adds signed cards (AgentCardSignature) so callers can verify a card was not tampered with, and an authenticated "extended card" for callers you already trust. A well-authored Agent Card is the difference between an agent that gets used and one that does not.
 
-The required fields:
+The v1.0 required fields:
 
 - `name`: the agent's name (e.g., "research-agent").
 - `description`: a one-paragraph description of what the agent does. This is what clients read to decide whether to use the agent.
+- `url`: the service URL where the agent receives requests (the card carries one URL, not a list of endpoints).
 - `version`: the agent's version (semantic versioning).
-- `capabilities`: what the agent supports (streaming, push notifications, async tasks).
-- `skills`: a list of skills the agent has. Each skill has an id, a description, and (optionally) input/output schemas.
-- `endpoints`: the URLs for `tasks/send`, `tasks/get`, etc.
-- `authentication`: the authentication scheme (none, API key, OAuth).
+- `capabilities`: what the agent supports (streaming, push notifications).
+- `defaultInputModes` / `defaultOutputModes`: the MIME types the agent accepts and produces.
+- `skills`: a list of skills the agent has. Each skill has an id, a name, a description, and tags.
+- `securitySchemes`: the authentication schemes (API key, OAuth, mutual TLS), mirroring OpenAPI's structure.
 
 The `skills` field is the most important. It is the agent's menu. Each skill should be specific enough that a client can decide whether the agent can handle a given task. "Research" is too vague; "Research a topic using web search and return a cited summary" is specific.
 
 ## Worked example
 
-Exposing a LangGraph research agent as an A2A server. Full code in [`examples/a2a_server_demo.py`](../examples/a2a_server_demo.py).
+Exposing a LangGraph research agent as an A2A v1.0 server. Full code (FastAPI, in-process client tests, the `rejected` state) in [`examples/a2a_server_demo.py`](../examples/a2a_server_demo.py).
 
 ```python
 from fastapi import FastAPI
-from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 from langchain_core.tools import tool
 from langgraph.prebuilt import create_react_agent
 
@@ -50,41 +51,50 @@ def web_search(query: str) -> str:
     """Search the web."""
     return f"[Results for: {query}]"
 
-llm = ChatOpenAI(model="gpt-4o", temperature=0)
+llm = ChatAnthropic(model="claude-sonnet-5-5")
 research_agent = create_react_agent(llm, tools=[web_search], prompt="You are a research agent.")
 
 AGENT_CARD = {
     "name": "research-agent",
-    "description": "Researches a topic using web search and returns a cited summary.",
+    "description": "Researches a topic and returns a cited summary.",
     "version": "1.0.0",
-    "capabilities": {"streaming": False, "pushNotifications": False, "asyncTasks": True},
+    "url": "http://localhost:8001",
+    "capabilities": {"streaming": False, "pushNotifications": False},
+    "defaultInputModes": ["text/plain"],
+    "defaultOutputModes": ["text/plain"],
     "skills": [{
-        "id": "research",
+        "id": "research", "name": "Research",
         "description": "Research a topic and return a summary with citations.",
-        "inputSchema": {"type": "object", "properties": {"topic": {"type": "string"}}, "required": ["topic"]},
-        "outputSchema": {"type": "object", "properties": {"summary": {"type": "string"}, "citations": {"type": "array"}}},
+        "tags": ["research"],
     }],
-    "endpoints": {"tasksSend": "/tasks/send", "tasksGet": "/tasks/get"},
-    "authentication": {"schemes": ["bearer"]},
+    "provider": {"organization": "agentic-ai-roadmap"},
 }
 
-@app.get("/.well-known/agent.json")
+@app.get("/.well-known/agent-card.json")
 def agent_card():
     return AGENT_CARD
 
-@app.post("/tasks/send")
-async def send_task(req: dict):
-    topic = req["message"]["parts"][0]["text"]
-    result = await research_agent.ainvoke({"messages": [{"role": "user", "content": f"Research: {topic}"}]})
-    summary = result["messages"][-1].content
-    return {
-        "task_id": req["task_id"],
-        "status": {"state": "completed"},
-        "artifacts": [{"type": "text", "text": summary}],
-    }
+@app.post("/")
+def message_send(payload: dict):
+    text = next(
+        (p.get("text", "") for p in payload["params"]["message"]["parts"]
+         if p.get("kind") == "text"), "",
+    )
+    if not text.strip():
+        state, artifacts = "rejected", []  # v1.0 terminal state
+    else:
+        result = research_agent.invoke(
+            {"messages": [{"role": "user", "content": f"Research: {text}"}]}
+        )
+        state = "completed"
+        artifacts = [{"parts": [{"kind": "text", "text": result["messages"][-1].content}]}]
+    return {"jsonrpc": "2.0", "id": payload["id"], "result": {
+        "id": "task-001", "contextId": "ctx-1",
+        "status": {"state": state}, "artifacts": artifacts,
+    }}
 ```
 
-Consuming the agent from a LangGraph client:
+Consuming the agent from a client:
 
 ```python
 import httpx
@@ -94,16 +104,18 @@ from langchain_core.tools import tool
 def call_research_agent(topic: str) -> str:
     """Research a topic using the remote research agent. Returns a summary."""
     # 1. Fetch the Agent Card (cached in production)
-    card = httpx.get("http://localhost:8000/.well-known/agent.json").json()
+    card = httpx.get("http://localhost:8001/.well-known/agent-card.json").json()
 
-    # 2. Send a task
-    response = httpx.post(card["endpoints"]["tasksSend"], json={
-        "task_id": f"task-{hash(topic)}",
-        "message": {"role": "user", "parts": [{"type": "text", "text": topic}]},
+    # 2. Send a message (v1.0 method name; 0.2.x used tasks/send)
+    response = httpx.post(card["url"], json={
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "message/send",
+        "params": {"message": {"role": "user", "parts": [{"kind": "text", "text": topic}]}},
     }, headers={"Authorization": "Bearer ..."})
 
-    result = response.json()
-    return result["artifacts"][0]["text"]
+    task = response.json()["result"]
+    return task["artifacts"][0]["parts"][0]["text"]
 ```
 
 ## Evaluation
@@ -117,17 +129,18 @@ In production, A2A servers are deployed like any HTTP service: behind a load bal
 ## Common pitfalls
 
 - Vague skill descriptions. Why: the author knows what the agent does. Fix: write specific skill descriptions; they are how clients decide.
-- Not serving the Agent Card at the well-known URL. Why: it works when the URL is known. Fix: use `/.well-known/agent.json`.
+- Not serving the Agent Card at the well-known URL. Why: it works when the URL is known. Fix: use `/.well-known/agent-card.json`.
 - Synchronous-only for long tasks. Why: it works in dev. Fix: use async mode.
 
 ## Further reading
 
-- [A2A specification](https://google.github.io/A2A/)
-- [LangGraph A2A integration](https://langchain-ai.github.io/langgraph/how-tos/a2a/)
+- [A2A protocol specification](https://a2a-protocol.org/latest/specification/)
+- [A2A Agent Card reference](https://a2a-protocol.org/latest/specification/)
 
 ## Checklist
 
 - [ ] Author an Agent Card with specific skill descriptions
-- [ ] Expose a LangGraph agent as an A2A server
-- [ ] Consume an A2A agent from a LangGraph client as a tool
+- [ ] Expose a LangGraph agent as an A2A v1.0 server
+- [ ] Consume an A2A agent from a client as a tool
 - [ ] Use async mode for long-running tasks
+

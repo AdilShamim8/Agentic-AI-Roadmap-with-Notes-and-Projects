@@ -64,7 +64,7 @@ class OpenAILLM(LLM):
     """OpenAI Chat Completions with tool-calling.
 
     Uses the ``openai`` Python SDK. Picks the model from ``OPENAI_MODEL``
-    (default ``gpt-4o-mini``).
+    (default ``gpt-5.5``).
     """
 
     name = "openai"
@@ -79,7 +79,7 @@ class OpenAILLM(LLM):
         if base := os.environ.get("OPENAI_BASE_URL"):
             kwargs["base_url"] = base
         self.client = OpenAI(**kwargs)
-        self.model = os.environ.get("OPENAI_MODEL", "gpt-4o-mini")
+        self.model = os.environ.get("OPENAI_MODEL", "gpt-5.5")
 
     def __call__(self, messages: List[Dict], tools: List[Dict]) -> LLMResponse:
         # openai v1+ expects "tool_calls" inside assistant messages, and
@@ -138,7 +138,7 @@ class AnthropicLLM(LLM):
     """Anthropic Messages API with tool-calling.
 
     Uses the ``anthropic`` Python SDK. Picks the model from
-    ``ANTHROPIC_MODEL`` (default ``claude-3-5-sonnet-20241022``).
+    ``ANTHROPIC_MODEL`` (default ``claude-sonnet-5-5``).
     """
 
     name = "anthropic"
@@ -150,7 +150,7 @@ class AnthropicLLM(LLM):
         if not api_key:
             raise RuntimeError("ANTHROPIC_API_KEY is not set")
         self.client = anthropic.Anthropic(api_key=api_key)
-        self.model = os.environ.get("ANTHROPIC_MODEL", "claude-3-5-sonnet-20241022")
+        self.model = os.environ.get("ANTHROPIC_MODEL", "claude-sonnet-5-5")
 
     def __call__(self, messages: List[Dict], tools: List[Dict]) -> LLMResponse:
         # Anthropic wants system separate, and uses ``tool_result`` blocks.

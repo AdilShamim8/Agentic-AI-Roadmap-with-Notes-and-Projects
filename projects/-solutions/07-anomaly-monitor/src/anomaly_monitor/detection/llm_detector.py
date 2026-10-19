@@ -2,7 +2,7 @@
 
 When ``settings.llm_enabled`` is False (no OpenAI key configured) the
 detector falls back to a deterministic rule-based stub so the pipeline
-still runs end-to-end. When enabled, it prompts ``gpt-4o-mini``
+still runs end-to-end. When enabled, it prompts the configured model
 (temperature=0) for a strict-JSON verdict and wraps the call in
 ``tenacity`` retries (3 attempts, exponential backoff starting at 1s).
 On final failure it returns ``reason="llm_unavailable"``.

@@ -3,7 +3,7 @@
 Module: 04-tools-and-mcp
 Chapter: 04-mcp-client-in-langgraph
 Status: stable
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 2 hours
 
 ## Learning objectives
@@ -44,7 +44,7 @@ An agent that consumes the filesystem and web search MCP servers from the previo
 ```python
 import asyncio
 from langchain_mcp_adapters.client import MultiServerMCPClient
-from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 from langgraph.prebuilt import create_react_agent
 
 async def main():
@@ -62,7 +62,7 @@ async def main():
         },
     }) as mcp_client:
         tools = mcp_client.get_tools()
-        llm = ChatOpenAI(model="gpt-4o", temperature=0)
+        llm = ChatAnthropic(model="claude-sonnet-5-5")
         agent = create_react_agent(llm, tools=tools)
 
         result = await agent.ainvoke({
@@ -95,7 +95,7 @@ The most common production issue: an MCP server becomes slow or unresponsive, an
 ## Further reading
 
 - [langchain-mcp-adapters](https://github.com/langchain-ai/langchain-mcp-adapters)
-- [LangGraph MCP integration](https://langchain-ai.github.io/langgraph/how-tos/mcp/)
+- [langchain-mcp-adapters](https://github.com/langchain-ai/langchain-mcp-adapters)
 
 ## Checklist
 

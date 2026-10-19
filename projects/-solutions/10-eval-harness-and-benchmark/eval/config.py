@@ -42,12 +42,12 @@ class Settings:
     openai_api_key: str | None = field(
         default_factory=lambda: os.environ.get("OPENAI_API_KEY")
     )
-    openai_model: str = field(default_factory=lambda: _env("OPENAI_MODEL", "gpt-4o"))
+    openai_model: str = field(default_factory=lambda: _env("OPENAI_MODEL", "gpt-5.5"))
     anthropic_api_key: str | None = field(
         default_factory=lambda: os.environ.get("ANTHROPIC_API_KEY")
     )
     anthropic_model: str = field(
-        default_factory=lambda: _env("ANTHROPIC_MODEL", "claude-3-5-sonnet-20240620")
+        default_factory=lambda: _env("ANTHROPIC_MODEL", "claude-sonnet-5-5")
     )
     llm_temperature: float = field(
         default_factory=lambda: _env_float("EVAL_LLM_TEMPERATURE", 0.0)

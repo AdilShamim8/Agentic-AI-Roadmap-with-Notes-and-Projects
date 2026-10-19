@@ -3,7 +3,7 @@
 Module: 06-evals-and-observability
 Chapter: 06-cost-and-latency
 Status: stable
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 2 hours
 
 ## Learning objectives
@@ -33,7 +33,7 @@ The metrics to track:
 
 The three optimization techniques:
 
-1. Model routing. Route easy requests to a cheap model (GPT-4o-mini, Claude Haiku) and hard requests to an expensive model (GPT-4o, Claude Sonnet). The router is a cheap LLM call that classifies the request difficulty. This typically reduces cost by 40-60 percent with no quality loss.
+1. Model routing. Route easy requests to a cheap tier (e.g. claude-haiku-5-5) and hard requests to a stronger tier (e.g. claude-sonnet-5-5). The router is a cheap LLM call that classifies the request difficulty. This typically reduces cost by 40-60 percent with no quality loss.
 
 2. Token budgeting. Set a maximum number of tokens per request (input + output). If the agent exceeds the budget, terminate it and return a fallback response. This prevents runaway costs from confused agents.
 
@@ -44,7 +44,7 @@ The three optimization techniques:
 A cost-tracking wrapper and a model router. Full code in [`examples/cost_optimization_demo.py`](../examples/cost_optimization_demo.py).
 
 ```python
-from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 from langchain_core.tools import tool
 from langgraph.prebuilt import create_react_agent
 
@@ -57,11 +57,11 @@ Reply with one word.
 Question: {question}"""
 
 def route_model(question: str) -> ChatOpenAI:
-    router = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+    router = ChatAnthropic(model="claude-haiku-5-5")
     difficulty = router.invoke(ROUTER_PROMPT.format(question=question)).content.strip()
     if difficulty == "simple":
-        return ChatOpenAI(model="gpt-4o-mini", temperature=0)
-    return ChatOpenAI(model="gpt-4o", temperature=0)
+        return ChatAnthropic(model="claude-haiku-5-5")
+    return ChatAnthropic(model="claude-sonnet-5-5")
 
 @tool
 def calculator(expr: str) -> str:

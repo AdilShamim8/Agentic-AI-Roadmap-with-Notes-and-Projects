@@ -3,7 +3,7 @@
 Module: 03-agents-in-practice
 Chapter: 02-persistence-and-memory
 Status: stable
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 3 hours
 
 ## Learning objectives
@@ -29,7 +29,7 @@ Checkpointing is short-term persistence. Every node execution saves the current 
 
 The Store is long-term persistence. It is a key-value store that is not scoped to a thread. You use it to remember things across conversations: user preferences, facts learned about the user, long-term project context. The Store is the foundation of "memory" in the colloquial sense - the thing that makes an agent feel like it knows you.
 
-The pattern for using the Store: after each conversation, a "memory extraction" node runs that pulls facts from the conversation and writes them to the Store under the user's ID. On the next conversation, a "memory retrieval" node reads the Store and injects relevant facts into the system prompt. This is the simplest form of long-term memory and it is surprisingly effective.
+The pattern for using the Store: after each conversation, a "memory extraction" node runs that pulls facts from the conversation and writes them to the Store under the user's ID. On the next conversation, a "memory retrieval" node reads the Store and injects relevant facts into the system prompt. This is the simplest form of long-term memory and it is surprisingly effective. One constraint to know: Store values are dict payloads (a bare list is rejected), so wrap lists under a key (`{"items": [...]}`).
 
 The three persistence failure modes:
 
@@ -44,35 +44,27 @@ The three persistence failure modes:
 A conversational agent with Postgres checkpointing and Store-based long-term memory. Full code in [`examples/persistence_demo.py`](../examples/persistence_demo.py).
 
 ```python
-from langgraph.checkpoint.postgres import PostgresSaver
+from langgraph.checkpoint.memory import MemorySaver
 from langgraph.store.memory import InMemoryStore
-from langgraph.prebuilt import create_react_agent
-from langchain_openai import ChatOpenAI
-from psycopg import Connection
 
-# Production: use a real Postgres connection
-# conn = Connection("postgresql://user:pass@localhost:5432/agentic")
-# checkpointer = PostgresSaver(conn)
-# For dev: in-memory
-checkpointer = PostgresSaver.from_conn_string("postgresql://user:pass@localhost:5432/agentic")  # or MemorySaver() for dev
-store = InMemoryStore()  # production: use a real store backend
-
-llm = ChatOpenAI(model="gpt-4o", temperature=0)
-
-def get_user_memories(user_id: str) -> str:
-    items = store.get(namespace=("memories", user_id), key="facts")
-    if not items or not items.value:
-        return ""
-    return "\n".join(f"- {fact}" for fact in items.value)
+# Production: PostgresSaver now lives in its own package
+# (langgraph-checkpoint-postgres) and from_conn_string is a context
+# manager: with PostgresSaver.from_conn_string(url) as checkpointer:
+checkpointer = MemorySaver()  # dev; PostgresSaver for production
+store = InMemoryStore()  # production: a durable store backend
 
 def save_user_memory(user_id: str, fact: str) -> None:
-    items = store.get(namespace=("memories", user_id), key="facts")
-    facts = items.value if items else []
-    facts.append(fact)
-    store.put(namespace=("memories", user_id), key="facts", value=facts)
+    namespace = ("memories", user_id)
+    item = store.get(namespace, "facts")
+    facts = list(item.value.get("items", [])) if item and item.value else []
+    if fact not in facts:
+        facts.append(fact)
+    # Store values are dict payloads; a bare list is rejected.
+    store.put(namespace, "facts", {"items": facts})
 
-# In a real agent, you would add nodes that call these functions.
-# For brevity, this example shows only the persistence layer.
+# In a real agent, memory-extraction and memory-retrieval nodes call these.
+# The runnable version (two threads, cross-user isolation) is in
+# examples/persistence_demo.py.
 ```
 
 ## Evaluation
@@ -91,7 +83,7 @@ In production, Postgres checkpointing is the default. The schema is managed by L
 
 ## Further reading
 
-- [LangGraph checkpointers](https://langchain-ai.github.io/langgraph/concepts/persistence/)
+- [LangGraph checkpointing docs](https://docs.langchain.com/oss/python/langgraph)
 - [LangGraph Store API](https://langchain-ai.github.io/langgraph/concepts/memory/)
 
 ## Checklist

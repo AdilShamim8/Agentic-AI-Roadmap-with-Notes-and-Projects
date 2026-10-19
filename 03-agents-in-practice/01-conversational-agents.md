@@ -3,7 +3,7 @@
 Module: 03-agents-in-practice
 Chapter: 01-conversational-agents
 Status: stable
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 3 hours
 
 ## Learning objectives
@@ -23,7 +23,7 @@ A conversational agent is an agent whose state is a list of messages. The user s
 
 The `add_messages` reducer is the key piece. It concatenates lists of messages, so each node can return `{"messages": [new_message]}` and the reducer appends it to the existing list. Without this reducer, each node would overwrite the message history instead of appending to it.
 
-The standard pattern is `create_react_agent(llm, tools)`, which gives you a pre-built ReAct loop. For most conversational agents, this is the right starting point. You drop to a custom StateGraph only when you need to add nodes that `create_react_agent` does not support (a separate critic, a human-approval step, a custom router).
+The standard pattern is `create_react_agent(llm, tools)`, which gives you a pre-built ReAct loop. For most conversational agents, this is the right starting point. You drop to a custom StateGraph only when you need to add nodes that `create_react_agent` does not support (a separate critic, a human-approval step, a custom router). Note: `create_react_agent` (in `langgraph.prebuilt`) is deprecated in LangGraph 1.x in favor of `langchain.agents.create_agent` - the same loop with a simpler interface and middleware. It still works and is removed no earlier than v2.0; this curriculum uses it until then and calls out the migration when it matters.
 
 Context management is the production concern. Every turn adds messages, and every LLM call re-sends the entire history. A 20-turn conversation with tool calls can easily hit 10K tokens of context. The three strategies:
 
@@ -38,7 +38,7 @@ For most production agents, summarization is the right choice. The summary node 
 A basic conversational agent with a weather tool, using `create_react_agent`. Full code in [`examples/conversational_agent_demo.py`](../examples/conversational_agent_demo.py).
 
 ```python
-from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 from langchain_core.tools import tool
 from langgraph.prebuilt import create_react_agent
 from langgraph.checkpoint.memory import MemorySaver
@@ -48,7 +48,7 @@ def get_weather(location: str) -> str:
     """Get current weather for a location. Use when the user asks about weather."""
     return f"72F, sunny in {location}"
 
-llm = ChatOpenAI(model="gpt-4o", temperature=0)
+llm = ChatAnthropic(model="claude-sonnet-5-5")
 agent = create_react_agent(llm, tools=[get_weather], checkpointer=MemorySaver())
 
 config = {"configurable": {"thread_id": "user-001"}}
@@ -69,7 +69,7 @@ A golden dataset of 10 multi-turn conversations. The evaluator checks that the a
 
 ## Production notes
 
-In production, the dominant cost is the conversation history being re-sent on every turn. Track the average context size per turn and alert when it grows. Implement summarization before cost becomes a problem, not after. The second production concern is tool-call loops: a confused agent calls the same tool repeatedly with the same arguments. The defense is `create_react_agent`'s `recursion_limit` parameter (default 25; set it to 5-10 for production).
+In production, the dominant cost is the conversation history being re-sent on every turn. Track the average context size per turn and alert when it grows. Implement summarization before cost becomes a problem, not after. The second production concern is tool-call loops: a confused agent calls the same tool repeatedly with the same arguments. The defense is the `recursion_limit` runtime config (default 25; set 5-10 for production) - it is passed at invoke time (`config={"recursion_limit": 8}`), not to the agent constructor.
 
 ## Common pitfalls
 

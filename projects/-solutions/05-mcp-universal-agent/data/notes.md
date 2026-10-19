@@ -10,7 +10,7 @@
   `registry.json` – no agent code changes required.
 - **Tool selection**: default strategy is `retrieval` because the registry
   ships 5 servers × ~4 tools = 20 tools, which already starts to degrade
-  naive GPT-4o-mini selection accuracy. Switch to `categorized` for a
+  naive default-selection accuracy. Switch to `categorized` for a
   cheaper two-stage call, or `naive` for a baseline.
 
 ## Lessons learned (so far)

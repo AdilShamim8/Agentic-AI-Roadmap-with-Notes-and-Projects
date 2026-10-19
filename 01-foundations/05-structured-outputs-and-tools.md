@@ -3,7 +3,7 @@
 Module: 01-foundations
 Chapter: 05-structured-outputs-and-tools
 Status: stable
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 3 hours
 
 ## Learning objectives
@@ -64,7 +64,7 @@ Here is a complete, runnable tool-calling loop with Pydantic schemas, retry on v
 ```python
 from typing import Annotated
 from pydantic import BaseModel, Field
-from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 from langchain_core.tools import tool
 from langchain_core.messages import HumanMessage, AIMessage
 
@@ -84,7 +84,7 @@ def get_weather(location: str, units: str = "fahrenheit") -> str:
     # In production, call a real weather API here.
     return f"72{units[0].upper()}, sunny"
 
-llm = ChatOpenAI(model="gpt-4o", temperature=0).bind_tools([get_weather])
+llm = ChatAnthropic(model="claude-sonnet-5-5").bind_tools([get_weather])
 
 def run_agent(user_message: str, max_iterations: int = 5) -> str:
     messages = [HumanMessage(content=user_message)]

@@ -256,7 +256,7 @@ All settings live in `.env` (copy from `.env.example`):
 | Var | Default | Notes |
 |---|---|---|
 | `OPENAI_API_KEY` | — | **required** |
-| `OPENAI_CHAT_MODEL` | `gpt-4o` | synthesis + extraction |
+| `OPENAI_CHAT_MODEL` | `gpt-5.5` | synthesis + extraction |
 | `OPENAI_EMBED_MODEL` | `text-embedding-3-small` | 1536-dim |
 | `OPENAI_EMBED_DIM` | `1536` | must match the embed model |
 | `LANGSMITH_TRACING` | (blank) | `true` to enable |

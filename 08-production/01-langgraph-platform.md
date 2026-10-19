@@ -3,7 +3,7 @@
 Module: 08-production
 Chapter: 01-langgraph-platform
 Status: stable
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 2 hours
 
 ## Learning objectives
@@ -19,7 +19,7 @@ Estimated time: 2 hours
 
 ## Conceptual foundation
 
-LangGraph Platform is LangChain's managed deployment offering. It handles the production concerns that are tedious to build yourself: horizontal scaling, checkpointing, the Assistants API (for managing multiple agent configurations), cron jobs (for scheduled agents), and the Store (for long-term memory). You bring the agent code; the platform runs it.
+LangGraph Platform is LangChain's managed deployment offering - since the 1.0 releases it is branded as LangSmith Deployment; same product, current name. It handles the production concerns that are tedious to build yourself: horizontal scaling, checkpointing, the Assistants API (for managing multiple agent configurations), cron jobs (for scheduled agents), and the Store (for long-term memory). You bring the agent code; the platform runs it.
 
 The platform's components:
 
@@ -33,9 +33,9 @@ The platform's components:
 
 5. Observability. LangSmith integration is built-in. Every request is traced; dashboards are pre-configured.
 
-The decision: LangGraph Platform vs. self-hosted Docker.
+The decision: managed deployment (LangSmith Deployment) vs. self-hosted Docker.
 
-Use LangGraph Platform when:
+Use the managed platform when:
 
 - Your team is small (under 10 engineers) and you want to focus on agent logic, not infrastructure.
 - You need the Assistants API, cron, or managed Store and do not want to build them.
@@ -57,14 +57,17 @@ Deploying an agent to LangGraph Platform. Full code in [`examples/deploy_demo.py
 # 1. Install the CLI
 pip install langgraph-cli
 
-# 2. Create langgraph.json in your project root
-# (see 08-production/langgraph.json for the template)
+# 2. Point langgraph.json at your graphs (see 08-production/langgraph.json)
 
-# 3. Deploy
-langgraph deploy --name my-agent
+# 3. Development: hot-reload server
+langgraph dev
 
-# 4. The CLI returns a URL. Your agent is now live.
-# curl https://my-agent.langgraph.app/invoke -d '{"messages":[{"role":"user","content":"hi"}]}'
+# 4. Self-host: build a production image, then run it
+langgraph build -t my-agent:latest
+langgraph up
+
+# 5. Managed: deploy to LangSmith Deployment
+langgraph deploy
 ```
 
 The `langgraph.json`:
@@ -95,8 +98,8 @@ In production, the platform's pre-configured observability is the biggest time-s
 
 ## Further reading
 
-- [LangGraph Platform](https://langchain-ai.github.io/langgraph/concepts/langgraph_platform/)
-- [LangGraph CLI](https://langchain-ai.github.io/langgraph/cloud/reference/cli/)
+- [LangGraph deployment docs](https://docs.langchain.com/oss/python/langgraph)
+- [LangGraph CLI (langgraph repo)](https://github.com/langchain-ai/langgraph)
 
 ## Checklist
 

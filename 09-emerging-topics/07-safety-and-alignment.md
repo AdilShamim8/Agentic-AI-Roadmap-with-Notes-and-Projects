@@ -3,7 +3,7 @@
 Module: 09-emerging-topics
 Chapter: 07-safety-and-alignment
 Status: draft
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 1 hour
 
 ## Learning objectives
@@ -60,7 +60,7 @@ In production (in 2026), safety is a first-class concern, not an afterthought. T
 ## Further reading
 
 - [OWASP LLM Top 10](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
-- [Anthropic: alignment](https://www.anthropic.com/research/alignment)
+- [Anthropic: alignment](https://www.anthropic.com/alignment)
 - [EU AI Act](https://artificialintelligenceact.eu/)
 
 ## Checklist

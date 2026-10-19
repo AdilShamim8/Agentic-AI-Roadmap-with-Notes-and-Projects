@@ -17,7 +17,7 @@ You give it a PDF. It:
    - text blocks (with their bboxes),
    - embedded images (extracted to PNG),
    - tables (detected via rectangle clustering, returned as 2-D string grids).
-2. **Captions every image** with a vision-language model (VLM) — defaults to the bundled **GLM-4V** via the `z-ai-web-dev-sdk`; GPT-4o vision is a one-line config swap.
+2. **Captions every image** with a vision-language model (VLM) — defaults to the bundled **GLM-4V** via the `z-ai-web-dev-sdk`; an OpenAI vision model is a one-line config swap.
 3. **Embeds everything** for retrieval:
    - text blocks and tables → `doc_text` collection (ChromaDB, cosine similarity),
    - image captions → `doc_captions` collection.
@@ -50,7 +50,7 @@ You give it a PDF. It:
                        │             │             │
                        │      ┌──────▼──────┐      │
                        │      │  VLM (GLM-4V │      │
-                       │      │   / GPT-4o)  │      │
+                       │      │   / gpt-5.5) │      │
                        │      └──────┬──────┘      │
                        │             │ captions    │
                        │             │             │
@@ -115,7 +115,7 @@ multimodal-document-analyst/
         │   ├── pdf_ingester.py
         │   └── table_detector.py
         ├── embeddings/
-        │   ├── vlm.py         # z-ai (GLM-4V) + OpenAI GPT-4o adapters
+        │   ├── vlm.py         # z-ai (GLM-4V) + OpenAI vision adapters
         │   └── embeddings.py  # SentenceTransformers (default) + z-ai placeholder
         ├── storage/
         │   ├── vector_store.py  # ChromaDB
@@ -204,7 +204,7 @@ this environment.
 
 | Setting | Default | Meaning |
 |---|---|---|
-| `VLM_PROVIDER` | `zai` | Vision-language model for image captioning. `zai` uses the bundled GLM-4V (no key); `openai` uses GPT-4o vision. |
+| `VLM_PROVIDER` | `zai` | Vision-language model for image captioning. `zai` uses the bundled GLM-4V (no key); `openai` uses the configured OpenAI vision model. |
 | `LLM_PROVIDER` | `zai` | Chat LLM for answer synthesis. Same adapters as `VLM_PROVIDER`. |
 | `EMBEDDING_PROVIDER` | `chroma_default` | SentenceTransformers `all-MiniLM-L6-v2` (384-dim), runs locally. |
 | `DATA_DIR` | `./.data` | Where Chroma, SQLite, page PNGs, and JSON cache live. |
@@ -212,7 +212,7 @@ this environment.
 | `API_HOST` / `API_PORT` | `0.0.0.0` / `8000` | FastAPI bind. |
 | `LANGCHAIN_TRACING_V2` | `false` | Enable LangSmith tracing (set `LANGCHAIN_API_KEY` too). |
 
-### Switching to OpenAI GPT-4o vision
+### Switching to an OpenAI vision model
 
 ```bash
 # .env

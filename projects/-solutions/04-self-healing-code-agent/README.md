@@ -18,7 +18,7 @@ Failing test ──▶ Reproduce ──▶ Diagnose ──▶ Patch ──▶ Ve
 ## Highlights
 
 - **LangGraph** state machine with plan-and-execute + reflexion loop.
-- **Switchable LLM backend** — OpenAI GPT-4o *or* Anthropic Claude, via `LLM_PROVIDER`.
+- **Switchable LLM backend** — an OpenAI or Anthropic model via `LLM_PROVIDER` (defaults gpt-5.5 / claude-sonnet-5-5).
 - **Multi-file patches** — agent can emit unified diffs touching >1 file; applied atomically.
 - **Real integrations, env-gated** — LangSmith tracing and GitHub PR creation are wired but
   degrade gracefully when keys are absent.

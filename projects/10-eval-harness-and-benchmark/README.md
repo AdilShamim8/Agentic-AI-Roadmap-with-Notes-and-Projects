@@ -21,7 +21,7 @@ This project exercises the evaluation discipline from module 06 at its fullest. 
 ## Stack
 
 - Orchestration: none (this is a tool, not an agent)
-- LLM: GPT-4o or Claude (for LLM-as-judge evaluators)
+- LLM: claude-sonnet-5-5 or gpt-5.5 (for LLM-as-judge evaluators)
 - Frameworks: pytest (for the runner), Pydantic (for schemas), Rich (for the CLI)
 - LangSmith: optional, for trace-level analysis
 

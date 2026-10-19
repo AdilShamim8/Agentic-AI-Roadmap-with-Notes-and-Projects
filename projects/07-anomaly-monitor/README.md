@@ -23,7 +23,7 @@ This project exercises async/streaming agents, real-time decision-making, and HI
 - Orchestration: LangGraph 0.2.x (async)
 - Streaming: Kafka or Kinesis
 - State: Redis (windowed aggregation)
-- LLM: GPT-4o or Claude Sonnet
+- LLM: claude-sonnet-5-5 or gpt-5.5 (any current frontier tool-calling model)
 - Observability: LangSmith + Prometheus
 - Alerting: PagerDuty
 - HITL: Slack approval for high-impact actions
@@ -52,7 +52,7 @@ This project exercises async/streaming agents, real-time decision-making, and HI
 
 ## References
 
-- [Datadog's Watchdog](https://www.datadoghq.com/auto-detection/) - production reference
+- [Prometheus](https://prometheus.io/) - the metrics stack this project ships
 - Real job postings: search "AI engineer" + "anomaly detection" or "observability" on builtin.com
 
 ## Solution

@@ -3,7 +3,7 @@
 Module: 07-multi-agent-and-a2a
 Chapter: 05-cross-framework-interop
 Status: beta
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 2 hours
 
 ## Learning objectives
@@ -45,34 +45,41 @@ A LangGraph supervisor that delegates to an OpenAI Agents SDK agent and a CrewAI
 
 ```python
 from langgraph.graph import StateGraph, START, END
-from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 from langchain_core.tools import tool
 import httpx
 
-llm = ChatOpenAI(model="gpt-4o", temperature=0)
+llm = ChatAnthropic(model="claude-sonnet-5-5")
+
+def a2a_call(server_url: str, task: str) -> str:
+    """Send one task to an A2A v1.0 server and return its artifact text."""
+    card = httpx.get(f"{server_url}/.well-known/agent-card.json").json()
+    response = httpx.post(card["url"], json={
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "message/send",  # v1.0; 0.2.x used tasks/send
+        "params": {"message": {"role": "user", "parts": [{"kind": "text", "text": task}]}},
+    })
+    task_obj = response.json()["result"]
+    assert task_obj["status"]["state"] == "completed", f"A2A call failed: {task_obj}"
+    return task_obj["artifacts"][0]["parts"][0]["text"]
 
 @tool
 def call_openai_agent(task: str) -> str:
     """Delegate a coding task to the OpenAI coding agent (via A2A)."""
-    response = httpx.post("http://localhost:8001/tasks/send", json={
-        "task_id": f"task-{hash(task)}",
-        "message": {"role": "user", "parts": [{"type": "text", "text": task}]},
-    })
-    return response.json()["artifacts"][0]["text"]
+    return a2a_call("http://localhost:8001", task)
 
 @tool
 def call_crewai_agent(task: str) -> str:
     """Delegate a research task to the CrewAI research crew (via A2A)."""
-    response = httpx.post("http://localhost:8002/tasks/send", json={
-        "task_id": f"task-{hash(task)}",
-        "message": {"role": "user", "parts": [{"type": "text", "text": task}]},
-    })
-    return response.json()["artifacts"][0]["text"]
+    return a2a_call("http://localhost:8002", task)
 
 from langgraph.prebuilt import create_react_agent
 
-supervisor = create_react_agent(llm, tools=[call_openai_agent, call_crewai_agent],
-    prompt="You coordinate a coding agent and a research agent. Delegate appropriately.")
+supervisor = create_react_agent(
+    llm, tools=[call_openai_agent, call_crewai_agent],
+    prompt="You coordinate a coding agent and a research agent. Delegate appropriately.",
+)
 ```
 
 ## Evaluation

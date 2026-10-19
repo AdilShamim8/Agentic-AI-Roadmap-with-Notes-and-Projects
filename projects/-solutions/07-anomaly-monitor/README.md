@@ -161,7 +161,7 @@ All configuration is via environment variables (see `.env.example`). Key ones:
 
 ## 📚 References
 
-- [Datadog Watchdog](https://www.datadoghq.com/auto-detection/) — production reference
+- [Prometheus](https://prometheus.io/) — the metrics stack this project ships
 - [LangGraph async docs](https://langchain-ai.github.io/langgraph/)
 - Original spec: [`projects/07-anomaly-monitor/README.md`](https://github.com/AdilShamim8/Agentic-AI-Roadmap-with-Notes-and-Projects/tree/main/projects/07-anomaly-monitor)
 

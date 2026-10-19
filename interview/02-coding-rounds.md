@@ -31,7 +31,7 @@ Prompt: "Build a ReAct agent with a calculator tool. The agent should answer mat
 Expected solution (10-15 minutes):
 
 ```python
-from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 from langchain_core.tools import tool
 from langgraph.prebuilt import create_react_agent
 
@@ -52,7 +52,7 @@ def calculator(expression: str) -> str:
         return f"Error evaluating '{expression}': {e}. Try a different expression."
 
 def build_agent():
-    llm = ChatOpenAI(model="gpt-4o", temperature=0)
+    llm = ChatAnthropic(model="claude-sonnet-5-5")
     agent = create_react_agent(
         llm,
         tools=[calculator],

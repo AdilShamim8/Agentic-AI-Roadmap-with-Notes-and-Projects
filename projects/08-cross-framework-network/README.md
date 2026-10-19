@@ -34,7 +34,7 @@ graph LR
 - Orchestration: LangGraph 0.2.x (supervisor)
 - A2A servers: OpenAI Agents SDK (with `a2a-openai` adapter), CrewAI (with `a2a-crewai` adapter)
 - A2A client: `langchain-mcp-adapters` (which also handles A2A)
-- LLM: GPT-4o or Claude Sonnet
+- LLM: claude-sonnet-5-5 or gpt-5.5 (any current frontier tool-calling model)
 - Observability: LangSmith (tracing across A2A boundaries)
 
 ## Eval rubric
@@ -59,7 +59,7 @@ graph LR
 
 ## References
 
-- [A2A protocol](https://google.github.io/A2A/)
+- [A2A protocol specification](https://a2a-protocol.org/latest/specification/)
 - [OpenAI Agents SDK](https://github.com/openai/openai-agents-python)
 - [CrewAI](https://github.com/crewAIInc/crewAI)
 - Real job postings: search "AI engineer" + "multi-agent" or "A2A" on builtin.com

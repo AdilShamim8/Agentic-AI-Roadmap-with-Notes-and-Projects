@@ -3,7 +3,7 @@
 Module: 08-production
 Chapter: 05-cost-optimization
 Status: stable
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 2 hours
 
 ## Learning objectives
@@ -24,7 +24,7 @@ Cost optimization in production agents is not a one-time exercise; it is a conti
 
 The three optimization techniques (covered in module 06, deepened here for production):
 
-1. Model routing. A cheap classifier LLM call decides whether the request is "simple" or "complex." Simple requests go to a cheap model (GPT-4o-mini, Claude Haiku); complex requests go to an expensive model (GPT-4o, Claude Sonnet). Typical cost reduction: 40-60 percent with no quality loss.
+1. Model routing. A cheap classifier LLM call decides whether the request is "simple" or "complex." Simple requests go to a cheap tier (e.g. claude-haiku-5-5); complex requests go to a stronger tier (e.g. claude-sonnet-5-5). Typical cost reduction: 40-60 percent with no quality loss.
 
 2. Token budgeting. Every request has a maximum token budget (input + output). If the agent exceeds the budget, it is terminated and a fallback response is returned. This prevents runaway costs from confused agents (the agent that calls 20 tools and produces a 5000-token response). The budget is set per agent based on the eval distribution: take the p99 token count from the eval, add 20 percent, that is the budget.
 
@@ -37,7 +37,7 @@ The cost-quality trade-off: every cost optimization has a quality risk. Model ro
 A production agent with all three optimizations. Full code in [`examples/cost_optimization_production_demo.py`](../examples/cost_optimization_production_demo.py).
 
 ```python
-from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 from langchain_core.tools import tool
 from langgraph.prebuilt import create_react_agent
 import hashlib
@@ -61,11 +61,11 @@ def get_weather(location: str) -> str:
     return result
 
 def route_model(question: str) -> ChatOpenAI:
-    router = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+    router = ChatAnthropic(model="claude-haiku-5-5")
     difficulty = router.invoke(f"Is this question 'simple' or 'complex'? Reply one word.\n\n{question}").content.strip()
     if difficulty == "simple":
-        return ChatOpenAI(model="gpt-4o-mini", temperature=0)
-    return ChatOpenAI(model="gpt-4o", temperature=0)
+        return ChatAnthropic(model="claude-haiku-5-5")
+    return ChatAnthropic(model="claude-sonnet-5-5")
 
 def agent_with_optimizations(question: str):
     llm = route_model(question)

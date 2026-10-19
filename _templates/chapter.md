@@ -26,7 +26,7 @@ By the end of this chapter, you will be able to:
 
 [Description of the example. Why this domain. What failure modes it exposes.]
 
-See [`example.py`](./example.py) for the source of truth and [`example.ipynb`](./example.ipynb) for the annotated walkthrough.
+See `example.py` for the source of truth and `example.ipynb` for the annotated walkthrough (instantiate both when creating a chapter from this template).
 
 ```python
 # Minimal runnable snippet that demonstrates the core pattern.
@@ -37,7 +37,7 @@ See [`example.py`](./example.py) for the source of truth and [`example.ipynb`](.
 
 [Description of the eval. What it measures. What the golden dataset contains. What score the example agent achieves.]
 
-See [`eval_example.py`](./eval_example.py) and [`golden_dataset.csv`](./golden_dataset.csv).
+See `eval_example.py` and `golden_dataset.csv` (instantiate both when creating a chapter from this template).
 
 | Evaluator | Type | Target | Achieved |
 |-----------|------|--------|----------|

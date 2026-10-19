@@ -3,7 +3,7 @@
 Module: 01-foundations
 Chapter: 03-llm-fundamentals
 Status: stable
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 3 hours
 
 ## Learning objectives
@@ -25,13 +25,13 @@ An agent engineer does not need to know how a transformer works, does not need t
 
 Tokenization is the first thing to internalize. LLMs do not see text; they see tokens. A token is roughly four characters of English, but it varies: common words are one token, rare words are several, code is more expensive than prose, and non-English text is more expensive than English. The practical consequences: token count is not character count divided by four, you must use a tokenizer to estimate it, and the cost of a request depends on the token count of both the input and the output. Every model has a tokenizer; for OpenAI it is `tiktoken`, for Anthropic it is the Anthropic tokenizer, for open models it varies. When you are budgeting an agent, you estimate tokens, not characters.
 
-Context windows are the second. The context window is the maximum number of tokens the model can consume in a single request, including the system prompt, the conversation history, the tool definitions, and the user's input. In 2026, context windows range from 8K (older open models) to 2M (Gemini 2.0 Pro). A large context window is not free: models degrade in quality as the context fills, a phenomenon called "lost in the middle." The practical rule: keep context under 50 percent of the window for production quality, under 80 percent for emergencies. A 1M-token context window does not mean you should put 1M tokens in it.
+Context windows are the second. The context window is the maximum number of tokens the model can consume in a single request, including the system prompt, the conversation history, the tool definitions, and the user's input. As of October 2026, common windows run from 128K to 1M tokens, with the frontier at roughly 1M by default ([Gemini 4 Argon](https://ai.google.dev/gemini-api/docs/models)); older 1.5-generation models exposed up to 2M. A large context window is not free: models degrade in quality as the context fills, a phenomenon called "lost in the middle." The practical rule: keep context under 50 percent of the window for production quality, under 80 percent for emergencies. A 1M-token context window does not mean you should put 1M tokens in it.
 
-Tool-calling quality is the third. Not all models call tools equally well. As of mid-2026, Claude 3.5+ and GPT-4o are the best tool-callers; Gemini is good but less reliable on complex schemas; open models (Llama 3, Mistral) are usable but require more careful tool descriptions and more retries. For agent work, tool-calling quality matters more than benchmark scores. A model that scores 5 points higher on MMLU but hallucinates tool arguments 10 percent more often is a worse agent model.
+Tool-calling quality is the third. Not all models call tools equally well. As of October 2026, the current frontier families (Claude 5.x, GPT-5/6 era, Gemini 3/4) are all strong tool-callers; open models vary more and require more careful tool descriptions and more retries. Model families are refreshed every few months, so treat any specific name here as an example, not a fixture - check the current provider docs before choosing. For agent work, tool-calling reliability matters more than benchmark scores. A model that scores 5 points higher on MMLU but hallucinates tool arguments 10 percent more often is a worse agent model.
 
 Cost and latency are the fourth. Cost is per million tokens, split into input and output. Output is always more expensive than input, often by 3 to 5x. Latency is dominated by output tokens: time-to-first-token is the latency of the input processing, and time-per-output-token is the generation speed. For agents, the dominant cost is usually the conversation history, which grows with every turn and is re-sent on every request. Caching, summarization, and context compression are the tools for managing this.
 
-Logprobs are the fifth. When a model generates a token, it produces a probability distribution over the vocabulary. The logprob is the log of the probability the model assigned to the token it actually produced. Low logprobs mean the model is uncertain; high logprobs mean it is confident. Logprobs are an underrated eval signal: if your agent's tool-call arguments have low logprobs, the model is guessing, and you should expect failures. Not all APIs expose logprobs; OpenAI and Anthropic both do, with some restrictions.
+Logprobs are the fifth. When a model generates a token, it produces a probability distribution over the vocabulary. The logprob is the log of the probability the model assigned to the token it actually produced. Low logprobs mean the model is uncertain; high logprobs mean it is confident. Availability as of October 2026: Gemini exposes logprobs; OpenAI exposes them on non-reasoning models but the reasoning-era flagships reject the request; Anthropic does not expose them. Where they are available, they are an underrated eval signal: if your agent's tool-call arguments have low logprobs, the model is guessing, and you should expect failures. Where they are not, rely on the eval suite instead - it measures the same uncertainty at the behavior level.
 
 The four failure modes to recognize:
 
@@ -45,35 +45,28 @@ The four failure modes to recognize:
 
 ## Worked example
 
-This chapter has no full code example - it is foundational. The code you will write in the next chapters assumes you understand the above. But here is a 20-line snippet that demonstrates tokenization, cost estimation, and logprobs:
+This chapter has no full code example - it is foundational. The code you will write in the next chapters assumes you understand the above. But here is a snippet that demonstrates tokenization and cost estimation with no API key required:
 
 ```python
 import tiktoken
-from openai import OpenAI
 
-client = OpenAI()
-enc = tiktoken.encoding_for_model("gpt-4o")
+enc = tiktoken.encoding_for_model("gpt-4o")  # tokenizers are model-family specific
 
 prompt = "Explain LangGraph in three sentences."
 input_tokens = len(enc.encode(prompt))
 print(f"Input tokens: {input_tokens}")
 
-response = client.chat.completions.create(
-    model="gpt-4o",
-    messages=[{"role": "user", "content": prompt}],
-    max_tokens=200,
-    logprobs=True,
-    top_logprobs=3,
-)
+# Fill these from your provider's pricing page on the day you ship:
+#   https://openai.com/api/pricing or https://docs.claude.com/en/docs/about-claude/pricing
+INPUT_PRICE_PER_M = 2.50   # illustrative, not a quote
+OUTPUT_PRICE_PER_M = 10.00  # illustrative, not a quote
 
-output_tokens = response.usage.completion_tokens
-print(f"Output tokens: {output_tokens}")
-print(f"Cost (USD): ${(input_tokens * 2.50 + output_tokens * 10.00) / 1_000_000:.6f}")
-
-# Inspect logprobs for the first generated token
-first_token_lp = response.choices[0].logprobs.content[0]
-print(f"First token: {first_token_lp.token!r}, logprob: {first_token_lp.logprob:.3f}")
+output_tokens = 60  # estimated; measure real usage in production
+print(f"Estimated cost (USD): "
+      f"${(input_tokens * INPUT_PRICE_PER_M + output_tokens * OUTPUT_PRICE_PER_M) / 1_000_000:.6f}")
 ```
+
+Logprobs (chapter concept five) are available on Gemini and on OpenAI's non-reasoning models; the reasoning-era flagships reject the request and Anthropic does not expose them. Where available, enable them and treat low logprobs on tool-call arguments as a failure warning.
 
 ## Evaluation
 
@@ -104,6 +97,6 @@ The second most important habit is treating every tool result as untrusted input
 You understand this chapter if you can:
 
 - [ ] Estimate the token count and cost of a request before running it, within 20 percent
-- [ ] Choose between GPT-4o, Claude, Gemini, and an open model for a given agent task, with reasons
+- [ ] Choose between the current frontier families and an open model for a given agent task, with reasons
 - [ ] Diagnose context exhaustion, prompt injection, schema drift, and hallucination from symptoms
 - [ ] Explain why a 1M-token context window does not mean you should put 1M tokens in it

@@ -15,7 +15,7 @@ spec.
 
 The 40% / 95% / $1 / 8-calls targets come straight from the project spec
 (which itself mirrors SWE-bench-lite baselines). On the bundled fixtures
-with a strong model (GPT-4o or Claude Sonnet 4.5) you should comfortably
+with a current strong model you should comfortably
 beat all four.
 
 ## Fixtures

@@ -3,7 +3,7 @@
 Module: 03-agents-in-practice
 Chapter: 04-human-in-the-loop
 Status: stable
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 2 hours
 
 ## Learning objectives
@@ -50,9 +50,9 @@ from typing import TypedDict
 from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.types import interrupt, Command
-from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 
-llm = ChatOpenAI(model="gpt-4o", temperature=0)
+llm = ChatAnthropic(model="claude-sonnet-5-5")
 
 class State(TypedDict):
     messages: list

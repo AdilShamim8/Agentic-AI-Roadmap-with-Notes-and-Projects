@@ -9,6 +9,8 @@ This document describes how the Agent-as-a-Service Platform implements the A2A (
 Every A2A-compliant agent exposes a JSON document at:
 
 ```
+
+> Protocol version note (Oct 2026): this solution implements the 0.2.x-era A2A wire format (`/.well-known/agent.json`, `tasks/send`). A2A v1.0.0 renamed the well-known path to `/.well-known/agent-card.json`, the send method to `message/send`, added the `rejected` terminal state, and moved stewardship to the Agentic AI Foundation. The patterns here transfer directly; module 07 chapter 03 covers the v1.0 wire format.
 GET /.well-known/agent.json
 ```
 

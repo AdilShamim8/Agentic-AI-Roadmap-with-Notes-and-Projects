@@ -6,6 +6,8 @@ This document describes the A2A (Agent-to-Agent) protocol implementation in this
 
 A2A is an open protocol by Google that enables AI agents built on different frameworks to communicate with each other. It defines:
 
+
+> Protocol version note (Oct 2026): this solution implements the 0.2.x-era A2A wire format (`/.well-known/agent.json`, `tasks/send`). A2A v1.0.0 renamed the well-known path to `/.well-known/agent-card.json`, the send method to `message/send`, added the `rejected` terminal state, and moved stewardship to the Agentic AI Foundation. The patterns here transfer directly; module 07 chapter 03 covers the v1.0 wire format.
 1. **Agent Cards** — a discovery document at `/.well-known/agent.json`
 2. **JSON-RPC 2.0** — the message format for all interactions
 3. **Task lifecycle** — a state machine for managing work between agents
@@ -235,6 +237,6 @@ The implementation is compatible with any A2A-compliant client or server, and co
 
 ## References
 
-- [A2A Protocol Specification](https://google.github.io/A2A/)
+- [A2A Protocol Specification](https://a2a-protocol.org/latest/specification/)
 - [JSON-RPC 2.0 Specification](https://www.jsonrpc.org/specification)
-- [Agent Card schema](https://google.github.io/A2A/#/objects?id=agentcard)
+- [Agent Card schema](https://a2a-protocol.org/latest/specification/#/objects?id=agentcard)

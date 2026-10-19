@@ -151,7 +151,7 @@ call.
 python cli.py "State of small modular reactors in 2026"
 
 # Choose a provider / model explicitly
-python cli.py "Topic" --provider openai --model gpt-4o
+python cli.py "Topic" --provider openai --model gpt-5.5
 
 # More search depth and more refinement rounds
 python cli.py "Topic" --max-results 6 --max-iterations 3

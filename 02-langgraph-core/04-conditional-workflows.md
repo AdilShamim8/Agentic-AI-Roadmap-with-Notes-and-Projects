@@ -3,7 +3,7 @@
 Module: 02-langgraph-core
 Chapter: 04-conditional-workflows
 Status: stable
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 2 hours
 
 ## Learning objectives
@@ -43,9 +43,9 @@ A support router: classify a message as refund, bug, or feature_request, route t
 ```python
 from typing import TypedDict, Literal
 from langgraph.graph import StateGraph, START, END
-from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 
-llm = ChatOpenAI(model="gpt-4o", temperature=0)
+llm = ChatAnthropic(model="claude-sonnet-5-5")
 
 class State(TypedDict):
     message: str

@@ -3,7 +3,7 @@
 Module: 03-agents-in-practice
 Chapter: 03-tool-integration
 Status: stable
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 2 hours
 
 ## Learning objectives
@@ -39,7 +39,7 @@ An agent with a custom API-wrapping tool, dynamic tool loading based on user rol
 from typing import Annotated
 from langchain_core.tools import tool, ToolException
 from langgraph.prebuilt import ToolNode, create_react_agent
-from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 import httpx
 
 @tool
@@ -63,7 +63,7 @@ def build_agent(user_role: str):
     tools = [get_order_status]
     if user_role == "admin":
         tools.append(issue_refund)
-    llm = ChatOpenAI(model="gpt-4o", temperature=0)
+    llm = ChatAnthropic(model="claude-sonnet-5-5")
     return create_react_agent(llm, tools=tools)
 
 # Regular user: only sees get_order_status

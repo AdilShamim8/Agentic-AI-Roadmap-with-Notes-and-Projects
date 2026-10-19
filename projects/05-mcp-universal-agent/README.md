@@ -34,7 +34,7 @@ graph LR
 - Orchestration: LangGraph 0.2.x
 - Tools: 5+ MCP servers (filesystem, web search, SQLite, calculator, custom)
 - Registry: a JSON file listing available servers
-- LLM: GPT-4o or Claude Sonnet
+- LLM: claude-sonnet-5-5 or gpt-5.5 (any current frontier tool-calling model)
 - Observability: LangSmith
 
 ## Eval rubric

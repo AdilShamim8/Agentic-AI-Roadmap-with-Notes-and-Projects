@@ -3,7 +3,7 @@
 Module: 08-production
 Chapter: 07-continuous-improvement
 Status: stable
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 2 hours
 
 ## Learning objectives
@@ -37,7 +37,7 @@ An A/B test infrastructure for two agent versions. Full code in [`examples/conti
 
 ```python
 import random
-from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 from langchain_core.tools import tool
 from langgraph.prebuilt import create_react_agent
 
@@ -48,14 +48,14 @@ def search(query: str) -> str:
 
 # Version A: GPT-4o, concise prompt
 agent_a = create_react_agent(
-    ChatOpenAI(model="gpt-4o", temperature=0),
+    ChatAnthropic(model="claude-sonnet-5-5"),
     tools=[search],
     prompt="Answer concisely.",
 )
 
 # Version B: GPT-4o, detailed prompt
 agent_b = create_react_agent(
-    ChatOpenAI(model="gpt-4o", temperature=0),
+    ChatAnthropic(model="claude-sonnet-5-5"),
     tools=[search],
     prompt="Answer thoroughly. Use multiple sources. Cite your sources.",
 )

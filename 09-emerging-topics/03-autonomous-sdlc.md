@@ -3,7 +3,7 @@
 Module: 09-emerging-topics
 Chapter: 03-autonomous-sdlc
 Status: draft
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 1 hour
 
 ## Learning objectives
@@ -29,7 +29,7 @@ The components:
 
 3. Code review. Review a PR for bugs, style, security. Production-ready for narrow scopes (a single function). Emerging for whole-PR review.
 
-4. Bug fixing. Given a failing test, produce a patch. Emerging. SWE-bench (the standard benchmark) is around 50 percent in 2026; the best production systems are around 40 percent. Useful for narrow, well-defined bugs.
+4. Bug fixing. Given a failing test, produce a patch. Production-ready for well-tested codebases: SWE-bench Verified was around 50 percent at the start of 2026 and reached roughly 97 percent by September 2026 ([vals.ai leaderboard](https://www.vals.ai/benchmarks/swebench)). Treat narrow bugs as automatable with human review on every PR.
 
 5. Feature implementation. Given a feature spec, implement it. Research-grade. The agent produces a starting point, but a human must refine it.
 

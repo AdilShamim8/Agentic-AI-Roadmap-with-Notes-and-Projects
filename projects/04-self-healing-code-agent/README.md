@@ -34,7 +34,7 @@ graph LR
 
 - Orchestration: LangGraph 0.2.x with plan-and-execute + reflexion
 - Tools: git, pytest, file read/write (as MCP servers or native tools)
-- LLM: Claude Sonnet or GPT-4o (strong code models)
+- LLM: claude-sonnet-5-5 or gpt-5.5 (current strong code models)
 - Observability: LangSmith (trajectory evals are critical)
 - PR creation: GitHub API
 

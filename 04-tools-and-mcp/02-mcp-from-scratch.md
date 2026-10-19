@@ -3,7 +3,7 @@
 Module: 04-tools-and-mcp
 Chapter: 02-mcp-from-scratch
 Status: stable
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 3 hours
 
 ## Learning objectives
@@ -21,7 +21,7 @@ Estimated time: 3 hours
 
 The Model Context Protocol (MCP) is an open protocol for exposing tools, resources, and prompts to LLMs. It was announced by Anthropic in late 2024 and by mid-2026 had become the de facto standard for tool interop: every major agent framework (LangGraph, OpenAI Agents SDK, CrewAI, AutoGen) can consume MCP servers, and a growing ecosystem of pre-built MCP servers covers everything from filesystem access to database queries to web search.
 
-The protocol is JSON-RPC 2.0 over either stdio (for local servers) or Server-Sent Events (for remote servers). The client (the agent framework) starts the server, sends JSON-RPC requests, and receives JSON-RPC responses. The protocol is transport-agnostic - the same server can be invoked over stdio locally or over SSE remotely.
+The protocol is JSON-RPC 2.0 over either stdio (for local servers) or Streamable HTTP (for remote servers). Streamable HTTP replaced the older HTTP+SSE transport, which is deprecated as of the 2026-07-28 revision. The protocol is transport-agnostic - the same server can be invoked over stdio locally or over Streamable HTTP remotely.
 
 The three primitives:
 
@@ -31,13 +31,15 @@ The three primitives:
 
 3. Prompts. Pre-defined prompt templates the LLM can use. A prompt has a name, a description, and a template. Prompts are less common in practice; they are useful when an MCP server wants to expose a curated prompt (e.g., "the right way to query this database").
 
-The lifecycle:
+The lifecycle (initialize, list, call) is what the 1.x Python SDK speaks - protocol revision 2025-11-25, the line that `langchain-mcp-adapters` requires and this repo pins:
 
 1. Initialize. The client sends an `initialize` request with its protocol version and capabilities. The server responds with its protocol version and capabilities. This is the handshake.
 
 2. List. The client sends a `tools/list`, `resources/list`, or `prompts/list` request. The server responds with the available tools, resources, or prompts. The client uses this to populate the LLM's tool list.
 
 3. Call. The client sends a `tools/call` request with the tool name and arguments. The server executes the tool and returns the result (a list of content items, typically text).
+
+The 2026-07-28 revision (implemented by the 2.x SDK line, `MCPServer`) removed the initialize handshake and the protocol-level session in favor of stateless requests with per-request metadata, plus `Mcp-Method` headers so gateways can route without parsing the body. Learn the handshake here because that is what the pinned SDK actually puts on the wire; read the current revision when you adopt the 2.x line.
 
 The protocol is stateful within a session (the server can maintain state between calls) but stateless across sessions (a new connection is a fresh start). For stateful tools (a database connection, a file handle), the server manages the state internally.
 
@@ -124,7 +126,7 @@ In production, never write an MCP server by hand - use the `mcp` SDK. The SDK ha
 
 ## Further reading
 
-- [MCP specification](https://spec.modelcontextprotocol.io/)
+- [MCP specification](https://modelcontextprotocol.io/specification/2026-07-28)
 - [MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk)
 - [Anthropic MCP announcement](https://www.anthropic.com/news/model-context-protocol)
 

@@ -3,7 +3,7 @@
 Module: 08-production
 Chapter: 03-kubernetes
 Status: beta
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 2 hours
 
 ## Learning objectives
@@ -126,7 +126,7 @@ In production, the two biggest concerns are Postgres (use a managed instance, no
 ## Further reading
 
 - [Kubernetes Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
-- [LangGraph self-hosted](https://langchain-ai.github.io/langgraph/cloud/deployment/self_hosted/)
+- [Kubernetes deployment guide](k8s/README.md) in this repo
 
 ## Checklist
 

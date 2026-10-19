@@ -33,9 +33,9 @@ class Settings(BaseSettings):
     # ── LLM ────────────────────────────────────────────────────
     llm_provider: LLMProviderName = LLMProviderName.MOCK
     openai_api_key: str = ""
-    openai_model: str = "gpt-4o"
+    openai_model: str = "gpt-5.5"
     anthropic_api_key: str = ""
-    anthropic_model: str = "claude-sonnet-4-5"
+    anthropic_model: str = "claude-sonnet-5-5"
     llm_temperature: float = 0.2
     llm_max_tokens: int = 4096
 
@@ -88,10 +88,12 @@ def get_settings(refresh: bool = False) -> Settings:
 # Cost tables (USD per 1M tokens). Update as pricing changes.
 # Source: provider pricing pages, Aug 2025.
 COST_TABLE_USD_PER_M: dict[str, dict[Literal["input", "output"], float]] = {
-    "gpt-4o": {"input": 2.5, "output": 10.0},
-    "gpt-4o-mini": {"input": 0.15, "output": 0.6},
+    "gpt-4o": {"input": 2.5, "output": 10.0},  # retired 2026-10-23; kept for history
+    "gpt-4o-mini": {"input": 0.15, "output": 0.6},  # retired; kept for history
     "claude-sonnet-4-5": {"input": 3.0, "output": 15.0},
-    "claude-3-5-sonnet": {"input": 3.0, "output": 15.0},
+    "claude-sonnet-5-5": {"input": 3.0, "output": 15.0},
+    "gpt-5.5": {"input": 1.25, "output": 10.0},  # illustrative; check the pricing page
+    "claude-3-5-sonnet": {"input": 3.0, "output": 15.0},  # legacy; kept for history
     "claude-haiku-3-5": {"input": 0.8, "output": 4.0},
     "mock": {"input": 0.0, "output": 0.0},
 }

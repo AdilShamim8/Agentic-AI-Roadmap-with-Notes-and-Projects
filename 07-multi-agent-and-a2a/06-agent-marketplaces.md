@@ -3,7 +3,7 @@
 Module: 07-multi-agent-and-a2a
 Chapter: 06-agent-marketplaces
 Status: draft
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 1 hour
 
 ## Learning objectives
@@ -73,7 +73,7 @@ Watch this space. By 2027, the trust problem will have an accepted solution (lik
 
 ## Further reading
 
-- [A2A protocol](https://google.github.io/A2A/)
+- [A2A protocol specification](https://a2a-protocol.org/latest/specification/)
 - [EU AI Act](https://artificialintelligenceact.eu/)
 - [Agent marketplace discussions](https://github.com/a2aproject/a2a/discussions)
 

@@ -3,7 +3,7 @@
 Module: 03-agents-in-practice
 Chapter: 05-streaming-and-ux
 Status: stable
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 2 hours
 
 ## Learning objectives
@@ -40,7 +40,7 @@ The UX considerations:
 A streaming chat client that prints tokens as they arrive and shows tool-call events. Full code in [`examples/streaming_demo.py`](../examples/streaming_demo.py).
 
 ```python
-from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 from langchain_core.tools import tool
 from langgraph.prebuilt import create_react_agent
 from langgraph.checkpoint.memory import MemorySaver
@@ -50,7 +50,7 @@ def get_weather(location: str) -> str:
     """Get current weather."""
     return f"72F, sunny in {location}"
 
-llm = ChatOpenAI(model="gpt-4o", temperature=0, streaming=True)
+llm = ChatAnthropic(model="claude-sonnet-5-5")
 agent = create_react_agent(llm, tools=[get_weather], checkpointer=MemorySaver())
 
 config = {"configurable": {"thread_id": "stream-1"}}
@@ -90,7 +90,7 @@ In production, streaming has three concerns: backpressure (the client must consu
 
 ## Further reading
 
-- [LangGraph streaming](https://langchain-ai.github.io/langgraph/how-tos/streaming-tokens/)
+- [LangGraph streaming docs](https://docs.langchain.com/oss/python/langgraph)
 - [LangGraph streaming modes](https://langchain-ai.github.io/langgraph/concepts/streaming/)
 
 ## Checklist

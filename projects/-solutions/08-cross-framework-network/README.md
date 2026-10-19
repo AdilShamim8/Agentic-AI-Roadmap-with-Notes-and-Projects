@@ -2,7 +2,7 @@
 
 > **Difficulty:** ⭐⭐⭐⭐⭐ | **Estimated time:** 4–6 weeks | **Status:** ✅ Reference implementation
 
-A reference implementation of a **cross-framework multi-agent network** that demonstrates the [A2A (Agent-to-Agent) protocol](https://google.github.io/A2A/) for interoperability between three different AI agent frameworks:
+A reference implementation of a **cross-framework multi-agent network** that demonstrates the [A2A (Agent-to-Agent) protocol](https://a2a-protocol.org/latest/specification/) for interoperability between three different AI agent frameworks:
 
 | Framework | Role | Exposed via |
 |-----------|------|-------------|
@@ -97,7 +97,7 @@ pip install openai
 # 2. Set environment variables
 export LLM_BACKEND=openai
 export OPENAI_API_KEY=sk-your-key-here
-export OPENAI_MODEL=gpt-4o   # optional, defaults to gpt-4o
+export OPENAI_MODEL=gpt-5.5   # optional, defaults to gpt-5.5
 
 # 3. Run as usual
 python -m examples.demo
@@ -230,7 +230,7 @@ Rather than depending on an external A2A SDK, the protocol is implemented from s
 
 The [`llm/`](llm/) package provides a uniform async interface with two backends:
 - **MockLLM** (default): deterministic, no API key, produces realistic structured output
-- **OpenAIBackend**: real GPT-4o (or any OpenAI model)
+- **OpenAIBackend**: a real OpenAI model (default gpt-5.5)
 
 This lets the entire network run end-to-end out of the box, while remaining trivially swappable for production.
 
@@ -254,6 +254,8 @@ The spec lists three stretch goals. Here's how they'd be implemented:
 
 | Stretch Goal | Implementation Path |
 |---|---|
+
+> Protocol version note (Oct 2026): this solution implements the 0.2.x-era A2A wire format (`/.well-known/agent.json`, `tasks/send`). A2A v1.0.0 renamed the well-known path to `/.well-known/agent-card.json`, the send method to `message/send`, added the `rejected` terminal state, and moved stewardship to the Agentic AI Foundation. The patterns here transfer directly; module 07 chapter 03 covers the v1.0 wire format.
 | **Dynamic agent discovery** | The A2A client already fetches Agent Cards at `/.well-known/agent.json`. Add a registry service that lists agent URLs; the supervisor queries it at startup. |
 | **Agent failover** | The `A2AAdapter` already catches errors. Add backup URLs per agent type and retry on failure. |
 | **Agent versioning** | Agent Cards have a `version` field. Add version negotiation in the adapter — fetch the card, check version, route accordingly. |
@@ -262,7 +264,7 @@ The spec lists three stretch goals. Here's how they'd be implemented:
 
 ## References
 
-- [A2A Protocol Specification](https://google.github.io/A2A/)
+- [A2A Protocol Specification](https://a2a-protocol.org/latest/specification/)
 - [OpenAI Agents SDK](https://github.com/openai/openai-agents-python)
 - [CrewAI](https://github.com/crewAIInc/crewAI)
 - [LangGraph](https://github.com/langchain-ai/langgraph)

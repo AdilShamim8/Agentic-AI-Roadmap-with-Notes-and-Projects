@@ -3,7 +3,7 @@
 Module: 02-langgraph-core
 Chapter: 06-functional-api
 Status: stable
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 2 hours
 
 ## Learning objectives
@@ -51,9 +51,9 @@ The same research-agent pattern from [02 Sequential workflows](02-sequential-wor
 from langgraph.func import entrypoint, task
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.types import interrupt, Command
-from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 
-llm = ChatOpenAI(model="gpt-4o", temperature=0)
+llm = ChatAnthropic(model="claude-sonnet-5-5")
 
 @task
 def research(topic: str) -> str:
@@ -104,7 +104,7 @@ The main risk: because the Functional API looks like ordinary Python, it is easy
 ## Further reading
 
 - [LangGraph Functional API](https://langchain-ai.github.io/langgraph/concepts/functional_api/)
-- [LangGraph `@entrypoint` and `@task`](https://langchain-ai.github.io/langgraph/how-tos/use_function_api/)
+- [LangGraph Functional API docs](https://docs.langchain.com/oss/python/langgraph)
 
 ## Checklist
 

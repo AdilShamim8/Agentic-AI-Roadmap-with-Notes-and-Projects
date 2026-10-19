@@ -145,7 +145,7 @@ The most common production failure: a node assumes a field is set but an earlier
 
 - [LangGraph StateGraph documentation](https://langchain-ai.github.io/langgraph/concepts/low_level/)
 - [LangGraph reducers](https://langchain-ai.github.io/langgraph/concepts/low_level/#reducers)
-- [LangGraph execution model](https://langchain-ai.github.io/langgraph/concepts/langgraph_runtime/)
+- [LangGraph docs](https://docs.langchain.com/oss/python/langgraph)
 
 ## Checklist
 

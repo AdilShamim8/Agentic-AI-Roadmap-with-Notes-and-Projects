@@ -3,7 +3,7 @@
 Module: 02-langgraph-core
 Chapter: 05-iterative-workflows
 Status: stable
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 2 hours
 
 ## Learning objectives
@@ -41,9 +41,9 @@ An X/Twitter post generator: generate a post, critique it for engagement and ton
 ```python
 from typing import TypedDict
 from langgraph.graph import StateGraph, START, END
-from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 
-llm = ChatOpenAI(model="gpt-4o", temperature=0.7)
+llm = ChatAnthropic(model="claude-sonnet-5-5")
 
 class State(TypedDict):
     topic: str

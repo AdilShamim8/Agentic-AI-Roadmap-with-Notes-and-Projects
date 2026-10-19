@@ -36,7 +36,7 @@ class LLMBackend(ABC):
     @property
     @abstractmethod
     def model_id(self) -> str:
-        """Model identifier (e.g. 'gpt-4o', 'mock-default')."""
+        """Model identifier (e.g. 'gpt-5.5', 'mock-default')."""
 
     @abstractmethod
     async def generate(
@@ -71,7 +71,7 @@ def get_llm() -> LLMBackend:
             # Import here to avoid a hard dependency on the openai package.
             from llm.openai_backend import OpenAIBackend
 
-            model = os.environ.get("OPENAI_MODEL", "gpt-4o")
+            model = os.environ.get("OPENAI_MODEL", "gpt-5.5")
             return OpenAIBackend(api_key=api_key, model=model)
         else:
             import warnings

@@ -3,7 +3,7 @@
 Module: 03-agents-in-practice
 Chapter: 06-langgraph-studio
 Status: stable
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 1 hour
 
 ## Learning objectives
@@ -68,8 +68,8 @@ Studio is for development. In production, you use LangSmith for tracing (which g
 
 ## Further reading
 
-- [LangGraph Studio](https://github.com/langchain-ai/langgraph-studio)
-- [LangGraph CLI](https://langchain-ai.github.io/langgraph/cloud/reference/cli/)
+- [LangGraph Studio docs](https://docs.langchain.com/oss/python/langgraph)
+- [LangGraph CLI (langgraph repo)](https://github.com/langchain-ai/langgraph)
 
 ## Checklist
 

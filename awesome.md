@@ -24,16 +24,16 @@ A curated list of resources for building agentic AI systems. Compiled while rese
 
 ## Protocols
 
-- [Model Context Protocol specification](https://spec.modelcontextprotocol.io/) - the open protocol for tool and context interop.
+- [Model Context Protocol specification](https://modelcontextprotocol.io/specification/2026-07-28) - the open protocol for tool and context interop.
 - [MCP servers registry](https://github.com/modelcontextprotocol/servers) - pre-built, ready-to-use MCP tool servers.
-- [A2A protocol specification](https://google.github.io/A2A/) - the open protocol for agent-to-agent communication.
-- [google/A2A](https://github.com/google/A2A) - reference implementations and SDKs.
+- [A2A protocol specification](https://a2a-protocol.org/latest/specification/) - the open protocol for agent-to-agent communication (Agentic AI Foundation).
+- [a2aproject/A2A](https://github.com/a2aproject/A2A) - reference implementations and SDKs (stewarded by the Agentic AI Foundation).
 
 ## Observability and eval
 
 - [LangSmith](https://smith.langchain.com/) - tracing, evaluation datasets, production monitoring. The default observability layer for this roadmap.
-- [LangGraph Studio](https://github.com/langchain-ai/langgraph-studio) - visual IDE for agent debugging and step-through execution.
-- [LangGraph Platform](https://langchain-ai.github.io/langgraph/concepts/langgraph_platform/) - managed deployment, cron, Assistants API.
+- [LangGraph Studio](https://docs.langchain.com/oss/python/langgraph/studio) - visual IDE for agent debugging and step-through execution.
+- [LangSmith Deployment](https://docs.langchain.com/oss/python/langgraph) - managed deployment, cron, Assistants API (formerly LangGraph Platform).
 - [OpenTelemetry](https://opentelemetry.io/) - vendor-neutral tracing. Useful when LangSmith is not an option.
 
 ## Practitioner blogs and engineering write-ups

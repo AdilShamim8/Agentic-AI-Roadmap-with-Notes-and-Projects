@@ -35,7 +35,7 @@ graph LR
 
 - Orchestration: LangGraph 0.2.x
 - Tools: MCP servers (web search via Tavily or Brave; fetch via httpx + trafilatura)
-- LLM: GPT-4o or Claude Sonnet
+- LLM: claude-sonnet-5-5 or gpt-5.5 (any current frontier tool-calling model)
 - Observability: LangSmith
 - Deployment: Docker
 

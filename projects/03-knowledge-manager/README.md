@@ -36,7 +36,7 @@ graph LR
 - Ingestion: LlamaIndex or Unstructured
 - Storage: Postgres + pgvector (vector), Apache AGE or Neo4j (graph)
 - MCP: retrieval tool server
-- LLM: GPT-4o or Claude Sonnet
+- LLM: claude-sonnet-5-5 or gpt-5.5 (any current frontier tool-calling model)
 - Observability: LangSmith
 
 ## Eval rubric

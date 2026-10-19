@@ -3,7 +3,7 @@
 Module: 09-emerging-topics
 Chapter: 06-agent-marketplaces-and-economics
 Status: draft
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 1 hour
 
 ## Learning objectives
@@ -52,9 +52,9 @@ In production (in 2026), do not rely on agent marketplaces for mission-critical 
 
 ## Further reading
 
-- [A2A protocol](https://google.github.io/A2A/)
+- [A2A protocol specification](https://a2a-protocol.org/latest/specification/)
 - [EU AI Act](https://artificialintelligenceact.eu/)
-- [The economics of AI agents](https://a16z.com/the-economic-case-for-agentic-ai/)
+- [LangChain blog](https://www.langchain.com/blog/langchain-langgraph-1dot0) - production agent engineering write-ups
 
 ## Checklist
 

@@ -73,7 +73,7 @@ In production, the most common multi-agent failure is over-engineering. Teams bu
 ## Further reading
 
 - [LangGraph multi-agent](https://langchain-ai.github.io/langgraph/concepts/multi_agent/)
-- [Anthropic: multi-agent systems](https://www.anthropic.com/research/multi-agent-research-system)
+- [Anthropic: how we built our multi-agent research system](https://www.anthropic.com/engineering/built-multi-agent-research-system)
 
 ## Checklist
 

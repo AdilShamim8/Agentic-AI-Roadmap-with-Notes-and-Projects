@@ -3,7 +3,7 @@
 Module: 06-evals-and-observability
 Chapter: 07-regression-suites-in-ci
 Status: stable
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 2 hours
 
 ## Learning objectives
@@ -101,7 +101,7 @@ The second most common failure: the eval passes but the agent is bad in producti
 ## Further reading
 
 - [LangSmith CI/CD](https://docs.smith.langchain.com/evaluation/ci)
-- [GitHub Actions: required status checks](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-branches-in-your-repository/managing-a-branch-protection-rule)
+- [GitHub docs: branch protection](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches)
 
 ## Checklist
 

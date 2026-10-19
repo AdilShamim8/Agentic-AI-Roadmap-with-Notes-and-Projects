@@ -41,8 +41,8 @@ class Settings(BaseSettings):
 
     # ---- OpenAI (only used when provider=openai) ----
     openai_api_key: str = ""
-    openai_vision_model: str = "gpt-4o"
-    openai_chat_model: str = "gpt-4o-mini"
+    openai_vision_model: str = "gpt-5.5"
+    openai_chat_model: str = "gpt-5.5"
 
     # ---- Embeddings ----
     embedding_model: str = "all-MiniLM-L6-v2"

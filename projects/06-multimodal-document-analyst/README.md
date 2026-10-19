@@ -21,7 +21,7 @@ This project exercises multimodal ingestion (text + images + tables), multimodal
 
 - Orchestration: LangGraph 0.2.x
 - Ingestion: LlamaParse or Unstructured
-- VLM: GPT-4o vision or Claude vision (for image captioning)
+- VLM: a current vision-capable model (gpt-5.5 or Claude) for image captioning
 - Storage: Postgres + pgvector
 - MCP: retrieval tool server
 - Observability: LangSmith

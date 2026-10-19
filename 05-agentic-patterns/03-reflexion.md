@@ -3,7 +3,7 @@
 Module: 05-agentic-patterns
 Chapter: 03-reflexion
 Status: stable
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 2 hours
 
 ## Learning objectives
@@ -44,9 +44,9 @@ A reflexion agent that writes code and learns from test failures. Full code in [
 from typing import TypedDict, Annotated
 from operator import add
 from langgraph.graph import StateGraph, START, END
-from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 
-llm = ChatOpenAI(model="gpt-4o", temperature=0)
+llm = ChatAnthropic(model="claude-sonnet-5-5")
 
 class State(TypedDict):
     task: str

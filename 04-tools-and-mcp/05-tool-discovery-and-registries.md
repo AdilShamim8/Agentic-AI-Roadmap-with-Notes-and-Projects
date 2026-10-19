@@ -3,7 +3,7 @@
 Module: 04-tools-and-mcp
 Chapter: 05-tool-discovery-and-registries
 Status: beta
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 2 hours
 
 ## Learning objectives
@@ -100,7 +100,7 @@ In production, the registry becomes a critical piece of infrastructure. If the r
 
 ## Further reading
 
-- [MCP specification](https://spec.modelcontextprotocol.io/)
+- [MCP specification](https://modelcontextprotocol.io/specification/2026-07-28)
 - [MCP servers registry](https://github.com/modelcontextprotocol/servers)
 
 ## Checklist

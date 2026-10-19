@@ -124,4 +124,4 @@ The engineers who stay current - who read the [09 Emerging topics](../09-emergin
 
 - [Levels.fyi](https://www.levels.fyi/) - salary data, filter by "AI Engineer"
 - [builtin.com](https://builtin.com/) - job postings with salary ranges
-- [AI Engineering Field Guide: Salary](https://github.com/alexeygrigorev/ai-engineering-field-guide/blob/main/job-market/trends.md)
+- [AI Engineering Field Guide](https://github.com/alexeygrigorev/ai-engineering-field-guide)

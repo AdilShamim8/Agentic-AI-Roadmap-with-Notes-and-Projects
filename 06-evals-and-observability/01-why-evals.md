@@ -3,7 +3,7 @@
 Module: 06-evals-and-observability
 Chapter: 01-why-evals
 Status: stable
-Last reviewed: 2026-07-27
+Last reviewed: 2026-10-19
 Estimated time: 1 hour
 
 ## Learning objectives
@@ -77,7 +77,7 @@ The most common production failure: the eval suite is too slow, so developers sk
 ## Further reading
 
 - [Hamel Husain: Evaluating LLM Applications](https://hamel.dev/blog/posts/evals/)
-- [Eugene Yan: Evaluating LLM Applications](https://eugeneyan.com/writing/evaluating-llm-applications/)
+- [Eugene Yan: evaluations](https://eugeneyan.com/)
 - [LangSmith evaluation docs](https://docs.smith.langchain.com/evaluation)
 
 ## Checklist

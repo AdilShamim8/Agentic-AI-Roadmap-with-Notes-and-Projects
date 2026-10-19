@@ -58,12 +58,12 @@ memory [4][6].
 
 ## References
 
-1. [Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks](https://example.com/rag-original-paper)
-2. [A Practitioner's Guide to Production RAG](https://example.com/rag-practitioner-guide)
-3. [Hybrid Search: Combining Keyword and Vector Retrieval](https://example.com/hybrid-search)
-4. [Multi-Agent RAG Architectures in 2026](https://example.com/multi-agent-rag)
-5. [Chunking Strategies for Retrieval Quality](https://example.com/chunking-strategies)
-6. [Do Long Context Windows Make RAG Obsolete?](https://example.com/rag-vs-long-context)
+1. [Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks (Lewis et al., 2020)](https://arxiv.org/abs/2005.11401)
+2. [Anthropic: Contextual Retrieval (chunking and reranking in production RAG)](https://www.anthropic.com/news/contextual-retrieval)
+3. [LlamaIndex: RAG framework with hybrid retrieval and reranking](https://www.llamaindex.ai/)
+4. [LangChain blog: agentic RAG and multi-agent patterns](https://blog.langchain.com/)
+5. [Anthropic: Contextual Retrieval (chunking strategies)](https://www.anthropic.com/news/contextual-retrieval)
+6. [Lost in the Middle: How Language Models Use Long Contexts (Liu et al., 2023)](https://arxiv.org/abs/2307.03172)
 
 ---
 *This is a hand-written example showing the report's format and citation

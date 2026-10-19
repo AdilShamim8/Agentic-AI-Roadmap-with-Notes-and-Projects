@@ -245,7 +245,7 @@ originally `ANOMON_`-prefixed; both forms work via `case_sensitive=False`).
 |----------|---------|-------------|
 | `OPENAI_API_KEY` | _(empty)_ | If empty, LLM detector uses a rule-based stub. |
 | `OPENAI_BASE_URL` | `https://api.openai.com/v1` | Override for Azure / local LLMs. |
-| `ANOMON_LLM_MODEL` | `gpt-4o-mini` | Model name. |
+| `ANOMON_LLM_MODEL` | `gpt-5.5` | Model name. |
 | `ANOMON_LLM_TEMPERATURE` | `0.0` | Sampling temperature (0 = deterministic). |
 | `ANOMON_LLM_TIMEOUT_SEC` | `20` | Per-call timeout. |
 
