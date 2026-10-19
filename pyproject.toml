@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "agentic-ai-roadmap"
-version = "0.2.0"
+version = "0.3.0"
 description = "A production-grade, hands-on curriculum for building agentic AI systems with LangGraph, MCP, and A2A."
 readme = "README.md"
 license = { text = "MIT" }
