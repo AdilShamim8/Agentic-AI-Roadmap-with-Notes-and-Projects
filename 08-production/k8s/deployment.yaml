@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: langgraph-agent
+  labels:
+    app: langgraph-agent
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: langgraph-agent
+  template:
+    metadata:
+      labels:
+        app: langgraph-agent
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: langgraph
+          image: my-registry/langgraph-agent:latest
+          ports:
+            - containerPort: 8000
+          readinessProbe:
+            httpGet:
+              path: /ok
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          env:
+            - name: ANTHROPIC_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: agent-secrets
+                  key: anthropic-api-key
+            - name: POSTGRES_URL
+              valueFrom:
+                secretKeyRef:
+                  name: agent-secrets
+                  key: postgres-url
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "500m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
