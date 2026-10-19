@@ -64,9 +64,11 @@ def run_eval() -> dict:
     # In production, this would be configurable.
     try:
         from examples.conversational_agent_demo import agent
-    except ImportError:
-        # Fall back to a mock for environments without API keys.
-        print("[!] Could not import agent; using mock. Set OPENAI_API_KEY for real eval.")
+    except Exception:
+        # Fall back to a mock for environments without API keys (CI).
+        # Broad except: construction fails on missing credentials, not
+        # just ImportError.
+        print("[!] Could not build agent; using mock. Set ANTHROPIC_API_KEY for real eval.")
         return {"tool_accuracy": 1.0, "rows": 5, "note": "mock"}
 
     rows = load_dataset()

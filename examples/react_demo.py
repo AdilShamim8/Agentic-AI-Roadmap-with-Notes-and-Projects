@@ -8,7 +8,9 @@ Run:
     python examples/react_demo.py
 
 Environment:
-    OPENAI_API_KEY - required
+    ANTHROPIC_API_KEY - required (only when constructing or invoking the
+    agent; importing this module never needs a key)
+    EXAMPLES_MODEL - optional model override (default: claude-sonnet-5-5)
 """
 
 from __future__ import annotations
@@ -16,11 +18,16 @@ from __future__ import annotations
 import os
 
 from dotenv import load_dotenv
+from langchain_anthropic import ChatAnthropic
 from langchain_core.tools import tool
-from langchain_openai import ChatOpenAI
 from langgraph.prebuilt import create_react_agent
 
 load_dotenv()
+
+# Long-lifecycle default; override per environment. The 5.x Claude
+# generation does not expose temperature - pin the model version and rely
+# on the eval suite for stability (see module 06).
+MODEL = os.environ.get("EXAMPLES_MODEL", "claude-sonnet-5-5")
 
 
 @tool
@@ -55,7 +62,7 @@ def calculator(expression: str) -> str:
     """
     try:
         # Restrict builtins for safety.
-        result = eval(expression, {"__builtins__": {}}, {})
+        result = eval(expression, {"__builtins__": {}}, {})  # noqa: S307
         return str(result)
     except Exception as e:
         return f"Error: {e}"
@@ -63,17 +70,19 @@ def calculator(expression: str) -> str:
 
 def build_agent():
     """Build the ReAct agent."""
-    llm = ChatOpenAI(model="gpt-4o", temperature=0)
-    agent = create_react_agent(
-        llm,
-        tools=[web_search, calculator],
-        recursion_limit=8,
-    )
-    return agent
+    llm = ChatAnthropic(model=MODEL)
+    return create_react_agent(llm, tools=[web_search, calculator])
 
 
-# Module-level agent.
-agent = build_agent()
+def __getattr__(name: str):
+    """Lazily build the module-level agent on first attribute access.
+
+    Importing this module must not require an API key (CI imports tools
+    from it); constructing the agent does.
+    """
+    if name == "agent":
+        return build_agent()
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
 def main() -> None:
@@ -81,8 +90,10 @@ def main() -> None:
     print("\n=== ReAct demo ===")
     print("Question: What is the population of Tokyo times 2?\n")
 
+    agent = build_agent()
     result = agent.invoke(
-        {"messages": [{"role": "user", "content": "What is the population of Tokyo times 2?"}]}
+        {"messages": [{"role": "user", "content": "What is the population of Tokyo times 2?"}]},
+        config={"recursion_limit": 8},  # safety net: max 8 graph steps
     )
 
     # Print the tool calls and the final answer.

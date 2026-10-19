@@ -54,14 +54,13 @@ def decide_and_act(state: State) -> dict:
     else:
         return {"value": state["value"] * 2, "steps": state["steps"] + 1}
 
-def should_continue(state: State) -> Literal["loop", "__end__"]:
-    return "loop" if state["value"] <= 10 else "__end__"
+def should_continue(state: State) -> Literal["act", "__end__"]:
+    return "act" if state["value"] <= 10 else "__end__"
 
 graph = StateGraph(State)
 graph.add_node("act", decide_and_act)
 graph.add_edge(START, "act")
-graph.add_conditional_edges("act", should_continue)
-graph.add_edge("loop", "act")  # this edge is taken when should_continue returns "loop"
+graph.add_conditional_edges("act", should_continue)  # routes back to "act" (loop) or END
 
 compiled = graph.compile()
 

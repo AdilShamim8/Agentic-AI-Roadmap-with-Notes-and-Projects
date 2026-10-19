@@ -10,7 +10,8 @@ Run:
     python examples/structured_output_demo.py
 
 Environment:
-    OPENAI_API_KEY - required
+    ANTHROPIC_API_KEY - required
+    EXAMPLES_MODEL - optional model override (default: claude-sonnet-5-5)
 """
 
 from __future__ import annotations
@@ -19,12 +20,16 @@ import os
 from typing import Annotated
 
 from dotenv import load_dotenv
-from langchain_core.messages import AIMessage, HumanMessage
+from langchain_core.messages import HumanMessage, ToolMessage
+from langchain_core.runnables import Runnable
 from langchain_core.tools import tool
-from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 from pydantic import BaseModel, Field
 
 load_dotenv()
+
+# Long-lifecycle default; override per environment.
+MODEL = os.environ.get("EXAMPLES_MODEL", "claude-sonnet-5-5")
 
 
 class WeatherArgs(BaseModel):
@@ -53,9 +58,9 @@ def get_weather(location: str, units: str = "fahrenheit") -> str:
     return f"72{unit_char}, sunny in {location}"
 
 
-def build_agent() -> ChatOpenAI:
+def build_agent() -> Runnable:
     """Build an LLM with the weather tool bound."""
-    llm = ChatOpenAI(model="gpt-4o", temperature=0)
+    llm = ChatAnthropic(model=MODEL)
     return llm.bind_tools([get_weather])
 
 
@@ -85,12 +90,12 @@ def run_agent(user_message: str, max_iterations: int = 5) -> str:
             try:
                 result = get_weather.invoke(call["args"])
                 messages.append(
-                    AIMessage(content=result, tool_call_id=call["id"])
+                    ToolMessage(content=str(result), tool_call_id=call["id"])
                 )
             except Exception as e:
                 # Return the error to the LLM so it can recover.
                 messages.append(
-                    AIMessage(
+                    ToolMessage(
                         content=f"Tool call failed: {e}. Try with different arguments.",
                         tool_call_id=call["id"],
                     )

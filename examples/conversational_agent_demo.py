@@ -2,29 +2,34 @@
 
 This is the minimum viable production agent: it uses create_react_agent,
 has a tool, persists state with MemorySaver (swap for PostgresSaver in
-production), and has a recursion limit to prevent infinite loops.
+production), and caps the run with a recursion limit at invoke time.
 
 Run:
     python examples/conversational_agent_demo.py
 
 Environment:
-    OPENAI_API_KEY - required
+    ANTHROPIC_API_KEY - required (only when constructing or invoking the
+    agent; importing this module never needs a key)
+    EXAMPLES_MODEL - optional model override (default: claude-sonnet-5-5)
 """
 
 from __future__ import annotations
 
 import os
-from typing import Annotated
 
 from dotenv import load_dotenv
+from langchain_anthropic import ChatAnthropic
 from langchain_core.tools import tool
-from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.memory import MemorySaver
+from langgraph.graph.state import CompiledStateGraph
 from langgraph.prebuilt import create_react_agent
 
 load_dotenv()
 
-# A simple tool. In production, this would call a real weather API.
+# Long-lifecycle default; override per environment.
+MODEL = os.environ.get("EXAMPLES_MODEL", "claude-sonnet-5-5")
+
+
 @tool
 def get_weather(location: str) -> str:
     """Get the current weather for a location.
@@ -42,31 +47,36 @@ def get_weather(location: str) -> str:
     return f"72F, sunny in {location}"
 
 
-def build_agent() -> object:
+def build_agent() -> CompiledStateGraph:
     """Build the conversational agent.
 
     Returns a compiled LangGraph agent. The agent is stateless between
     calls unless a thread_id is provided in the config.
     """
-    llm = ChatOpenAI(model="gpt-4o", temperature=0)
+    llm = ChatAnthropic(model=MODEL)
     # MemorySaver for dev; use PostgresSaver for production.
     checkpointer = MemorySaver()
-    agent = create_react_agent(
-        llm,
-        tools=[get_weather],
-        checkpointer=checkpointer,
-        recursion_limit=8,  # safety net: max 8 LLM calls per request
-    )
-    return agent
+    return create_react_agent(llm, tools=[get_weather], checkpointer=checkpointer)
 
 
-# Module-level agent, used by the eval runner and the deployment.
-agent = build_agent()
+def __getattr__(name: str):
+    """Lazily build the module-level agent on first attribute access.
+
+    Importing this module must not require an API key (the eval runner
+    and tests import tools from it); constructing the agent does.
+    """
+    if name == "agent":
+        return build_agent()
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
 def main() -> None:
     """Run a two-turn conversation to demonstrate persistence."""
-    config = {"configurable": {"thread_id": "demo-001"}}
+    agent = build_agent()
+    config = {
+        "configurable": {"thread_id": "demo-001"},
+        "recursion_limit": 8,  # safety net: max 8 graph steps per request
+    }
 
     # Turn 1
     print("\n=== Turn 1 ===")
