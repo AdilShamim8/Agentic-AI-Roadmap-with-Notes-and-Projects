@@ -90,7 +90,7 @@ What you will be able to do:
 
 Checkpoint: implement the same task (research-and-write-a-report) using three different patterns, run all three against the same eval suite, and write a one-page analysis of the trade-offs.
 
-## Phase 6 — Evals and observability `beta`
+## Phase 6 — Evals and observability `done`
 
 Goal: build the discipline that separates professionals from hobbyists. Every agent you ship has an eval suite that runs in CI.
 

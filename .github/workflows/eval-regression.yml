@@ -1,0 +1,30 @@
+name: Eval regression gate
+
+# The eval-regression workflow referenced by module 06 chapter 07 and
+# examples/run_evals.py. Runs the golden-dataset eval on every PR,
+# writes the report into the job summary, and fails the check on a
+# regression (> 2 percentage points below baseline on any metric).
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  eval-regression:
+    name: Eval vs baseline
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e .
+      - name: Run the eval (exits non-zero on regression)
+        run: |
+          python examples/run_evals.py
+          echo "### Eval report" >> "$GITHUB_STEP_SUMMARY"
+          echo '```markdown' >> "$GITHUB_STEP_SUMMARY"
+          cat eval_report.md >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
