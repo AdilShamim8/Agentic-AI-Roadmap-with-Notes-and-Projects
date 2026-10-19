@@ -1,3 +1,4 @@
 {
-  "tool_accuracy": 1.0
+  "intent_accuracy": 0.933,
+  "tool_accuracy": 0.933
 }
