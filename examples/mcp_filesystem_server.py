@@ -77,7 +77,7 @@ async def call_tool(name: str, arguments: dict[str, Any]) -> list[TextContent]:
     try:
         if name == "read_file":
             path = arguments["path"]
-            with open(path, "r", encoding="utf-8") as f:
+            with open(path, encoding="utf-8") as f:
                 content = f.read()
             return [TextContent(type="text", text=content)]
         if name == "list_directory":

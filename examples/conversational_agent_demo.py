@@ -19,6 +19,7 @@ import os
 
 from dotenv import load_dotenv
 from langchain_anthropic import ChatAnthropic
+from langchain_core.runnables.config import RunnableConfig
 from langchain_core.tools import tool
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph.state import CompiledStateGraph
@@ -73,7 +74,7 @@ def __getattr__(name: str):
 def main() -> None:
     """Run a two-turn conversation to demonstrate persistence."""
     agent = build_agent()
-    config = {
+    config: RunnableConfig = {
         "configurable": {"thread_id": "demo-001"},
         "recursion_limit": 8,  # safety net: max 8 graph steps per request
     }

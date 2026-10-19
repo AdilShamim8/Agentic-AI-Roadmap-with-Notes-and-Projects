@@ -19,17 +19,8 @@ Run:
 from __future__ import annotations
 
 import re
-from typing import Any, Callable, Dict, Optional
 
-try:
-    from langchain_core.tools import tool
-    HAS_LANGCHAIN_CORE = True
-except ImportError:
-    HAS_LANGCHAIN_CORE = False
-
-    def tool(fn: Callable[..., Any]) -> Callable[..., Any]:  # type: ignore[no-redef]
-        fn.name = fn.__name__  # type: ignore[attr-defined]
-        return fn
+from langchain_core.tools import tool
 
 
 # --- Anti-Pattern: Poorly Designed Tool ---
@@ -73,14 +64,17 @@ def get_order_status(order_id: str) -> str:
         )
 
     # Simulated database lookup
-    mock_db: Dict[str, Dict[str, str]] = {
+    mock_db: dict[str, dict[str, str]] = {
         "ACME-100001": {"status": "shipped", "date": "2026-09-10", "tracking": "TRK-982341"},
         "ACME-100002": {"status": "processing", "date": "2026-09-15", "tracking": "Pending"},
     }
 
     if order_id in mock_db:
         record = mock_db[order_id]
-        return f"Order {order_id}: {record['status']} on {record['date']}, tracking {record['tracking']}"
+        return (
+            f"Order {order_id}: {record['status']} on {record['date']}, "
+            f"tracking {record['tracking']}"
+        )
 
     return f"Order {order_id} not found in database. Check the order ID and try again."
 
@@ -89,23 +83,23 @@ def main() -> None:
     """Evaluate tool behavior under edge cases and malformed inputs."""
     print("\n=== Tool Design Principles & Validation Demo ===")
 
-    print("1. Testing Poor Tool Anti-Pattern:")
-    poor_result = query("")
-    print(f"  Empty input output: '{poor_result}' (silent failure - zero guidance for LLM)")
+    print("1. Testing poor tool anti-pattern:")
+    poor_result = query.invoke({"data": ""})
+    print(f"  Empty input output: {poor_result!r} (silent failure - zero guidance)")
     assert poor_result == ""
 
-    print("\n2. Testing Well-Designed Tool with Valid Input:")
-    valid_result = get_order_status("ACME-100001")
+    print("\n2. Testing well-designed tool with valid input:")
+    valid_result = get_order_status.invoke({"order_id": "ACME-100001"})
     print(f"  Result: {valid_result}")
     assert "shipped on 2026-09-10" in valid_result
 
-    print("\n3. Testing Well-Designed Tool with Missing Order ID:")
-    not_found_result = get_order_status("ACME-999999")
+    print("\n3. Testing well-designed tool with missing order ID:")
+    not_found_result = get_order_status.invoke({"order_id": "ACME-999999"})
     print(f"  Result: {not_found_result}")
     assert "not found in database" in not_found_result
 
-    print("\n4. Testing Well-Designed Tool with Invalid Format:")
-    invalid_format_result = get_order_status("12345")
+    print("\n4. Testing well-designed tool with invalid format:")
+    invalid_format_result = get_order_status.invoke({"order_id": "12345"})
     print(f"  Result: {invalid_format_result}")
     assert "Validation Error" in invalid_format_result
     assert "ACME-XXXXXX" in invalid_format_result

@@ -13,10 +13,9 @@ Run:
 from __future__ import annotations
 
 import json
-from typing import Any, Dict, List, Optional, Set
+from typing import Any
 
-
-SAMPLE_REGISTRY_DATA: Dict[str, List[Dict[str, Any]]] = {
+SAMPLE_REGISTRY_DATA: dict[str, list[dict[str, Any]]] = {
     "servers": [
         {
             "name": "filesystem",
@@ -49,10 +48,10 @@ SAMPLE_REGISTRY_DATA: Dict[str, List[Dict[str, Any]]] = {
 class ToolRegistry:
     """Registry managing available MCP tool servers and matching capabilities."""
 
-    def __init__(self, registry_dict: Optional[Dict[str, Any]] = None) -> None:
+    def __init__(self, registry_dict: dict[str, Any] | None = None) -> None:
         self.servers = (registry_dict or SAMPLE_REGISTRY_DATA).get("servers", [])
 
-    def filter_by_capabilities(self, required_capabilities: List[str]) -> List[Dict[str, Any]]:
+    def filter_by_capabilities(self, required_capabilities: list[str]) -> list[dict[str, Any]]:
         """Find all servers matching at least one required capability."""
         needed = set(required_capabilities)
         matched_servers = []
@@ -62,7 +61,7 @@ class ToolRegistry:
                 matched_servers.append(server)
         return matched_servers
 
-    def get_server_by_version(self, name: str, min_major_version: int) -> Optional[Dict[str, Any]]:
+    def get_server_by_version(self, name: str, min_major_version: int) -> dict[str, Any] | None:
         """Retrieve server if it meets semantic major version constraints."""
         for server in self.servers:
             if server["name"] == name:
@@ -76,7 +75,9 @@ class ToolRegistry:
                 )
         return None
 
-    def export_langgraph_config(self, matched_servers: List[Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
+    def export_langgraph_config(
+        self, matched_servers: list[dict[str, Any]]
+    ) -> dict[str, dict[str, Any]]:
         """Export connection dictionary for MultiServerMCPClient."""
         config = {}
         for s in matched_servers:
@@ -118,7 +119,7 @@ def main() -> None:
     print("\nTest 4: Testing version constraint rejection (min v3 on v2 server)...")
     try:
         registry.get_server_by_version("sqlite_db", min_major_version=3)
-        assert False, "Should have raised ValueError on version mismatch"
+        raise AssertionError("Should have raised ValueError on version mismatch")
     except ValueError as exc:
         print(f"  Caught expected error: {exc}")
 

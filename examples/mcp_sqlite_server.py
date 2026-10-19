@@ -1,4 +1,4 @@
-"""MCP SQLite Database server.
+"""MCP SQLite database server.
 
 Exposes tools over the Model Context Protocol for interacting with SQLite:
 - query_database: executes read-only SQL queries and returns formatted rows
@@ -7,57 +7,32 @@ Exposes tools over the Model Context Protocol for interacting with SQLite:
 
 Run:
     python examples/mcp_sqlite_server.py
+
+With a terminal stdin (no MCP client attached) this runs a self-test;
+with a piped stdin (an MCP client spawned us) it speaks JSON-RPC.
 """
 
 from __future__ import annotations
 
 import json
 import sqlite3
-from typing import Any, Dict, List, Optional
+import sys
+from typing import Any
 
-try:
-    import anyio
-    from mcp.server import Server
-    from mcp.server.stdio import stdio_server
-    from mcp.types import TextContent, Tool
-    HAS_MCP_SDK = True
-except ImportError:
-    HAS_MCP_SDK = False
-
-    class TextContent:  # type: ignore[no-redef]
-        def __init__(self, type: str, text: str) -> None:
-            self.type = type
-            self.text = text
-
-    class Tool:  # type: ignore[no-redef]
-        def __init__(self, name: str, description: str, inputSchema: dict) -> None:
-            self.name = name
-            self.description = description
-            self.inputSchema = inputSchema
-
-    class Server:  # type: ignore[no-redef]
-        def __init__(self, name: str) -> None:
-            self.name = name
-            self._list_tools_handler: Optional[Any] = None
-            self._call_tool_handler: Optional[Any] = None
-
-        def list_tools(self) -> Any:
-            def dec(fn: Any) -> Any:
-                self._list_tools_handler = fn
-                return fn
-            return dec
-
-        def call_tool(self) -> Any:
-            def dec(fn: Any) -> Any:
-                self._call_tool_handler = fn
-                return fn
-            return dec
-
+import anyio
+from mcp.server import Server
+from mcp.server.stdio import stdio_server
+from mcp.types import TextContent, Tool
 
 server = Server("sqlite-server")
 
-# In-memory database initialization with sample schema and seed records
+
 def get_db_connection() -> sqlite3.Connection:
+    """Create the in-memory demo database with sample schema and rows.
+
+    The model names and prices are illustrative sample data for the demo
+    database, not a pricing reference.
+    """
     conn = sqlite3.connect(":memory:")
     cursor = conn.cursor()
     cursor.execute("""
@@ -72,9 +47,9 @@ def get_db_connection() -> sqlite3.Connection:
     cursor.executemany(
         "INSERT INTO models VALUES (?, ?, ?, ?, ?)",
         [
-            (1, "claude-3-5-sonnet", "anthropic", 200000, 3.0),
-            (2, "gpt-4o", "openai", 128000, 2.5),
-            (3, "gemini-1-5-pro", "google", 2000000, 1.25),
+            (1, "claude-sonnet-5-5", "anthropic", 200000, 3.0),
+            (2, "gpt-5.5", "openai", 400000, 1.25),
+            (3, "gemini-4-argon", "google", 1000000, 1.25),
         ],
     )
     conn.commit()
@@ -86,19 +61,22 @@ SHARED_CONN = get_db_connection()
 
 @server.list_tools()
 async def list_tools() -> list[Tool]:
-    """List tools exposed by SQLite MCP server."""
+    """List the tools this server exposes."""
     return [
         Tool(
             name="query_database",
             description=(
                 "Execute a read-only SQL query against the database. "
-                "Use for SELECT queries to fetch metrics, records, or aggregates. "
-                "Destructive operations (DROP, DELETE, UPDATE) are blocked."
+                "Use for SELECT queries to fetch metrics, records, or "
+                "aggregates. Destructive operations are blocked."
             ),
             inputSchema={
                 "type": "object",
                 "properties": {
-                    "sql": {"type": "string", "description": "SQL query to execute, e.g. 'SELECT * FROM models'"}
+                    "sql": {
+                        "type": "string",
+                        "description": "SQL query to execute, e.g. 'SELECT * FROM models'",
+                    }
                 },
                 "required": ["sql"],
             },
@@ -110,11 +88,14 @@ async def list_tools() -> list[Tool]:
         ),
         Tool(
             name="describe_table",
-            description="Get the column schema and datatypes for a specified table name.",
+            description="Get the column schema and datatypes for a table.",
             inputSchema={
                 "type": "object",
                 "properties": {
-                    "table_name": {"type": "string", "description": "Name of the table to inspect"}
+                    "table_name": {
+                        "type": "string",
+                        "description": "Name of the table to inspect",
+                    }
                 },
                 "required": ["table_name"],
             },
@@ -129,72 +110,83 @@ async def call_tool(name: str, arguments: dict[str, Any]) -> list[TextContent]:
         cursor = SHARED_CONN.cursor()
 
         if name == "list_tables":
-            cursor.execute("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name")
+            cursor.execute(
+                "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name"
+            )
             tables = [row[0] for row in cursor.fetchall()]
             return [TextContent(type="text", text=json.dumps(tables, indent=2))]
 
         if name == "describe_table":
             table_name = arguments.get("table_name", "")
             cursor.execute(f"PRAGMA table_info({table_name})")
-            columns = [{"column": row[1], "type": row[2], "notnull": bool(row[3])} for row in cursor.fetchall()]
+            columns = [
+                {"column": row[1], "type": row[2], "notnull": bool(row[3])}
+                for row in cursor.fetchall()
+            ]
             if not columns:
                 return [TextContent(type="text", text=f"Table '{table_name}' does not exist.")]
             return [TextContent(type="text", text=json.dumps(columns, indent=2))]
 
         if name == "query_database":
             sql = arguments.get("sql", "").strip()
-            # Guard against mutations
-            if not sql.upper().startswith("SELECT") and not sql.upper().startswith("WITH") and not sql.upper().startswith("PRAGMA"):
-                return [TextContent(type="text", text="Access Error: Only read-only queries (SELECT) are permitted.")]
-
+            allowed_prefixes = ("SELECT", "WITH", "PRAGMA")
+            if not sql.upper().startswith(allowed_prefixes):
+                return [
+                    TextContent(
+                        type="text",
+                        text="Access error: only read-only queries (SELECT) are permitted.",
+                    )
+                ]
             cursor.execute(sql)
             col_names = [d[0] for d in cursor.description] if cursor.description else []
-            rows = [dict(zip(col_names, r)) for r in cursor.fetchall()]
+            rows = [dict(zip(col_names, r, strict=False)) for r in cursor.fetchall()]
             return [TextContent(type="text", text=json.dumps(rows, indent=2))]
 
         return [TextContent(type="text", text=f"Unknown tool: {name}")]
     except Exception as exc:
-        return [TextContent(type="text", text=f"Database Query Error: {exc}")]
+        # Return the error to the LLM, do not raise.
+        return [TextContent(type="text", text=f"Database query error: {exc}")]
 
 
-def run_standalone_test() -> None:
-    """Run in-memory self-test of SQLite MCP handlers."""
-    print("\n=== MCP SQLite Server Self-Test ===")
-    import asyncio
+async def run_server() -> None:
+    """Run the MCP server over stdio."""
+    async with stdio_server() as (read, write):
+        await server.run(read, write, server.create_initialization_options())
 
-    async def _test() -> None:
-        # Test 1: List tables
-        res_tables = await call_tool("list_tables", {})
-        print(f"Tables Discovered: {res_tables[0].text}")
-        assert "models" in res_tables[0].text
 
-        # Test 2: Describe schema
-        res_schema = await call_tool("describe_table", {"table_name": "models"})
-        print(f"\nSchema for 'models':\n{res_schema[0].text}")
-        assert "context_window" in res_schema[0].text
+async def run_self_test() -> None:
+    """Run in-memory self-tests of the SQLite MCP handlers."""
+    print("\n=== MCP SQLite server self-test ===")
 
-        # Test 3: Valid query
-        res_query = await call_tool("query_database", {"sql": "SELECT name, provider, cost_per_m_input FROM models WHERE cost_per_m_input < 3.0"})
-        print(f"\nQuery Results:\n{res_query[0].text}")
-        assert "gemini-1-5-pro" in res_query[0].text
+    res_tables = await call_tool("list_tables", {})
+    print(f"Tables discovered: {res_tables[0].text}")
+    assert "models" in res_tables[0].text
 
-        # Test 4: Blocked destructive query
-        res_drop = await call_tool("query_database", {"sql": "DROP TABLE models"})
-        print(f"\nBlocked Query Result: {res_drop[0].text}")
-        assert "Access Error" in res_drop[0].text
+    res_schema = await call_tool("describe_table", {"table_name": "models"})
+    print(f"\nSchema for 'models':\n{res_schema[0].text}")
+    assert "context_window" in res_schema[0].text
 
-    asyncio.run(_test())
-    print("\nAll SQLite MCP server tool tests passed successfully.")
+    res_query = await call_tool(
+        "query_database",
+        {"sql": "SELECT name, provider FROM models WHERE cost_per_m_input < 2.0"},
+    )
+    print(f"\nQuery results:\n{res_query[0].text}")
+    assert "gemini-4-argon" in res_query[0].text
+
+    res_drop = await call_tool("query_database", {"sql": "DROP TABLE models"})
+    print(f"\nBlocked query result: {res_drop[0].text}")
+    assert "Access error" in res_drop[0].text
+
+    print("\nAll SQLite MCP server tool tests passed.")
+
+
+def main() -> None:
+    """Serve over stdio when a client spawned us; self-test on a terminal."""
+    if sys.stdin.isatty():
+        anyio.run(run_self_test)
+    else:
+        anyio.run(run_server)
 
 
 if __name__ == "__main__":
-    if HAS_MCP_SDK:
-        try:
-            async def main() -> None:
-                async with stdio_server() as (read, write):
-                    await server.run(read, write, server.create_initialization_options())
-            anyio.run(main)
-        except Exception:
-            run_standalone_test()
-    else:
-        run_standalone_test()
+    main()

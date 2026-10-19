@@ -61,7 +61,7 @@ def handle_request(req: dict) -> dict:
             "jsonrpc": "2.0",
             "id": req_id,
             "result": {
-                "protocolVersion": "2024-11-05",
+                "protocolVersion": "2025-11-25",
                 "capabilities": {"tools": {}},
                 "serverInfo": {"name": "echo-server", "version": "0.1.0"},
             },

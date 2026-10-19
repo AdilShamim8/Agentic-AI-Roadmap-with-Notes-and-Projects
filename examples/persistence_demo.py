@@ -1,10 +1,13 @@
 """Persistence and long-term memory demonstration in LangGraph.
 
 Demonstrates:
-1. Short-term thread persistence via Checkpointer (MemorySaver / PostgresSaver)
-2. Long-term cross-thread memory via Store (namespaced key-value storage)
-3. State isolation between different thread IDs
-4. Context resumption across multiple conversation turns
+1. Short-term thread persistence via the checkpointer (MemorySaver here;
+   swap in PostgresSaver for production).
+2. Long-term cross-thread memory via the Store (namespaced key-value
+   storage).
+3. State isolation between different thread IDs.
+
+The conversation logic is mocked, so no API key is required.
 
 Run:
     python examples/persistence_demo.py
@@ -12,138 +15,116 @@ Run:
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional, Tuple, TypedDict
+from typing import Annotated, TypedDict
 
-try:
-    from langgraph.checkpoint.memory import MemorySaver
-    from langgraph.graph import END, START, StateGraph
-    from langgraph.store.memory import InMemoryStore
-    HAS_LANGGRAPH_PERSISTENCE = True
-except ImportError:
-    HAS_LANGGRAPH_PERSISTENCE = False
-
-
-class InMemoryMockStore:
-    """Mock store for cross-thread long-term memory."""
-
-    def __init__(self) -> None:
-        self._data: Dict[Tuple[Tuple[str, ...], str], Any] = {}
-
-    def put(self, namespace: Tuple[str, ...], key: str, value: Any) -> None:
-        self._data[(namespace, key)] = value
-
-    def get(self, namespace: Tuple[str, ...], key: str) -> Optional[Any]:
-        return self._data.get((namespace, key))
-
-
-class ThreadCheckpointer:
-    """Mock checkpointer managing per-thread state."""
-
-    def __init__(self) -> None:
-        self.threads: Dict[str, Dict[str, Any]] = {}
-
-    def save(self, thread_id: str, state: Dict[str, Any]) -> None:
-        self.threads[thread_id] = dict(state)
-
-    def load(self, thread_id: str) -> Dict[str, Any]:
-        return dict(self.threads.get(thread_id, {}))
+from langgraph.checkpoint.memory import MemorySaver
+from langgraph.graph import END, START, StateGraph
+from langgraph.graph.message import add_messages
+from langgraph.store.memory import InMemoryStore
 
 
 class ConversationState(TypedDict):
     """Conversation state schema."""
 
-    messages: List[str]
+    messages: Annotated[list, add_messages]
     user_id: str
     last_response: str
 
 
-class ConversationalAgentWithMemory:
-    """Agent combining thread-level checkpointing and long-term store."""
+# Long-term memory: the Store. Cross-thread, namespace per user.
+store = InMemoryStore()
 
-    def __init__(self) -> None:
-        self.checkpointer = ThreadCheckpointer()
-        self.store = InMemoryMockStore()
 
-    def remember_fact(self, user_id: str, fact: str) -> None:
-        """Store long-term memory in the user's namespace."""
-        existing = self.store.get(("memories", user_id), "facts") or []
-        if fact not in existing:
-            existing.append(fact)
-        self.store.put(("memories", user_id), "facts", existing)
+def save_user_memory(user_id: str, fact: str) -> None:
+    """Store a long-term fact in the user's namespace.
 
-    def recall_facts(self, user_id: str) -> List[str]:
-        """Retrieve all long-term facts for a given user."""
-        return self.store.get(("memories", user_id), "facts") or []
+    Store values are dict payloads (a bare list is rejected); we keep the
+    facts under an 'items' key.
+    """
+    namespace = ("memories", user_id)
+    item = store.get(namespace, "facts")
+    facts = list(item.value.get("items", [])) if item and item.value else []
+    if fact not in facts:
+        facts.append(fact)
+    store.put(namespace, "facts", {"items": facts})
 
-    def chat(self, thread_id: str, user_id: str, user_message: str) -> str:
-        """Execute a conversation step within a specific thread."""
-        state = self.checkpointer.load(thread_id)
-        messages: List[str] = state.get("messages", [])
-        messages.append(f"User: {user_message}")
 
-        # Check long-term user memories
-        memories = self.recall_facts(user_id)
-        memory_context = f" [Recalled facts: {', '.join(memories)}]" if memories else ""
+def recall_user_memories(user_id: str) -> list[str]:
+    """Retrieve long-term facts for a user."""
+    namespace = ("memories", user_id)
+    item = store.get(namespace, "facts")
+    if item and item.value:
+        return list(item.value.get("items", []))
+    return []
 
-        response = f"Assistant: Received '{user_message}'.{memory_context} Turn count: {len(messages)}"
-        messages.append(response)
 
-        # Update checkpoint for thread
-        self.checkpointer.save(
-            thread_id,
-            {"messages": messages, "user_id": user_id, "last_response": response},
-        )
-        return response
+def respond(state: ConversationState) -> dict:
+    """Produce the next assistant turn (mocked; an LLM would do this)."""
+    user_id = state["user_id"]
+    last_user_message = state["messages"][-1].content if state["messages"] else ""
+    known = recall_user_memories(user_id)
+    memory_note = f" I remember about you: {'; '.join(known)}." if known else ""
+    reply = (
+        f"You said: {last_user_message!r}.{memory_note} "
+        "(mocked response; an LLM call goes here in production)"
+    )
+    # Memory extraction: in production a small model call extracts facts.
+    if "favorite" in last_user_message.lower():
+        save_user_memory(user_id, last_user_message)
+    return {"last_response": reply}
+
+
+def build_conversation_graph():
+    """Build and compile the conversational StateGraph."""
+    workflow = StateGraph(ConversationState)
+    workflow.add_node("respond", respond)
+    workflow.add_edge(START, "respond")
+    workflow.add_edge("respond", END)
+    return workflow.compile(checkpointer=MemorySaver())
+
+
+# Module-level compiled graph.
+agent = build_conversation_graph()
 
 
 def main() -> None:
-    """Run verification tests for checkpointing and memory isolation."""
-    print("\n=== LangGraph Persistence and Memory Demo ===")
-    agent = ConversationalAgentWithMemory()
+    """Run multi-turn conversations across two threads and two users."""
+    print("\n=== Persistence demo ===\n")
 
-    user_id = "engineer_alice"
-    thread_1 = "thread-alice-session-1"
-    thread_2 = "thread-alice-session-2"
-    thread_bob = "thread-bob-session-1"
+    # Thread 1, user alice: two turns. The checkpointer keeps history.
+    cfg_alice = {"configurable": {"thread_id": "alice-session-1"}}
 
-    # Step 1: Save long-term facts into Store
-    print("Step 1: Saving long-term user profile facts into Store...")
-    agent.remember_fact(user_id, "Prefers Python and LangGraph")
-    agent.remember_fact(user_id, "Targeting 2026 Agentic AI production deployment")
-    alice_facts = agent.recall_facts(user_id)
-    print(f"  Alice's Stored Facts: {alice_facts}")
-    assert len(alice_facts) == 2
+    def turn(content: str, user_id: str = "alice") -> dict:
+        return {
+            "messages": [{"role": "user", "content": content}],
+            "user_id": user_id,
+            "last_response": "",
+        }
+    r1 = agent.invoke(turn("Hi"), config=cfg_alice)
+    print(f"Turn 1 (alice): {r1['last_response']}")
+    r2 = agent.invoke(turn("My favorite color is blue"), config=cfg_alice)
+    print(f"Turn 2 (alice): {r2['last_response']}")
 
-    # Step 2: Thread 1 conversation
-    print("\nStep 2: Conversation in Thread 1...")
-    r1 = agent.chat(thread_1, user_id, "Hello, can you help configure my state machine?")
-    print(f"  {r1}")
-    r2 = agent.chat(thread_1, user_id, "Add error boundary validation.")
-    print(f"  {r2}")
+    # Thread 2, same user: a new session, but long-term memory persists.
+    cfg_alice2 = {"configurable": {"thread_id": "alice-session-2"}}
+    r3 = agent.invoke(turn("What do you know about me?"), config=cfg_alice2)
+    print(f"New session (alice): {r3['last_response']}")
+    assert "favorite color is blue" in r3["last_response"], "Store memory lost"
 
-    t1_state = agent.checkpointer.load(thread_1)
-    print(f"  Thread 1 message count: {len(t1_state['messages'])}")
-    assert len(t1_state["messages"]) == 4, "Thread 1 should have 2 user + 2 assistant messages"
+    # A different user must not see alice's memories (cross-user isolation).
+    cfg_bob = {"configurable": {"thread_id": "bob-session-1"}}
+    r4 = agent.invoke(
+        {
+            "messages": [{"role": "user", "content": "What do you know about me?"}],
+            "user_id": "bob",
+            "last_response": "",
+        },
+        config=cfg_bob,
+    )
+    print(f"Other user (bob):  {r4['last_response']}")
+    assert "favorite color is blue" not in r4["last_response"], "Memory leaked across users"
 
-    # Step 3: Thread 2 conversation (same user, new session)
-    print("\nStep 3: Conversation in Thread 2 (Same user, new thread)...")
-    r3 = agent.chat(thread_2, user_id, "Starting a fresh project.")
-    print(f"  {r3}")
-
-    t2_state = agent.checkpointer.load(thread_2)
-    print(f"  Thread 2 message count: {len(t2_state['messages'])}")
-    assert len(t2_state["messages"]) == 2, "Thread 2 should have independent thread history"
-    assert "Prefers Python and LangGraph" in r3, "Cross-thread store memory should be accessible"
-
-    # Step 4: Bob's conversation (different user)
-    print("\nStep 4: Conversation for user Bob (different user)...")
-    r_bob = agent.chat(thread_bob, "user_bob", "Hi, I'm new here.")
-    print(f"  {r_bob}")
-    bob_facts = agent.recall_facts("user_bob")
-    assert len(bob_facts) == 0, "Bob should not have Alice's memories"
-    assert "Prefers Python" not in r_bob, "Bob must not access Alice's private facts"
-
-    print("\nAll persistence and memory isolation tests passed successfully.")
+    print("\nPersistence, Store memory, and isolation verified.")
 
 
 if __name__ == "__main__":

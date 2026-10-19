@@ -84,3 +84,4 @@ python_version = "3.10"
 strict = false
 warn_unused_configs = true
 ignore_missing_imports = true
+plugins = ["pydantic.mypy"]

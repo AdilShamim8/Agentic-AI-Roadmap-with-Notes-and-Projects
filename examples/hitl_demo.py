@@ -1,12 +1,12 @@
 """Human-in-the-loop (HITL) approval demonstration with LangGraph.
 
 Demonstrates:
-1. Dynamic policy gating:
-   - Low-risk actions (<= $50) execute autonomously
-   - High-risk actions (> $50) trigger an interrupt() for human review
-2. Checkpoint-backed state suspension and resumption
-3. Resuming with Command(resume=True) or Command(resume=False)
-4. Evaluation of autonomous vs paused execution paths
+1. A risk-threshold policy gate: low-risk actions (<= $50) execute
+   autonomously, high-risk actions (> $50) trigger interrupt().
+2. Checkpoint-backed suspension and resumption via Command(resume=...).
+3. Both approval and rejection paths.
+
+The policy parsing is mocked (no LLM call), so no API key is required.
 
 Run:
     python examples/hitl_demo.py
@@ -14,141 +14,112 @@ Run:
 
 from __future__ import annotations
 
-from typing import Any, Callable, Dict, List, Optional, TypedDict
+from typing import Literal, TypedDict
 
-try:
-    from langgraph.checkpoint.memory import MemorySaver
-    from langgraph.graph import END, START, StateGraph
-    from langgraph.types import Command, interrupt
-    HAS_LANGGRAPH_HITL = True
-except ImportError:
-    HAS_LANGGRAPH_HITL = False
+from langgraph.checkpoint.memory import MemorySaver
+from langgraph.graph import END, START, StateGraph
+from langgraph.types import Command, interrupt
 
-    class Command:  # type: ignore[no-redef]
-        def __init__(self, resume: Any = None) -> None:
-            self.resume = resume
-
-    class MemorySaver:  # type: ignore[no-redef]
-        def __init__(self) -> None:
-            self.store: Dict[str, Dict[str, Any]] = {}
+APPROVAL_THRESHOLD = 50.0
 
 
 class RefundState(TypedDict):
-    """Shared state for refund processing workflow."""
+    """Shared state for the refund approval workflow."""
 
     order_id: str
     refund_amount: float
-    approved: Optional[bool]
-    status: str
+    approved: bool | None
     result_message: str
 
 
-class HITLWorkflowRunner:
-    """Manages the interrupt and resume execution cycle for HITL."""
-
-    def __init__(self) -> None:
-        self.checkpoints: Dict[str, Dict[str, Any]] = {}
-
-    def invoke(self, input_data: Any, config: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
-        thread_id = (config or {}).get("configurable", {}).get("thread_id", "default")
-
-        if isinstance(input_data, Command):
-            # Resuming an interrupted workflow
-            state = self.checkpoints.get(thread_id)
-            if not state:
-                raise ValueError(f"No checkpoint found for thread {thread_id}")
-
-            approval = bool(input_data.resume)
-            state["approved"] = approval
-            if approval:
-                state["status"] = "COMPLETED"
-                state["result_message"] = f"Refund of ${state['refund_amount']:.2f} approved and processed."
-            else:
-                state["status"] = "REJECTED"
-                state["result_message"] = f"Refund of ${state['refund_amount']:.2f} rejected by supervisor."
-
-            self.checkpoints[thread_id] = state
-            return state
-
-        # Fresh invocation
-        state = dict(input_data)
-        amount = state.get("refund_amount", 0.0)
-
-        if amount <= 50.0:
-            # Autonomous fast path
-            state["approved"] = True
-            state["status"] = "COMPLETED"
-            state["result_message"] = f"Refund of ${amount:.2f} auto-approved under threshold."
-            self.checkpoints[thread_id] = state
-            return state
-
-        # High-risk path: interrupt and pause
-        state["approved"] = None
-        state["status"] = "INTERRUPTED"
-        state["interrupt_payload"] = {
-            "action": "refund",
-            "amount": amount,
-            "order_id": state.get("order_id"),
-            "reason": f"Amount ${amount:.2f} exceeds $50.00 autonomous limit. Human approval required.",
-        }
-        self.checkpoints[thread_id] = state
-        return state
+def parse_refund(state: RefundState) -> dict:
+    """Extract the refund request (mocked; an LLM would do this in production)."""
+    # In production, an LLM call extracts order_id and amount from the
+    # conversation. Fixed values keep the demo deterministic.
+    return {"refund_amount": 75.0, "order_id": "ACME-123"}
 
 
-runner = HITLWorkflowRunner()
+def maybe_approve(state: RefundState) -> dict:
+    """Gate: autonomous fast path or human interrupt."""
+    if state["refund_amount"] <= APPROVAL_THRESHOLD:
+        return {"approved": True}
+
+    approved = interrupt({
+        "action": "refund",
+        "order_id": state["order_id"],
+        "amount": state["refund_amount"],
+        "reason": (
+            f"Amount exceeds the ${APPROVAL_THRESHOLD:.0f} threshold; "
+            "requires human approval."
+        ),
+    })
+    return {"approved": approved}
+
+
+def execute(state: RefundState) -> dict:
+    """Execute the refund or record the rejection."""
+    if state["approved"]:
+        message = (
+            f"Refund of ${state['refund_amount']:.2f} for "
+            f"{state['order_id']} processed."
+        )
+    else:
+        message = "Refund cancelled by reviewer."
+    return {"result_message": message}
+
+
+def route(state: RefundState) -> Literal["__end__"]:
+    return "__end__"
+
+
+def build_refund_graph():
+    """Build and compile the HITL refund StateGraph."""
+    workflow = StateGraph(RefundState)
+    workflow.add_node("parse", parse_refund)
+    workflow.add_node("gate", maybe_approve)
+    workflow.add_node("execute", execute)
+
+    workflow.add_edge(START, "parse")
+    workflow.add_edge("parse", "gate")
+    workflow.add_edge("gate", "execute")
+    workflow.add_edge("execute", END)
+
+    return workflow.compile(checkpointer=MemorySaver())
+
+
+# Module-level compiled graph.
+agent = build_refund_graph()
 
 
 def main() -> None:
-    """Evaluate HITL workflow across autonomous and approval paths."""
-    print("\n=== LangGraph Human-in-the-Loop (HITL) Demo ===")
-    print(f"Engine: {'LangGraph Native' if HAS_LANGGRAPH_HITL else 'Standalone HITL Runner'}\n")
+    """Run the approval workflow: pause, approve, and reject paths."""
+    print("\n=== HITL demo ===\n")
+    config = {"configurable": {"thread_id": "refund-001"}}
 
-    # Test 1: Low-risk transaction (Auto-approval)
-    print("Test 1: Low-risk refund ($25.00)...")
-    t1_config = {"configurable": {"thread_id": "thread-small-refund"}}
-    out1 = runner.invoke(
-        {"order_id": "ORD-101", "refund_amount": 25.0, "approved": None, "status": "", "result_message": ""},
-        config=t1_config,
+    print("Step 1: invoke. The flow pauses at the interrupt.")
+    result = agent.invoke(
+        {"order_id": "", "refund_amount": 0.0, "approved": None, "result_message": ""},
+        config=config,
     )
-    print(f"  Status: {out1['status']}")
-    print(f"  Message: {out1['result_message']}")
-    assert out1["status"] == "COMPLETED"
-    assert out1["approved"] is True
+    print(f"  Interrupt payload shown to the human: {result}")
+    assert "__interrupt__" in str(result) or result.get("result_message", "") == ""
 
-    # Test 2: High-risk transaction interrupted for human review
-    print("\nTest 2: High-risk refund ($150.00) requiring review...")
-    t2_config = {"configurable": {"thread_id": "thread-large-refund"}}
-    out2 = runner.invoke(
-        {"order_id": "ORD-999", "refund_amount": 150.0, "approved": None, "status": "", "result_message": ""},
-        config=t2_config,
+    print("\nStep 2: human approves via Command(resume=True).")
+    result = agent.invoke(Command(resume=True), config=config)
+    print(f"  Result: {result['result_message']}")
+    assert "processed" in result["result_message"]
+
+    print("\nStep 3: a second thread rejects via Command(resume=False).")
+    config2 = {"configurable": {"thread_id": "refund-002"}}
+    agent.invoke(
+        {"order_id": "", "refund_amount": 0.0, "approved": None, "result_message": ""},
+        config=config2,
     )
-    print(f"  Status: {out2['status']}")
-    print(f"  Interrupt Payload: {out2['interrupt_payload']['reason']}")
-    assert out2["status"] == "INTERRUPTED"
-    assert out2["approved"] is None
+    result = agent.invoke(Command(resume=False), config=config2)
+    print(f"  Result: {result['result_message']}")
+    assert "cancelled" in result["result_message"]
 
-    # Test 3: Resume Test 2 with human approval
-    print("\nTest 3: Resuming Test 2 with Command(resume=True)...")
-    resumed_approval = runner.invoke(Command(resume=True), config=t2_config)
-    print(f"  Status: {resumed_approval['status']}")
-    print(f"  Message: {resumed_approval['result_message']}")
-    assert resumed_approval["status"] == "COMPLETED"
-    assert resumed_approval["approved"] is True
-
-    # Test 4: High-risk transaction with human rejection
-    print("\nTest 4: High-risk refund ($500.00) rejected by reviewer...")
-    t4_config = {"configurable": {"thread_id": "thread-rejected-refund"}}
-    runner.invoke(
-        {"order_id": "ORD-555", "refund_amount": 500.0, "approved": None, "status": "", "result_message": ""},
-        config=t4_config,
-    )
-    rejected_out = runner.invoke(Command(resume=False), config=t4_config)
-    print(f"  Status: {rejected_out['status']}")
-    print(f"  Message: {rejected_out['result_message']}")
-    assert rejected_out["status"] == "REJECTED"
-    assert rejected_out["approved"] is False
-
-    print("\nAll Human-in-the-Loop policy gate evaluations passed successfully.")
+    print("\nHITL interrupt, approval, and rejection verified.")
 
 
 if __name__ == "__main__":

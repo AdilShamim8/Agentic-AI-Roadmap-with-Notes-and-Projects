@@ -13,19 +13,19 @@ Run:
 from __future__ import annotations
 
 import json
-from typing import Any, Dict, Optional
+from typing import Any
 
 
 class MCPFromScratchServer:
     """Pure-Python implementation of an MCP server adhering to JSON-RPC 2.0."""
 
-    PROTOCOL_VERSION = "2024-11-05"
+    PROTOCOL_VERSION = "2025-11-25"  # the revision the mcp 1.x SDK line speaks
 
     def __init__(self, name: str = "demo-scratch-server", version: str = "1.0.0") -> None:
         self.name = name
         self.version = version
 
-    def handle_message(self, request_payload: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    def handle_message(self, request_payload: dict[str, Any]) -> dict[str, Any] | None:
         """Process an incoming JSON-RPC 2.0 request or notification."""
         jsonrpc = request_payload.get("jsonrpc")
         method = request_payload.get("method")
@@ -68,7 +68,12 @@ class MCPFromScratchServer:
                             "description": "Echoes the input back to verify transport integrity.",
                             "inputSchema": {
                                 "type": "object",
-                                "properties": {"text": {"type": "string", "description": "Text to echo."}},
+                                "properties": {
+                                    "text": {
+                                        "type": "string",
+                                        "description": "Text to echo.",
+                                    }
+                                },
                                 "required": ["text"],
                             },
                         },
@@ -119,7 +124,10 @@ class MCPFromScratchServer:
             return {
                 "jsonrpc": "2.0",
                 "id": req_id,
-                "error": {"code": -32601, "message": f"Method not found: Tool '{tool_name}' does not exist."},
+                "error": {
+                    "code": -32601,
+                    "message": f"Method not found: tool {tool_name!r} does not exist.",
+                },
             }
 
         # Unknown RPC method
@@ -142,12 +150,13 @@ def main() -> None:
         "id": 1,
         "method": "initialize",
         "params": {
-            "protocolVersion": "2024-11-05",
+            "protocolVersion": "2025-11-25",
             "capabilities": {},
             "clientInfo": {"name": "test-client", "version": "1.0"},
         },
     }
     init_res = server.handle_message(init_req)
+    assert init_res is not None
     print(f"  Handshake Response: {json.dumps(init_res, indent=2)}")
     assert init_res["result"]["serverInfo"]["name"] == "demo-scratch-server"
 
@@ -155,6 +164,7 @@ def main() -> None:
     print("\nStep 2: Client sends 'tools/list' request...")
     list_req = {"jsonrpc": "2.0", "id": 2, "method": "tools/list"}
     list_res = server.handle_message(list_req)
+    assert list_res is not None
     tools = list_res["result"]["tools"]
     print(f"  Discovered {len(tools)} tools: {[t['name'] for t in tools]}")
     assert len(tools) == 2
@@ -168,6 +178,7 @@ def main() -> None:
         "params": {"name": "echo", "arguments": {"text": "Agentic AI 2026"}},
     }
     call_res = server.handle_message(call_req)
+    assert call_res is not None
     print(f"  Execution Response: {call_res['result']['content'][0]['text']}")
     assert call_res["result"]["content"][0]["text"] == "Echo: Agentic AI 2026"
 
@@ -180,6 +191,7 @@ def main() -> None:
         "params": {"name": "add", "arguments": {"a": 40, "b": 2}},
     }
     add_res = server.handle_message(add_req)
+    assert add_res is not None
     print(f"  Result: 40 + 2 = {add_res['result']['content'][0]['text']}")
     assert add_res["result"]["content"][0]["text"] == "42"
 
@@ -192,6 +204,7 @@ def main() -> None:
         "params": {"name": "non_existent_tool", "arguments": {}},
     }
     err_res = server.handle_message(err_req)
+    assert err_res is not None
     print(f"  RPC Error code: {err_res['error']['code']}, message: {err_res['error']['message']}")
     assert err_res["error"]["code"] == -32601
 

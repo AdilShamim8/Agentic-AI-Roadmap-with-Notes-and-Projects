@@ -13,18 +13,9 @@ Run:
 from __future__ import annotations
 
 import time
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any
 
-try:
-    from langchain_core.tools import tool
-    HAS_LANGCHAIN_CORE = True
-except ImportError:
-    HAS_LANGCHAIN_CORE = False
-
-    def tool(fn: Callable[..., Any]) -> Callable[..., Any]:  # type: ignore[no-redef]
-        """Lightweight decorator preserving docstring and metadata."""
-        fn.name = fn.__name__  # type: ignore[attr-defined]
-        return fn
+from langchain_core.tools import BaseTool, tool
 
 
 @tool
@@ -37,7 +28,10 @@ def get_order_status(order_id: str) -> str:
     }
     # Simulate network call with boundary validation
     if not order_id.startswith("ORD-"):
-        return f"Tool Error: Invalid order format '{order_id}'. Order IDs must start with 'ORD-'."
+        return (
+            f"Tool error: invalid order format {order_id!r}. "
+            "Order IDs must start with 'ORD-'."
+        )
     if order_id in valid_orders:
         return f"Order {order_id} status: {valid_orders[order_id]}"
     return f"Tool Notice: Order {order_id} not found in database. Please verify with customer."
@@ -49,31 +43,40 @@ def issue_refund(order_id: str, amount: float) -> str:
     if amount <= 0:
         return f"Tool Error: Refund amount ${amount:.2f} must be greater than zero."
     if amount > 5000.0:
-        return f"Tool Error: Refund amount ${amount:.2f} exceeds single-transaction limit of $5,000.00."
-    return f"Success: Refund of ${amount:.2f} processed for order {order_id}. Reference #REF-{order_id[4:]}."
+        return (
+            f"Tool error: refund amount ${amount:.2f} exceeds the "
+            "single-transaction limit of $5,000.00."
+        )
+    return (
+        f"Success: refund of ${amount:.2f} processed for order {order_id}. "
+        f"Reference #REF-{order_id[4:]}."
+    )
 
 
 class ToolRegistry:
     """Manages role-based tool visibility and logged execution."""
 
     def __init__(self) -> None:
-        self.call_logs: List[Dict[str, Any]] = []
+        self.call_logs: list[dict[str, Any]] = []
 
-    def get_tools_for_role(self, role: str) -> List[Callable[..., Any]]:
-        """Return available tool set based on user role."""
+    def get_tools_for_role(self, role: str) -> list[BaseTool]:
+        """Return the available tool set based on user role."""
         tools = [get_order_status]
         if role == "admin":
             tools.append(issue_refund)
         return tools
 
-    def invoke_tool(self, tool_fn: Callable[..., Any], caller_role: str, **kwargs: Any) -> str:
+    def invoke_tool(self, tool_fn: BaseTool, caller_role: str, **kwargs: Any) -> str:
         """Safely invoke tool with telemetry and access enforcement."""
         start = time.time()
-        tool_name = getattr(tool_fn, "name", tool_fn.__name__)
-        available_tools = [getattr(t, "name", t.__name__) for t in self.get_tools_for_role(caller_role)]
+        tool_name = tool_fn.name
+        available = [t.name for t in self.get_tools_for_role(caller_role)]
 
-        if tool_name not in available_tools:
-            result = f"Access Denied: Role '{caller_role}' is not authorized to invoke '{tool_name}'."
+        if tool_name not in available:
+            result = (
+                f"Access denied: role {caller_role!r} is not authorized "
+                f"to invoke {tool_name!r}."
+            )
             self.call_logs.append({
                 "tool": tool_name,
                 "role": caller_role,
@@ -83,10 +86,10 @@ class ToolRegistry:
             return result
 
         try:
-            result = tool_fn(**kwargs)
+            result = tool_fn.invoke(kwargs)
         except Exception as exc:
-            # Shield graph from crashing; return formatted error
-            result = f"Unexpected Tool Execution Error: {exc}"
+            # Shield the graph from crashing; return a formatted error.
+            result = f"Unexpected tool execution error: {exc}"
 
         elapsed = time.time() - start
         self.call_logs.append({
@@ -115,19 +118,19 @@ def main() -> None:
     print("\nCase 2: Standard user attempts administrative refund...")
     res2 = registry.invoke_tool(issue_refund, caller_role="user", order_id="ORD-101", amount=49.99)
     print(f"  Result: {res2}")
-    assert "Access Denied" in res2
+    assert "Access denied" in res2
 
     # Case 3: Admin issues refund successfully
     print("\nCase 3: Administrator issues legitimate refund...")
     res3 = registry.invoke_tool(issue_refund, caller_role="admin", order_id="ORD-101", amount=49.99)
     print(f"  Result: {res3}")
-    assert "Success: Refund" in res3
+    assert "Success: refund" in res3
 
     # Case 4: Faulty argument handled gracefully without exception
     print("\nCase 4: Faulty input handled gracefully...")
     res4 = registry.invoke_tool(get_order_status, caller_role="user", order_id="invalid_123")
     print(f"  Result: {res4}")
-    assert "Tool Error" in res4
+    assert "Tool error" in res4
 
     print(f"\nTotal Telemetry Records Logged: {len(registry.call_logs)}")
     assert len(registry.call_logs) == 4

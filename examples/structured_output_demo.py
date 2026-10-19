@@ -17,13 +17,12 @@ Environment:
 from __future__ import annotations
 
 import os
-from typing import Annotated
 
 from dotenv import load_dotenv
+from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import HumanMessage, ToolMessage
 from langchain_core.runnables import Runnable
 from langchain_core.tools import tool
-from langchain_anthropic import ChatAnthropic
 from pydantic import BaseModel, Field
 
 load_dotenv()
@@ -77,7 +76,7 @@ def run_agent(user_message: str, max_iterations: int = 5) -> str:
     llm = build_agent()
     messages: list = [HumanMessage(content=user_message)]
 
-    for i in range(max_iterations):
+    for _ in range(max_iterations):
         response = llm.invoke(messages)
         messages.append(response)
 

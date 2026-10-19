@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import Literal, TypedDict
 
-from langgraph.graph import START, END, StateGraph
+from langgraph.graph import START, StateGraph
 
 
 class State(TypedDict):
