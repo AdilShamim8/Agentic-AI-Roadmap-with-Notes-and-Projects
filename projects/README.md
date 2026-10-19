@@ -4,7 +4,7 @@ Ten portfolio-grade projects, each specced to portfolio depth. Build these to co
 
 ## How to use these projects
 
-1. Read [how to pick a project](01-how-to-pick.md) (coming soon; for now, read the project descriptions and pick the one that excites you).
+1. Read [how to pick a project](01-how-to-pick.md) - match the project to your background and your goal.
 2. Read the project spec carefully. It defines the problem, the architecture, the stack, the eval rubric, and the stretch goals.
 3. Build the project. Use the curriculum as reference. Do not look at the reference solution until you have a working version of your own.
 4. Run the eval rubric against your implementation. Iterate until you meet the targets.
@@ -35,7 +35,7 @@ Ten portfolio-grade projects, each specced to portfolio depth. Build these to co
 
 ## Reference solutions
 
-Reference solutions live in [projects/-solutions/](-solutions/) (coming soon). They are gated behind a spoiler warning: do not look at them until you have a working implementation of your own. The learning is in the building, not in the reading.
+Reference solutions for all ten projects live in [projects/-solutions/](-solutions/). They are gated behind a spoiler warning: do not look at them until you have a working implementation of your own. The learning is in the building, not in the reading.
 
 ## Contributing a solution
 

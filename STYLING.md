@@ -64,12 +64,12 @@ For grouped lists with sub-items, use proper nesting:
 
 Links with descriptive text:
 
-[Analysis](analysis/analyze.py) - main analysis script
+[Eval runner](examples/run_evals.py) - runs the golden dataset and writes the regression report
 
 For multiple links, format as a list:
 
-- [analyze.py](analysis/analyze.py) - full statistical analysis
-- [analyze_patterns.py](analysis/analyze_patterns.py) - pattern analysis
+- [structured_output_demo.py](examples/structured_output_demo.py) - structured outputs and tool calling
+- [react_demo.py](examples/react_demo.py) - the ReAct loop with two tools
 
 Do not use "click here" or "this link" as link text. The link text should describe what the reader will find.
 
@@ -100,7 +100,7 @@ Every statistic must have a source. Unsourced numbers are worse than no numbers.
 
 When citing a source, link it inline:
 
-- MCP adoption grew 300% in Q1 2026 ([Anthropic announcement](https://www.anthropic.com/news/mcp))
+- LangGraph 1.0 shipped in October 2025 ([LangChain blog](https://www.langchain.com/blog/langchain-langgraph-1dot0))
 
 ## Code blocks
 
