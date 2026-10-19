@@ -23,36 +23,41 @@ classifiers = [
 ]
 
 dependencies = [
-    "langgraph==0.2.50",
-    "langchain==0.3.7",
-    "langchain-core==0.3.15",
-    "langchain-openai==0.2.5",
-    "langchain-anthropic==0.2.3",
-    "langchain-mcp-adapters==0.1.0",
-    "langsmith==0.1.140",
-    "mcp==1.0.0",
-    "pydantic==2.9.2",
-    "python-dotenv==1.0.1",
-    "httpx==0.27.2",
-    "rich==13.9.4",
-    "tenacity==9.0.0",
+    "langgraph==1.2.16",
+    "langchain==1.4.6",
+    "langchain-core==1.6.12",
+    "langchain-openai==1.7.2",
+    "langchain-anthropic==1.7.6",
+    "langchain-mcp-adapters==0.3.2",
+    "langgraph-checkpoint-sqlite==3.1.2",
+    "langgraph-checkpoint-postgres==3.2.0",
+    "langsmith==0.14.11",
+    # mcp: the 1.x line is what langchain-mcp-adapters currently requires;
+    # it speaks protocol revision 2025-11-25. The 2.x SDK line (stateless,
+    # 2026-07-28 revision) is tracked separately.
+    "mcp==1.30.0",
+    "pydantic==2.14.1",
+    "httpx==0.28.1",
+    "rich==15.0.0",
+    "tenacity==9.2.1",
+    "python-dotenv==1.2.4",
 ]
 
 [project.optional-dependencies]
 dev = [
-    "pytest==8.3.3",
-    "pytest-asyncio==0.24.0",
-    "ruff==0.7.1",
-    "mypy==1.13.0",
-    "nbqa==1.9.0",
-    "jupyterlab==4.2.5",
+    "pytest==9.1.1",
+    "pytest-asyncio==1.4.0",
+    "ruff==0.17.1",
+    "mypy==2.4.0",
+    "nbqa==1.9.1",
+    "jupyterlab==4.6.4",
 ]
 deploy = [
-    "langgraph-platform>=0.1.0",
-    "fastapi==0.115.4",
-    "uvicorn==0.32.0",
-    "psycopg[binary]==3.2.3",
-    "redis==5.2.0",
+    "langgraph-cli==0.4.36",
+    "fastapi==0.146.0",
+    "uvicorn==0.54.0",
+    "psycopg[binary]==3.3.6",
+    "redis==8.1.0",
 ]
 
 [project.urls]
