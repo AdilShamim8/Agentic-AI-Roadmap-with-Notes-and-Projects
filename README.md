@@ -60,7 +60,7 @@ See [projects/](projects/) for the full catalog.
 
 ## Roadmap
 
-The six-phase path through the curriculum, with per-phase status. Start here if you want the linear version.
+The nine-phase path through the curriculum, with per-phase status. Start here if you want the linear version.
 
 See [ROADMAP.md](ROADMAP.md).
 

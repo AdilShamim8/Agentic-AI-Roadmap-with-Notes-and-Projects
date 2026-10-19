@@ -1,6 +1,6 @@
 # Roadmap
 
-The six-phase path through the curriculum. Each phase has a status badge, a goal, and the modules it covers.
+The nine-phase path through the curriculum. Each phase has a status badge, a goal, and the modules it covers.
 
 Status legend: `done` — content shipped and reviewed. `beta` — content shipped, undergoing review. `draft` — content in progress. `planned` — spec only.
 
@@ -90,7 +90,7 @@ What you will be able to do:
 
 Checkpoint: implement the same task (research-and-write-a-report) using three different patterns, run all three against the same eval suite, and write a one-page analysis of the trade-offs.
 
-## Phase 6 — Evals and observability `draft`
+## Phase 6 — Evals and observability `beta`
 
 Goal: build the discipline that separates professionals from hobbyists. Every agent you ship has an eval suite that runs in CI.
 
@@ -108,7 +108,7 @@ What you will be able to do:
 
 Checkpoint: take any agent from Phase 3, 4, or 5, build a 50-row golden dataset, implement three evaluators (rule-based, LLM-as-judge, trajectory), and wire the suite into GitHub Actions.
 
-## Phase 7 — Multi-agent and A2A `draft`
+## Phase 7 — Multi-agent and A2A `beta`
 
 Goal: scale from single-agent to multi-agent systems using both LangGraph's native patterns and the A2A protocol for cross-framework interop.
 
@@ -125,7 +125,7 @@ What you will be able to do:
 
 Checkpoint: build a cross-framework pipeline where a LangGraph supervisor delegates to one OpenAI Agents SDK agent and one CrewAI agent, both consumed via A2A.
 
-## Phase 8 — Production `draft`
+## Phase 8 — Production `beta`
 
 Goal: deploy, monitor, and scale agentic systems that run in production.
 

@@ -15,8 +15,6 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 - Templates for chapters, projects, eval rubrics, and learning paths in [_templates/](_templates/)
 - Reference implementations in [examples/](examples/)
 - Interview prep and job market analysis sections
-- `.github/` configuration: issue templates, PR template, CI workflow
-- `.claude/` configuration: AI-assisted maintenance commands
 - `STYLING.md` enforcing minimalist, density-first formatting
 - `MAINTAINERS.md` documenting the editorial bar and maintainer roles
 - `ROADMAP.md` with per-phase status badges
