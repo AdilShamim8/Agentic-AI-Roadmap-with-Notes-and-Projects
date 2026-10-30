@@ -9,6 +9,7 @@ Tool design as a first-class skill, and the Model Context Protocol as the standa
 - Building MCP servers in Python with the `mcp` SDK
 - Consuming MCP servers from LangGraph via `langchain-mcp-adapters`
 - Dynamic tool discovery and registries
+- Retrieval as a tool: scoped search, iterative refinement, pipeline RAG vs agentic retrieval
 
 ## Chapters
 
@@ -17,6 +18,7 @@ Tool design as a first-class skill, and the Model Context Protocol as the standa
 - [03 MCP servers](03-mcp-servers.md) - building filesystem, web search, and SQLite MCP servers in Python
 - [04 MCP client in LangGraph](04-mcp-client-in-langgraph.md) - `MultiServerMCPClient`, dynamic tool loading, error handling
 - [05 Tool discovery and registries](05-tool-discovery-and-registries.md) - dynamic registration, capability catalogs, versioning
+- [06 Retrieval as a tool](06-retrieval-as-a-tool.md) - scoped search tools, iterative query refinement, when pipeline RAG vs agentic retrieval
 
 ## Prerequisites
 

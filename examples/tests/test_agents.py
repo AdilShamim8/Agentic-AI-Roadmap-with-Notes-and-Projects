@@ -89,3 +89,34 @@ def test_mcp_filesystem_server_exists():
     from examples.mcp_filesystem_server import server
 
     assert server.name == "filesystem-server"
+
+
+def test_retrieval_tool_scopes_by_tenant():
+    """The scoped search tool must never cross tenants.
+
+    Importing retrieval_demo must not require an API key.
+    """
+    from examples.retrieval_demo import search_knowledge_base
+
+    acme = search_knowledge_base.invoke({"query": "refund policy", "tenant": "acme"})
+    assert "standard customers" in acme
+
+    globex = search_knowledge_base.invoke({"query": "refund policy", "tenant": "globex"})
+    assert "standard customers" not in globex
+    assert "No documents matched" in globex
+
+    unknown = search_knowledge_base.invoke({"query": "refund policy", "tenant": "initech"})
+    assert "Unknown tenant" in unknown
+
+
+def test_retrieval_refinement_finds_loyalty_terms():
+    """The broad query cannot match the loyalty doc; the reformulated one must.
+
+    The loyalty-terms document deliberately avoids the word "refund", so
+    this asserts the demo's reformulation story is real, not staged.
+    """
+    from examples.retrieval_demo import search_knowledge_base
+
+    broad = search_knowledge_base.invoke({"query": "loyalty member benefits", "tenant": "acme"})
+    assert "90 days" in broad
+    assert "10 percent credit" in broad

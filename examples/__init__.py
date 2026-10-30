@@ -28,6 +28,7 @@ Module 04 (tools and MCP):
 - `mcp_filesystem_server.py`, `mcp_websearch_server.py`,
   `mcp_sqlite_server.py` - SDK servers over stdio
 - `mcp_client_demo.py` - MultiServerMCPClient against the real servers
+- `retrieval_demo.py` - retrieval as a tool: scoped search, iterative refinement
 
 Module 05 (patterns):
 - `react_demo.py` - the foundational loop

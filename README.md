@@ -10,6 +10,8 @@ A structured learning path that takes you from LLM fundamentals to production mu
 
 The curriculum is built around the 2026 reference stack: LangGraph for orchestration, MCP for tool interop, A2A for agent interop, LangSmith for evaluation and observability, and LangGraph Platform for deployment. These are the choices that have won in production. We teach them deeply, and we explain why they won.
 
+The one-page system view of a production agentic application - how the model layer, orchestration, state, persistence, tools, retrieval, security, observability, and deployment fit together - is in [ARCHITECTURE.md](ARCHITECTURE.md).
+
 ## Learning paths
 
 Pick the path that matches your background. Each path tells you what you already know, what you need to learn, and the shortest route through the curriculum.
