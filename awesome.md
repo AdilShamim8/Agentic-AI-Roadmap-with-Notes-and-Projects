@@ -53,6 +53,10 @@ A curated list of resources for building agentic AI systems. Compiled while rese
 - [Prompt Engineering Guide](https://www.promptingguide.ai/) - open-source reference for prompt patterns.
 - [Hands-On Large Language Models](https://www.oreilly.com/library/view/hands-on-large-language/9781098150952/) - Jay Alammar and Maarten Grootendorst. Practical LLM engineering.
 
+## Videos
+
+- [Agentic Engineering Roadmap For Beginners](https://www.youtube.com/watch?v=dt1eK_4rCAM) - Ayush Singh, published Oct 26, 2026. The component view of an agentic system (model layer, MCP communication, PostgreSQL persistence, orchestration) that [ARCHITECTURE.md](ARCHITECTURE.md) maps onto this curriculum.
+
 ## Real-world case studies
 
 - [How Klarna built a customer-support agent](https://www.klarna.com/international/press/klarna-ai-assistant-handles-two-thirds-of-customer-service-chats-in-its-first-month/) - production customer-support agent at scale.

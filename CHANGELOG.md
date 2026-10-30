@@ -4,6 +4,26 @@ All notable changes to this repository are documented in this file.
 
 The format is based on Keep a Changelog, and this project adheres to Semantic Versioning for the curriculum structure (individual chapters evolve on their own review cycles).
 
+## [0.3.1] - 2026-10-30
+
+### Added
+
+- `ARCHITECTURE.md`: the one-page system view of a production agentic
+  application (model layer, orchestration, state, Postgres persistence,
+  MCP tools, retrieval, security, observability, deployment), each
+  component mapped to the chapter and runnable example that teaches it;
+  linked from the README
+- `04-tools-and-mcp/06-retrieval-as-a-tool.md` (beta) with
+  `examples/retrieval_demo.py`: retrieval as a tool - scoped search,
+  iterative refinement, the recursion limit as the retrieval cap; two
+  keyless tests in `examples/tests/test_agents.py`
+- A Videos section in `awesome.md`; the roadmap video that framed the
+  architecture view is credited on the architecture page
+
+### Changed
+
+- Version bumps to 0.3.1 (`pyproject.toml`, examples `__version__`)
+
 ## [0.3.0] - 2026-10-19
 
 ### Added
