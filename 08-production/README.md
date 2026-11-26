@@ -28,6 +28,10 @@ Deploy, monitor, and scale agentic systems that run in production. By the end of
 
 3 to 4 weeks at 2 to 3 hours per day.
 
+## Interview questions
+
+- [08 Production question bank](../interview/questions/08-production-questions.md) and [scenarios](../interview/questions/08-production-scenarios.md) - the questions interviewers actually ask about this module, with model answers
+
 ## What is next
 
 After this module, you are ready for [09 Emerging topics](../09-emerging-topics/), where you will track the frontier of where the field is going.
