@@ -57,6 +57,12 @@ graph LR
 - Handle tool versioning (different versions of the same tool)
 - Learn tool preferences per user
 
+## Interview guide
+
+- How to present this project in an interview - the pitch, the whiteboard
+  script, the numbers to quote, and the follow-ups to expect:
+  [INTERVIEW.md](INTERVIEW.md)
+
 ## References
 
 - [MCP servers registry](https://github.com/modelcontextprotocol/servers) - pre-built MCP servers
