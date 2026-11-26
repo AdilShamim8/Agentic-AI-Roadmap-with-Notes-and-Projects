@@ -65,6 +65,12 @@ graph LR
 - Multi-language support
 - Proactive outreach (agent messages customer about order delays before customer complains)
 
+## Interview guide
+
+- How to present this project in an interview - the pitch, the whiteboard
+  script, the numbers to quote, and the follow-ups to expect:
+  [INTERVIEW.md](INTERVIEW.md)
+
 ## References
 
 - [Klarna's AI assistant](https://www.klarna.com/international/press/klarna-ai-assistant-handles-two-thirds-of-customer-service-chats-in-its-first-month/) - production reference
