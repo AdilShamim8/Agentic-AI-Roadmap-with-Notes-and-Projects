@@ -58,6 +58,12 @@ graph LR
 - Handle test failures that require environment changes (not just code)
 - Learn from past patches (build a retrieval index of past fixes)
 
+## Interview guide
+
+- How to present this project in an interview - the pitch, the whiteboard
+  script, the numbers to quote, and the follow-ups to expect:
+  [INTERVIEW.md](INTERVIEW.md)
+
 ## References
 
 - [SWE-agent](https://github.com/princeton-nlp/SWE-agent) - the academic reference
