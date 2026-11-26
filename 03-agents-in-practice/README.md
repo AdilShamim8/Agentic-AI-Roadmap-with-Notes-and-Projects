@@ -28,6 +28,10 @@ Build, debug, and deploy real single-agent systems. By the end of this module, y
 
 3 weeks at 2 to 3 hours per day.
 
+## Interview questions
+
+- [03 Agents in practice question bank](../interview/questions/03-agents-in-practice-questions.md) and [scenarios](../interview/questions/03-agents-in-practice-scenarios.md) - the questions interviewers actually ask about this module, with model answers
+
 ## What is next
 
 After this module, you are ready for [04 Tools and MCP](../04-tools-and-mcp/), where you will standardize your tools as MCP servers and consume them from any framework.
