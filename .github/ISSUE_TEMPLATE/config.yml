@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: How to report a security problem
+    url: https://github.com/AdilShamim8/Agentic-AI-Roadmap-with-Notes-and-Projects/blob/main/SECURITY.md
+    about: Read SECURITY.md first; do not open a public issue for security reports.
