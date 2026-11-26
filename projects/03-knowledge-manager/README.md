@@ -61,6 +61,12 @@ graph LR
 - Temporal reasoning (answer "what did I think about X last month?")
 - Multi-user with per-user graphs
 
+## Interview guide
+
+- How to present this project in an interview - the pitch, the whiteboard
+  script, the numbers to quote, and the follow-ups to expect:
+  [INTERVIEW.md](INTERVIEW.md)
+
 ## References
 
 - [Obsidian](https://obsidian.md/) - the canonical reference for personal knowledge management
