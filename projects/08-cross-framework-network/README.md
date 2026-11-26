@@ -57,6 +57,12 @@ graph LR
 - Agent failover (if one agent is down, route to a backup)
 - Agent versioning (consume v1 and v2 of the same agent)
 
+## Interview guide
+
+- How to present this project in an interview - the pitch, the whiteboard
+  script, the numbers to quote, and the follow-ups to expect:
+  [INTERVIEW.md](INTERVIEW.md)
+
 ## References
 
 - [A2A protocol specification](https://a2a-protocol.org/latest/specification/)
