@@ -46,6 +46,12 @@ This project exercises the evaluation discipline from module 06 at its fullest. 
 - Support online evals (evaluate production traffic)
 - Support comparative evals (A/B test two agent versions)
 
+## Interview guide
+
+- How to present this project in an interview - the pitch, the whiteboard
+  script, the numbers to quote, and the follow-ups to expect:
+  [INTERVIEW.md](INTERVIEW.md)
+
 ## References
 
 - [LangSmith evaluation](https://docs.smith.langchain.com/evaluation)
