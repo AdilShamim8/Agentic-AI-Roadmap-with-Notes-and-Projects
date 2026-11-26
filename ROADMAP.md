@@ -159,3 +159,21 @@ What you will be able to do:
 - Identify the safety and alignment challenges specific to agentic systems
 
 Checkpoint: write a one-page position paper on which emerging topic will have the largest production impact in the next 18 months, with evidence.
+
+## Phase 10 — Interview preparation `beta`
+
+Goal: get selected. Turn the nine modules into offers - the rounds, the rubrics, and the sprint that sequences them.
+
+Modules: [10-interview-preparation](10-interview-preparation/)
+
+Time: 2 weeks with the curriculum behind you; 4 alongside modules 08 and 09.
+
+What you will be able to do:
+
+- Run every round: recruiter screen, hiring manager, technical screen, take-home, onsite
+- Structure agent system design answers with the six-part framework, applied to five worked cases
+- Answer the per-module question banks with model answers, and self-check with the quizzes
+- Present the portfolio projects as interview stories with numbers
+- Negotiate against the published bands and decide between offers
+
+Checkpoint: run the four-week sprint's mock cycle - one technical screen, one system design, one behavioral, all timed and recorded - and score yourself with the interviewer rubric before the first real loop.
