@@ -28,6 +28,10 @@ Tool design as a first-class skill, and the Model Context Protocol as the standa
 
 2 to 3 weeks at 2 to 3 hours per day.
 
+## Interview questions
+
+- [04 Tools and MCP question bank](../interview/questions/04-tools-and-mcp-questions.md) and [scenarios](../interview/questions/04-tools-and-mcp-scenarios.md) - the questions interviewers actually ask about this module, with model answers
+
 ## What is next
 
 After this module, you are ready for [05 Agentic patterns](../05-agentic-patterns/), where you will compose agents that use these tools in ReAct, plan-and-execute, reflexion, and supervisor patterns.
