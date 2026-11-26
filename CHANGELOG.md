@@ -4,6 +4,51 @@ All notable changes to this repository are documented in this file.
 
 The format is based on Keep a Changelog, and this project adheres to Semantic Versioning for the curriculum structure (individual chapters evolve on their own review cycles).
 
+## [0.4.0] - 2026-11-26
+
+### Added
+
+- `10-interview-preparation/`: the tenth module, 27 chapters plus README -
+  the interview landscape and how debriefs decide, per-round guides
+  (recruiter screen, hiring manager, technical screen, trace-debugging
+  round), the six-part system-design framework with five fully worked
+  design cases (support agent, research agent, code review, internal docs
+  RAG, anomaly monitor), take-home strategy and presentation, a 30-question
+  behavioral STAR bank, project-story mapping for the ten portfolio
+  projects, resume/portfolio and GitHub hygiene, company research,
+  negotiation and offer decision, three complete mock-interview transcripts
+  with examiner commentary, the four-week interview sprint, rejection
+  autopsy, the interviewer rubric with a self-scoring sheet, and questions
+  for the panel
+- `interview/questions/`: per-module question banks with model answers -
+  concepts and scenarios files for each of modules 01-09, plus an index;
+  every module README links its bank
+- `interview/quizzes/`: ten-question self-assessment quizzes with answer
+  keys for each of the nine teaching modules, plus an index
+- `datasets/interview_quiz.csv` (45 rows, 5 per module) and
+  `examples/interview_quiz_demo.py`: a fully keyless quiz CLI (module
+  filter, random drill, CI self-check mode); seven tests in
+  `examples/tests/test_interview_quiz.py`
+- `INTERVIEW.md` for each of the ten projects: the pitch, the whiteboard
+  script, the numbers to quote, the follow-up questions, and the red
+  flags; linked from every project README
+- `SECURITY.md`, `SUPPORT.md`, and `.github/ISSUE_TEMPLATE/` (bug report,
+  content suggestion, config routing security reports away from public
+  issues)
+
+### Fixed
+
+- Dropped seven stale "solution (coming soon)" claims in project READMEs -
+  all ten reference solutions already exist in `projects/-solutions/`
+
+### Changed
+
+- README lists ten modules and links the interview track; ROADMAP gains
+  Phase 10 (Interview preparation, beta); `interview/README.md` indexes
+  the banks, quizzes, and module 10; `awesome.md` gains an interview
+  preparation section
+- Version bumps to 0.4.0 (`pyproject.toml`, examples `__version__`)
+
 ## [0.3.1] - 2026-10-30
 
 ### Added
