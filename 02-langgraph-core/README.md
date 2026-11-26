@@ -26,6 +26,10 @@ Deep mastery of LangGraph's architecture and both API surfaces. By the end of th
 
 3 to 4 weeks at 2 to 3 hours per day.
 
+## Interview questions
+
+- [02 LangGraph core question bank](../interview/questions/02-langgraph-core-questions.md) and [scenarios](../interview/questions/02-langgraph-core-scenarios.md) - the questions interviewers actually ask about this module, with model answers
+
 ## What is next
 
 After this module, you are ready for [03 Agents in practice](../03-agents-in-practice/), where you will add memory, tools, human-in-the-loop, and streaming to the graphs you learned to build here.
