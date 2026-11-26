@@ -28,6 +28,10 @@ Track the frontier. This module covers topics that are not yet production-ready 
 
 Ongoing. This module is updated as the field evolves.
 
+## Interview questions
+
+- [09 Emerging topics question bank](../interview/questions/09-emerging-topics-questions.md) and [scenarios](../interview/questions/09-emerging-topics-scenarios.md) - the questions interviewers actually ask about this module, with model answers
+
 ## What is next
 
 There is no "next" - this module is the frontier. The roadmap loops back: as emerging topics mature, they become new chapters in modules 01 through 08.
