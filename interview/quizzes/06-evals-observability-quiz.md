@@ -64,13 +64,13 @@ D) Writing evals after launch when data exists
 
 ## Answer key
 
-1. B - reality-sourced and versioned ([chapter 01](../../06-evals-and-observability/01-golden-datasets.md)).
-2. B - correctness as fact, not judgment ([chapter 01](../../06-evals-and-observability/01-golden-datasets.md)).
-3. B - right answer reached dangerously still fails ([chapter 03](../../06-evals-and-observability/03-trajectory-evals.md)).
-4. B - agreement measured, rubric fixed where it diverges ([chapter 02](../../06-evals-and-observability/02-llm-as-judge.md)).
-5. B - the change surface is wider than code ([chapter 05](../../06-evals-and-observability/05-ci-regression-suites.md)).
+1. B - reality-sourced and versioned ([chapter 01](../../06-evals-and-observability/02-golden-datasets.md)).
+2. B - correctness as fact, not judgment ([chapter 01](../../06-evals-and-observability/02-golden-datasets.md)).
+3. B - right answer reached dangerously still fails ([chapter 03](../../06-evals-and-observability/04-protocol-evals.md)).
+4. B - agreement measured, rubric fixed where it diverges ([chapter 02](../../06-evals-and-observability/03-llm-as-judge.md)).
+5. B - the change surface is wider than code ([chapter 05](../../06-evals-and-observability/07-regression-suites-in-ci.md)).
 6. B - the efficiency number tiers and loops move ([chapter 06](../../06-evals-and-observability/06-cost-and-latency.md)).
 7. B - streaming is the UX answer to latency ([chapter 06](../../06-evals-and-observability/06-cost-and-latency.md)).
-8. B - always-answering is the trap this metric catches ([chapter 01](../../06-evals-and-observability/01-golden-datasets.md)).
-9. B - "the number moved" becomes a fact ([chapter 05](../../06-evals-and-observability/05-ci-regression-suites.md)).
-10. B - the row stays as the regression net ([chapter 01](../../06-evals-and-observability/01-golden-datasets.md)).
+8. B - always-answering is the trap this metric catches ([chapter 01](../../06-evals-and-observability/02-golden-datasets.md)).
+9. B - "the number moved" becomes a fact ([chapter 05](../../06-evals-and-observability/07-regression-suites-in-ci.md)).
+10. B - the row stays as the regression net ([chapter 01](../../06-evals-and-observability/02-golden-datasets.md)).

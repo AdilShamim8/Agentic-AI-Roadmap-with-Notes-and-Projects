@@ -64,13 +64,13 @@ D) Specialize in one vendor
 
 ## Answer key
 
-1. B - direction, not product ([chapter 01](../../09-emerging-topics/01-agent-os.md)).
+1. B - direction, not product ([chapter 01](../../09-emerging-topics/01-agent-os-and-kernels.md)).
 2. B - consolidation beyond interaction time ([chapter 02](../../09-emerging-topics/02-long-horizon-memory.md)).
 3. B - autonomy scales with the check, not the model ([chapter 03](../../09-emerging-topics/03-autonomous-sdlc.md)).
 4. B - treat the page as a flaky tool ([chapter 04](../../09-emerging-topics/04-agentic-browsers.md)).
 5. B - improvement with a regression gate ([chapter 05](../../09-emerging-topics/05-self-improving-agents.md)).
-6. B - action-capable systems at scale ([chapter 06](../../09-emerging-topics/06-safety-and-alignment.md)).
-7. B - capability outruns measurement ([chapter 06](../../09-emerging-topics/06-safety-and-alignment.md)).
-8. B - judgment compounds; plumbing does not ([chapter 01](../../09-emerging-topics/01-agent-os.md)).
-9. B - autonomy is a spectrum set by scopes and budgets ([chapter 06](../../09-emerging-topics/06-safety-and-alignment.md)).
+6. B - action-capable systems at scale ([chapter 06](../../09-emerging-topics/07-safety-and-alignment.md)).
+7. B - capability outruns measurement ([chapter 06](../../09-emerging-topics/07-safety-and-alignment.md)).
+8. B - judgment compounds; plumbing does not ([chapter 01](../../09-emerging-topics/01-agent-os-and-kernels.md)).
+9. B - autonomy is a spectrum set by scopes and budgets ([chapter 06](../../09-emerging-topics/07-safety-and-alignment.md)).
 10. B - platforms eat plumbing ([chapter 10 of the field guide](../../field-guide/02-skills-that-matter.md)).

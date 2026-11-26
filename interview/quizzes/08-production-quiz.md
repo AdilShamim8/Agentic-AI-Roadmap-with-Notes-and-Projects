@@ -65,12 +65,12 @@ D) Model upgrades when benchmarks move
 ## Answer key
 
 1. B - the old base-image flow is the dated answer ([chapter 01](../../08-production/01-langgraph-platform.md)).
-2. B - the state store is the product's memory ([chapter 02](../../08-production/02-docker-and-checkpointing.md)).
-3. B - additive state migrations or explicit ones ([chapter 02](../../08-production/02-docker-and-checkpointing.md)).
-4. B - prompt-level separation is advice, not isolation ([chapter 04](../../08-production/04-multi-tenant-considerations.md)).
-5. B - classification does not need a frontier model ([chapter 03](../../08-production/03-cost-optimization.md)).
-6. B - provable, versioned, reversible ([chapter 05](../../08-production/05-governance-and-compliance.md)).
+2. B - the state store is the product's memory ([chapter 02](../../08-production/04-checkpointing-and-durability.md)).
+3. B - additive state migrations or explicit ones ([chapter 02](../../08-production/04-checkpointing-and-durability.md)).
+4. B - prompt-level separation is advice, not isolation ([chapter 04](../../08-production/04-checkpointing-and-durability.md)).
+5. B - classification does not need a frontier model ([chapter 03](../../08-production/05-cost-optimization.md)).
+6. B - provable, versioned, reversible ([chapter 05](../../08-production/06-governance-and-safety.md)).
 7. B - tool errors spike first; loops burn money ([runbooks](../../08-production/runbooks/)).
 8. B - never in image or repo ([SECURITY.md](../../SECURITY.md)).
-9. B - semantic errors route to the model; transient ones hide in the layer ([chapter 02](../../08-production/02-docker-and-checkpointing.md)).
+9. B - semantic errors route to the model; transient ones hide in the layer ([chapter 02](../../08-production/04-checkpointing-and-durability.md)).
 10. B - maintenance with measurement discipline ([chapter 07](../../08-production/07-continuous-improvement.md)).

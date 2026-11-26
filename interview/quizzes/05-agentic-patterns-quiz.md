@@ -64,13 +64,13 @@ D) User satisfaction polls
 
 ## Answer key
 
-1. B - at the cost of per-step latency and tokens ([chapter 01](../../05-agentic-patterns/01-react-pattern.md)).
+1. B - at the cost of per-step latency and tokens ([chapter 01](../../05-agentic-patterns/01-react.md)).
 2. B - plan once, execute in parallel ([chapter 02](../../05-agentic-patterns/02-plan-and-execute.md)).
 3. B - reflection state, not just retries ([chapter 03](../../05-agentic-patterns/03-reflexion.md)).
-4. B - legibility vs hops ([chapter 04](../../05-agentic-patterns/04-supervisor.md) and [06](../../05-agentic-patterns/06-swarm.md)).
-5. B - the org-chart principle ([chapter 05](../../05-agentic-patterns/05-hierarchical.md)).
+4. B - legibility vs hops ([chapter 04](../../05-agentic-patterns/04-supervisor.md) and [06](../../05-agentic-patterns/05-swarm.md)).
+5. B - the org-chart principle ([chapter 05](../../05-agentic-patterns/06-hierarchical.md)).
 6. B - per-item timeout and error capture fix it ([chapter 07](../../05-agentic-patterns/07-map-reduce.md)).
 7. A - name the constraint before the split ([chapter 08](../../05-agentic-patterns/08-when-to-use-which.md)).
-8. B - contracts, not conventions ([chapter 06](../../05-agentic-patterns/06-swarm.md)).
+8. B - contracts, not conventions ([chapter 06](../../05-agentic-patterns/05-swarm.md)).
 9. B - gated retry captures most of the gain ([chapter 03](../../05-agentic-patterns/03-reflexion.md)).
 10. B - systems can pass endpoints while burning coordination tokens ([chapter 08](../../05-agentic-patterns/08-when-to-use-which.md)).

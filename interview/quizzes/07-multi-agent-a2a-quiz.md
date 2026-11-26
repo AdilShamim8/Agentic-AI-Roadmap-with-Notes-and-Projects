@@ -65,7 +65,7 @@ D) A shared database
 ## Answer key
 
 1. B - the delegation boundary ([chapter 03](../../07-multi-agent-and-a2a/03-a2a-protocol.md)).
-2. B - the discovery document ([chapter 04](../../07-multi-agent-and-a2a/04-agent-cards.md)).
+2. B - the discovery document ([chapter 04](../../07-multi-agent-and-a2a/04-a2a-agent-cards.md)).
 3. B - two boundaries, one system ([chapter 05](../../07-multi-agent-and-a2a/05-cross-framework-interop.md)).
 4. B - request-response cannot express it ([chapter 03](../../07-multi-agent-and-a2a/03-a2a-protocol.md)).
 5. B - organizational boundaries, not fashion ([chapter 05](../../07-multi-agent-and-a2a/05-cross-framework-interop.md)).
