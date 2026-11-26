@@ -50,6 +50,12 @@ This project exercises A2A at scale, platform engineering, and the marketplace c
 - Agent composition (chain agents visually)
 - Agent analytics (per-agent dashboards)
 
+## Interview guide
+
+- How to present this project in an interview - the pitch, the whiteboard
+  script, the numbers to quote, and the follow-ups to expect:
+  [INTERVIEW.md](INTERVIEW.md)
+
 ## References
 
 - [Hugging Face Spaces](https://huggingface.co/spaces) - the closest analogue for ML models
