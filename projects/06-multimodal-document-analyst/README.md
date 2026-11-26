@@ -48,6 +48,12 @@ This project exercises multimodal ingestion (text + images + tables), multimodal
 - Handle multi-document queries (compare across PDFs)
 - Handle charts (extract data points from chart images)
 
+## Interview guide
+
+- How to present this project in an interview - the pitch, the whiteboard
+  script, the numbers to quote, and the follow-ups to expect:
+  [INTERVIEW.md](INTERVIEW.md)
+
 ## References
 
 - [LlamaParse](https://www.llamaindex.ai/llamaparse) - production ingestion
