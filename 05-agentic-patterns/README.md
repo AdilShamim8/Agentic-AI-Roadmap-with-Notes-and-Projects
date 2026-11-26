@@ -28,6 +28,10 @@ The canonical agent architectures and the decision framework for choosing betwee
 
 3 to 4 weeks at 2 to 3 hours per day.
 
+## Interview questions
+
+- [05 Agentic patterns question bank](../interview/questions/05-agentic-patterns-questions.md) and [scenarios](../interview/questions/05-agentic-patterns-scenarios.md) - the questions interviewers actually ask about this module, with model answers
+
 ## What is next
 
 After this module, you are ready for [06 Evals and observability](../06-evals-and-observability/), where you will measure whether the patterns you built actually work.
