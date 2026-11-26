@@ -60,6 +60,12 @@ graph LR
 - Parallel research across sub-questions (decompose the question, research each in parallel)
 - Persistent research memory (remember what the user has asked before)
 
+## Interview guide
+
+- How to present this project in an interview - the pitch, the whiteboard
+  script, the numbers to quote, and the follow-ups to expect:
+  [INTERVIEW.md](INTERVIEW.md)
+
 ## References
 
 - [Perplexity's answer engine](https://blog.perplexity.ai/) - the canonical reference for this product
