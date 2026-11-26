@@ -50,6 +50,12 @@ This project exercises async/streaming agents, real-time decision-making, and HI
 - Handle concept drift (the definition of anomaly changes over time)
 - Multi-source correlation (an anomaly in one stream correlates with an anomaly in another)
 
+## Interview guide
+
+- How to present this project in an interview - the pitch, the whiteboard
+  script, the numbers to quote, and the follow-ups to expect:
+  [INTERVIEW.md](INTERVIEW.md)
+
 ## References
 
 - [Prometheus](https://prometheus.io/) - the metrics stack this project ships
