@@ -30,6 +30,10 @@ The discipline that separates professionals from hobbyists. By the end of this m
 
 2 to 3 weeks at 2 to 3 hours per day.
 
+## Interview questions
+
+- [06 Evals and observability question bank](../interview/questions/06-evals-observability-questions.md) and [scenarios](../interview/questions/06-evals-observability-scenarios.md) - the questions interviewers actually ask about this module, with model answers
+
 ## What is next
 
 After this module, you are ready for [07 Multi-agent and A2A](../07-multi-agent-and-a2a/), where you will scale from single-agent to multi-agent systems.
