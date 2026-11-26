@@ -69,6 +69,14 @@ A curated list of resources for building agentic AI systems. Compiled while rese
 - [builtin.com](https://builtin.com/) - job postings used for skill analysis in the field guide.
 - [AI Engineering Field Guide](https://github.com/alexeygrigorev/ai-engineering-field-guide) - 4,894 job descriptions analyzed. The benchmark for the field guide style in this repo.
 - [Levels.fyi](https://www.levels.fyi/) - salary data for AI engineering roles.
+- [Levels.fyi negotiation guide](https://www.levels.fyi/blog/salary-negotiation.html) - the negotiation tactics the interview-prep module's negotiation chapter builds on.
+
+## Interview preparation (in this repo)
+
+- [Module 10 - Interview preparation](10-interview-preparation/) - the deep track: rounds, rubrics, five worked design cases, three mock transcripts, the four-week sprint.
+- [Question banks](interview/questions/) - per-module technical questions with model answers.
+- [Quizzes](interview/quizzes/) - self-assessment with an answer key; runnable keyless via `python examples/interview_quiz_demo.py`.
+- [Project interview guides](projects/) - every project README links an INTERVIEW.md with the pitch, the whiteboard script, and the follow-ups.
 
 ## Reference repos to study
 
