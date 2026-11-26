@@ -28,6 +28,10 @@ The conceptual and technical base everything else rests on. Read this module fir
 
 2 to 3 weeks at 2 to 3 hours per day.
 
+## Interview questions
+
+- [01 Foundations question bank](../interview/questions/01-foundations-questions.md) and [scenarios](../interview/questions/01-foundations-scenarios.md) - the questions interviewers actually ask about this module, with model answers
+
 ## What is next
 
 After this module, you are ready for [02 LangGraph core](../02-langgraph-core/), where you will model your first multi-step LLM workflow as a graph.
