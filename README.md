@@ -25,7 +25,7 @@ Pick the path that matches your background. Each path tells you what you already
 
 ## Curriculum
 
-The nine modules below are the spine of the roadmap. Each is self-contained with a README that orients you, prerequisites, and a clear "what's next" pointer.
+The ten modules below are the spine of the roadmap. Each is self-contained with a README that orients you, prerequisites, and a clear "what's next" pointer.
 
 - [01 Foundations](01-foundations/) — what agentic AI is, why LangGraph, LLM fundamentals, prompt engineering, structured outputs
 - [02 LangGraph core](02-langgraph-core/) — graph state, nodes, edges, conditional routing, parallel and iterative workflows, functional API
@@ -36,6 +36,7 @@ The nine modules below are the spine of the roadmap. Each is self-contained with
 - [07 Multi-agent and A2A](07-multi-agent-and-a2a/) — multi-agent architectures, handoffs, A2A protocol, agent cards, cross-framework interop
 - [08 Production](08-production/) — LangGraph Platform, Docker, Kubernetes, checkpointing, cost optimization, governance, continuous improvement
 - [09 Emerging topics](09-emerging-topics/) — agent OS, long-horizon memory, autonomous SDLC, agentic browsers, self-improving agents, safety
+- [10 Interview preparation](10-interview-preparation/) — the rounds and rubrics, system design cases, mock transcripts, behavioral STAR bank, the four-week sprint
 
 ## Field guide
 
@@ -59,10 +60,12 @@ See [projects/](projects/) for the full catalog.
 
 - [Job market analysis](job-market/) — what companies actually hire for in 2026
 - [Interview prep](interview/) — system design for agents, coding rounds, behavioral
+- [Question banks and quizzes](interview/questions/) — per-module interview questions with model answers, and the self-assessment quizzes (runnable keyless via `examples/interview_quiz_demo.py`)
+- [Module 10 - Interview preparation](10-interview-preparation/) — the deep track: rounds, design cases, mock transcripts, negotiation, the four-week sprint
 
 ## Roadmap
 
-The nine-phase path through the curriculum, with per-phase status. Start here if you want the linear version.
+The ten-phase path through the curriculum, with per-phase status. Start here if you want the linear version.
 
 See [ROADMAP.md](ROADMAP.md).
 
