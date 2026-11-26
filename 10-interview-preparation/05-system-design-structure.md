@@ -30,7 +30,7 @@ Panels score design rounds on axes, not on cleverness: requirements coverage, ar
 ## The moves that score
 
 - Name the state schema out loud. "State is messages, plus a scratchpad of retrieved doc IDs, plus a pending action." Agent design lives and dies in state, and half the field cannot articulate theirs.
-- Draw the graph, not the cloud. Boxes for nodes, arrows for edges, one box for the persistence layer. [ARCHITECTURE.md](../../ARCHITECTURE.md) is the one-page version of what your whiteboard should look like.
+- Draw the graph, not the cloud. Boxes for nodes, arrows for edges, one box for the persistence layer. [ARCHITECTURE.md](../ARCHITECTURE.md) is the one-page version of what your whiteboard should look like.
 - Reject an alternative on record. "Plan-and-execute would plan once and commit; for this task the loop needs to react to tool results, so ReAct." A choice without a rejected alternative reads as default, not decision.
 - Volunteer the numbers. Requests per day, expected tokens per turn, cost per request, p95 target. Rough is fine; absent is not.
 - End on evals. When the interviewer says "anything to add?", the answer is the eval plan: "If I shipped nothing else first, I would ship the 30-row golden set and the CI gate, because every other component changes under it."

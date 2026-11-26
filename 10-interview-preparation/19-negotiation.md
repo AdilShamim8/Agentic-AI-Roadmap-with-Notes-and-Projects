@@ -14,7 +14,7 @@ Estimated time: 1 hour
 
 ## Ground rules from the data
 
-The [salary bands](../../job-market/03-salary-bands.md) chapter carries the numbers by level, region, and company stage. Negotiation starts from that table, not from courage. Three structural facts hold in this market:
+The [salary bands](../job-market/03-salary-bands.md) chapter carries the numbers by level, region, and company stage. Negotiation starts from that table, not from courage. Three structural facts hold in this market:
 
 1. Almost everything is negotiable at offer stage except the level - and the level is the thing that compounds. Fight for the level before the number.
 2. The first number moves less than candidates fear and more than companies pretend. Ranges move 5 to 15 percent; equity and sign-on move more.

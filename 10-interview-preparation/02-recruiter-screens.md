@@ -30,7 +30,7 @@ What not to do: the five-minute biography, starting from your first job; the tec
 
 ## The compensation question
 
-"What are your expectations?" is a filter question, not a negotiation. The [salary bands](../../job-market/03-salary-bands.md) chapter has the real numbers by level and region. The move that works:
+"What are your expectations?" is a filter question, not a negotiation. The [salary bands](../job-market/03-salary-bands.md) chapter has the real numbers by level and region. The move that works:
 
 1. Know the band for your level before the call, from the posting (pay-transparency laws make ranges common), from [levels.fyi](https://www.levels.fyi/), and from [builtin.com](https://www.builtin.com/) postings.
 2. Answer with a range whose bottom you would genuinely accept, anchored to the band: "For this level in this market I am looking in the 170 to 220 range; where does this role sit?"

@@ -41,7 +41,7 @@ A single page (GitHub profile README or a static page) with one job: route a rev
 
 1. One paragraph: what you build (agents in LangGraph, evaluation-first).
 2. The three primary projects, each: pitch line, the number, the link, one screenshot or trace excerpt.
-3. Links to the curriculum work: the [eval harness](../../projects/10-eval-harness-and-benchmark/README.md), the [retrieval demo](../../examples/retrieval_demo.py), the write-ups.
+3. Links to the curriculum work: the [eval harness](../projects/10-eval-harness-and-benchmark/README.md), the [retrieval demo](../examples/retrieval_demo.py), the write-ups.
 
 The screenshot of a LangSmith trace or an eval run output is the highest-signal image available - it shows the artifact working, not a stock robot.
 

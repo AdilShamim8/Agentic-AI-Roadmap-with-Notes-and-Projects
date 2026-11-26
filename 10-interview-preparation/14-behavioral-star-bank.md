@@ -67,7 +67,7 @@ The bank below is the thirty questions that actually recur, grouped into familie
 27. "Why this company?" Something only true of them - a shipped product, an engineering blog post, the eval culture. Vague here is fatal.
 28. "Where do you want to be in three years?" Senior on agent reliability, or building the eval practice - concrete, plausible, not "your job."
 29. "What kind of manager brings out your best?" Honest, one clause, positive framing.
-30. "What do you do when you are stuck?" The ladder: re-read prerequisites, diff against a working reference, ask with a minimal repro - the [support chapter's](../../SUPPORT.md) discipline, told as a personal habit.
+30. "What do you do when you are stuck?" The ladder: re-read prerequisites, diff against a working reference, ask with a minimal repro - the [support chapter's](../SUPPORT.md) discipline, told as a personal habit.
 
 ## How to rehearse
 

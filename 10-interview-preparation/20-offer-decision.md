@@ -23,7 +23,7 @@ Score each offer, 1 to 5, honestly, on paper:
 1. Scope of the first project. From the research chapter: prototype, scaling, or platform. Which one do you want to be doing at 9 a.m. on the worst Monday of next year? The [team-stage read](18-company-research.md) gives you the data.
 2. The manager. You met them. Did they ask questions you had to think about? Did they know the system's failure modes? Would you take a correction from them without resentment? The manager axis is the one most correlated with leaving inside 18 months.
 3. The eval culture. "Who owns the eval set" got an answer. A team that measures its agents is a team where engineering judgment beats volume; a team that does not will ask you to ship on vibes and judge you on outcomes.
-4. Compensation against the [bands](../../job-market/03-salary-bands.md), as a package - base, equity at a realistic valuation, sign-on amortized over the cliff. Money is a hygiene factor: below the floor it poisons everything, above it, it stops differentiating.
+4. Compensation against the [bands](../job-market/03-salary-bands.md), as a package - base, equity at a realistic valuation, sign-on amortized over the cliff. Money is a hygiene factor: below the floor it poisons everything, above it, it stops differentiating.
 5. Optionality. Will this role teach you the thing your next role will require - platform work, production reliability, the protocol layer - or does it deepen what you already have?
 
 Weights are yours. But write them before scoring, and score against the ledger, not the last conversation.

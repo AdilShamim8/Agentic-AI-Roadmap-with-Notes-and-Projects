@@ -20,7 +20,7 @@ The hiring manager owns the outcome of your first year. Their round screens for 
 
 This is the center of the round, and the level you answer at decides it. The manager is listening for: did you own the problem, or the task? Answer at the problem level.
 
-Structure the answer in four moves, using a project from [projects/](../../projects/) you actually built:
+Structure the answer in four moves, using a project from [projects/](../projects/) you actually built:
 
 1. The problem and who had it: "Support was spending most of its time on order-status and returns, and the team wanted deflection on tier one without touching refund decisions."
 2. The shape of your solution and one rejected alternative: "A single ReAct-style agent with scoped tools, and human approval on refunds. I considered a multi-agent split but the tool count did not justify it."

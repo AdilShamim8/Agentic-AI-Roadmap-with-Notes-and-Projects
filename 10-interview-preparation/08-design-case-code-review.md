@@ -22,7 +22,7 @@ Functional: on PR open, review the diff and changed-file context, post comments,
 
 ## Part 2 - Architecture
 
-Pipeline, not a free-form agent. Diff chunking, then parallel per-file analysis (map-reduce), then a verifier pass, then a single reviewer node that deduplicates and composes the PR comment. The verifier is the load-bearing choice: the first pass finds candidate issues with recall bias; a second, cheaper agent (or deterministic checks - lint rules, AST patterns) verifies each candidate and drops the noise before it reaches humans. This is the pattern from [05 Agentic patterns](../../05-agentic-patterns/) map-reduce chapter: generation and verification want different prompts, different temperatures, often different model classes.
+Pipeline, not a free-form agent. Diff chunking, then parallel per-file analysis (map-reduce), then a verifier pass, then a single reviewer node that deduplicates and composes the PR comment. The verifier is the load-bearing choice: the first pass finds candidate issues with recall bias; a second, cheaper agent (or deterministic checks - lint rules, AST patterns) verifies each candidate and drops the noise before it reaches humans. This is the pattern from [05 Agentic patterns](../05-agentic-patterns/) map-reduce chapter: generation and verification want different prompts, different temperatures, often different model classes.
 
 State: the diff chunks, candidate issues with file/line and confidence, verified issues, and the final comment. No persistence between PRs beyond aggregate stats.
 

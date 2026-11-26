@@ -27,7 +27,7 @@ What the reviewer reads for, in order:
 3. Conditional edges named after the thing they decide: `route_by_intent`, not `decide`.
 4. A tool node wired to the agent, and tool errors handled rather than assumed away.
 
-Drill it: build it in under 25 minutes, talking, from [02 LangGraph core](../../02-langgraph-core/) and [03 Agents in practice](../../03-agents-in-practice/). The demos `conditional_edges_demo.py` and `agent_with_tools_demo.py` in [examples/](../../examples/) are the reference shape.
+Drill it: build it in under 25 minutes, talking, from [02 LangGraph core](../02-langgraph-core/) and [03 Agents in practice](../03-agents-in-practice/). The demos `conditional_edges_demo.py` and `agent_with_tools_demo.py` in [examples/](../examples/) are the reference shape.
 
 ## Shape 2: tool design
 

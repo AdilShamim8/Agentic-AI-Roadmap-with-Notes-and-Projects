@@ -22,7 +22,7 @@ Functional: score every transaction in-stream, group related anomalies, and prod
 
 ## Part 2 - Architecture
 
-Two tiers, and the tiering is the answer. Tier one: streaming stats and rules - rolling aggregates, thresholds, a simple model - in the stream processor, millisecond latency, no LLM. Tier two: an agent that wakes on tier-one anomalies, pulls the correlated window (recent transactions for the same merchant, card, or account), investigates with tools, and composes the alert. The agent runs per incident, not per event; the event loop runs always. [05 Agentic patterns](../../05-agentic-patterns/) framing: this is a supervisor that dispatches on incident, with investigation sub-agents and a hard turn cap.
+Two tiers, and the tiering is the answer. Tier one: streaming stats and rules - rolling aggregates, thresholds, a simple model - in the stream processor, millisecond latency, no LLM. Tier two: an agent that wakes on tier-one anomalies, pulls the correlated window (recent transactions for the same merchant, card, or account), investigates with tools, and composes the alert. The agent runs per incident, not per event; the event loop runs always. [05 Agentic patterns](../05-agentic-patterns/) framing: this is a supervisor that dispatches on incident, with investigation sub-agents and a hard turn cap.
 
 State per incident: the anomaly window, the investigation findings, and the draft alert. Incidents checkpoint; a five-minute-old incident resuming after a crash is normal operation, not an error.
 

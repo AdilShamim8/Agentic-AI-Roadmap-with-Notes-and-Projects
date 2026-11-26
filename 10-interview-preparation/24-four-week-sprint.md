@@ -24,7 +24,7 @@ Assume 2 to 3 hours per weekday and 6 on one weekend day. If you are working ful
 - Day 2: Three primary [project stories](15-project-stories.md) written as six STAR bullets each, rehearsed aloud.
 - Day 3: The remaining seven stories to one-liners; the [behavioral bank](14-behavioral-star-bank.md) - mark your weakest family and write its story.
 - Day 4: Applications. Twenty postings: eight dream, eight fit, four rehearsal-tier. Tailor one paragraph per application - the only customization that measurably matters. Tracker row per company: stage, contact, next action, date.
-- Day 5: The [question banks](../questions/) for modules 01-04, self-graded; note the misses.
+- Day 5: The [question banks](../interview/questions/) for modules 01-04, self-graded; note the misses.
 - Weekend: Run `interview_quiz_demo.py` for the fast pass; the [design framework](05-system-design-structure.md) drilled once against a random prompt, timed, aloud.
 
 ## Week 2 - the mocks

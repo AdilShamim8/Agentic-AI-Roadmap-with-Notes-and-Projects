@@ -43,7 +43,7 @@ The graph is habit evidence, not volume evidence. A steady line of real commits 
 
 ## The curriculum-as-evidence play
 
-If you are using this repo as your foundation, the strongest move is to fork it and do the work in the open: the projects, the eval extensions, the question-bank additions. Your fork's history becomes a months-long public work sample of exactly the skills the role wants - studying in public is hiring signal, not embarrassment. The [CONTRIBUTING.md](../../CONTRIBUTING.md) bar gives your commits an editorial standard to meet, and meeting it is demonstrable craft.
+If you are using this repo as your foundation, the strongest move is to fork it and do the work in the open: the projects, the eval extensions, the question-bank additions. Your fork's history becomes a months-long public work sample of exactly the skills the role wants - studying in public is hiring signal, not embarrassment. The [CONTRIBUTING.md](../CONTRIBUTING.md) bar gives your commits an editorial standard to meet, and meeting it is demonstrable craft.
 
 ## What is next
 

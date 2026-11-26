@@ -20,7 +20,7 @@ The assignment brief says "build a small agent." The rubric behind it grades fiv
 
 Read the brief twice, then write the one-paragraph "what I will build" and the explicit non-goals list. Example, for a support-agent brief: in scope - the graph, two tools, the approval interrupt, a 10-row eval; out of scope - auth, streaming, a frontend, Postgres (SQLite or in-memory checkpointer instead). Non-goals stated in the README read as judgment; unstated, they read as gaps.
 
-The repo's projects give calibrated scope targets: the [customer support project](../../projects/02-customer-support-multi-agent/README.md) and its solution show what a complete-but-bounded submission looks like. Match that size and stop.
+The repo's projects give calibrated scope targets: the [customer support project](../projects/02-customer-support-multi-agent/README.md) and its solution show what a complete-but-bounded submission looks like. Match that size and stop.
 
 ## The time budget
 
@@ -38,7 +38,7 @@ The order matters because the rubric's top lines are satisfied by hour four. Eve
 
 1. The non-running submission. The reviewer clones it, the command in the README fails, and the score drops past recovery. Prevention: fresh clone, fresh venv, run the exact README command, before submitting. This is the cheapest point on the entire loop.
 2. The scope explosion. A frontend, three agents, a vector store - for a brief that asked for one agent and two tools. The reviewer reads it as poor judgment under ambiguity, which is the thing they were testing. Ship the non-goals list instead.
-3. The missing eval. An agent submission with no measurement reads as pre-2022 instincts. Ten rows of golden data and a printed score line turn "hobby project" into "engineering artifact." The [eval module](../../06-evals-and-observability/) and `run_evals.py` in [examples/](../../examples/) are the template - copy the shape, not the size.
+3. The missing eval. An agent submission with no measurement reads as pre-2022 instincts. Ten rows of golden data and a printed score line turn "hobby project" into "engineering artifact." The [eval module](../06-evals-and-observability/) and `run_evals.py` in [examples/](../examples/) are the template - copy the shape, not the size.
 4. The unreadable README. The reviewer grades what they can find. Run command, one architecture paragraph, the eval number, the decisions you made and why, the non-goals. Six sections, one page.
 
 ## Secrets and hygiene

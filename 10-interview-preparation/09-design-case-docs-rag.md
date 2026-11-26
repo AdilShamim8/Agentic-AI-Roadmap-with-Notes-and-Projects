@@ -22,7 +22,7 @@ Functional: answer with citations to the source doc and section; refuse when the
 
 ## Part 2 - Architecture
 
-Retrieval as a tool, not a pipeline: the agent decides whether and what to search, reformulates, and can search again with different terms. That decision - search or answer from what you have - is the whole point of tool-shaped retrieval, and it is what this repo teaches in [04 Tools and MCP, chapter 06](../../04-tools-and-mcp/06-retrieval-as-a-tool.md). State: messages plus a scratchpad of retrieved doc IDs so the agent knows what it has seen. The answer node receives only tool results, never direct index access.
+Retrieval as a tool, not a pipeline: the agent decides whether and what to search, reformulates, and can search again with different terms. That decision - search or answer from what you have - is the whole point of tool-shaped retrieval, and it is what this repo teaches in [04 Tools and MCP, chapter 06](../04-tools-and-mcp/06-retrieval-as-a-tool.md). State: messages plus a scratchpad of retrieved doc IDs so the agent knows what it has seen. The answer node receives only tool results, never direct index access.
 
 ## Part 3 - Tools and the index
 
@@ -45,7 +45,7 @@ The agent runs on the platform (`langgraph build`, Kubernetes), Postgres checkpo
 ## The follow-ups
 
 - "Why not fine-tune on the docs?" Access control, freshness, and citations all break; retrieval keeps all three. Also the docs change weekly and a fine-tune does not.
-- "Multi-tenant?" The scoping story is identical - tenant replaces identity group. [The retrieval demo](../../examples/retrieval_demo.py) shows the tenant-scoped tool shape, keyless.
+- "Multi-tenant?" The scoping story is identical - tenant replaces identity group. [The retrieval demo](../examples/retrieval_demo.py) shows the tenant-scoped tool shape, keyless.
 - "What about images and diagrams in the docs?" Capabilities answer: extract text at ingest, defer multimodal indexing to a second phase with its own eval - do not hand-wave it into phase one.
 
 ## What is next

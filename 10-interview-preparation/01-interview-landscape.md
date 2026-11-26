@@ -14,7 +14,7 @@ Estimated time: 1 hour
 
 ## The standard loop
 
-Most loops for agentic AI engineer roles have four to five rounds, and take three to six weeks from first contact to offer. The [field guide](../../field-guide/05-interview-prep.md) covers the baseline; this chapter adds what each round is actually filtering for.
+Most loops for agentic AI engineer roles have four to five rounds, and take three to six weeks from first contact to offer. The [field guide](../field-guide/05-interview-prep.md) covers the baseline; this chapter adds what each round is actually filtering for.
 
 1. Recruiter screen, 30 minutes. Screens: communication, expectations, timeline. Not technical. Most rejections here are self-inflicted: unprepared answers on compensation or location. Chapter 02.
 2. Hiring manager round, 45 minutes. Screens: scope of past work, ownership, judgment. The candidate who lists tools loses to the one who describes decisions. Chapter 03.
@@ -52,7 +52,7 @@ Interviews are not exams you pass with correctness points; they are risk assessm
 
 ## Prerequisites
 
-- [The interview process overview](../../field-guide/05-interview-prep.md) - the shorter, numbers-first version
+- [The interview process overview](../field-guide/05-interview-prep.md) - the shorter, numbers-first version
 
 ## What is next
 

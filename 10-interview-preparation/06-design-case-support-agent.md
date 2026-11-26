@@ -30,7 +30,7 @@ Four native tools with typed schemas: `get_order_status(order_id, customer_id)`,
 
 ## Part 4 - Evaluation
 
-Golden dataset built from real ticket categories: 30-plus rows of `input, expected_intent, expected_tool, expected_args`. Exact-match on intent and tool call; LLM-judge on the response text for tone and completeness; a trajectory check that a refund over $50 never executes without a resume event. Baseline the numbers before shipping (the repo's [eval module](../../06-evals-and-observability/) and `run_evals.py` are this part, working) and gate changes in CI.
+Golden dataset built from real ticket categories: 30-plus rows of `input, expected_intent, expected_tool, expected_args`. Exact-match on intent and tool call; LLM-judge on the response text for tone and completeness; a trajectory check that a refund over $50 never executes without a resume event. Baseline the numbers before shipping (the repo's [eval module](../06-evals-and-observability/) and `run_evals.py` are this part, working) and gate changes in CI.
 
 ## Part 5 - Production
 
@@ -46,7 +46,7 @@ Golden dataset built from real ticket categories: 30-plus rows of `input, expect
 
 - "How do you stop it from refunding the same order twice?" Idempotency key on `issue_refund`, checked in the tool layer, rejected as a duplicate.
 - "The CFO wants refund leakage numbers." Refund volume per day with mean and p99 amount, plus the approval rejection rate - all derivable from the checkpointer.
-- "Where does RAG fit?" Only for policy questions: the returns policy is a retrieval tool scoped to a policy index, which is [retrieval as a tool](../../04-tools-and-mcp/06-retrieval-as-a-tool.md), not a vector search over the whole chat.
+- "Where does RAG fit?" Only for policy questions: the returns policy is a retrieval tool scoped to a policy index, which is [retrieval as a tool](../04-tools-and-mcp/06-retrieval-as-a-tool.md), not a vector search over the whole chat.
 
 ## What is next
 
